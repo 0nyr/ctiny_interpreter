@@ -1,0 +1,9 @@
+int main () {
+    int c;
+
+    c = a; // error a not defined.
+    
+    Int a; // not allowed here
+
+    return 0;
+}

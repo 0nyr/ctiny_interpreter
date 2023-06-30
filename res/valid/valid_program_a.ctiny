@@ -1,0 +1,16 @@
+int main () {
+    bool x;
+    float y, z;
+
+    z = 0;
+    y = 0;
+    x = true;
+
+    if(x) {
+        y = y + z;
+    }
+    else{
+        y = y - z;
+    }
+    return 0;
+}
