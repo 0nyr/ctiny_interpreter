@@ -1,0 +1,84 @@
+# my Ctiny grammar
+> Note that my design choices and more information about my Ctiny grammar are described in the [ctiny_grammar_info.md](./ctiny_grammar_info.md) file.
+
+### file layout
+
+<translation-unit> -> { <function-definition> }* <entry-point-function-definition>
+
+<entry-point-function-definition> -> <int-type> main () <block-statement>
+
+<function-definition> -> <type-specifier> <identifier> ( [ <declaration> ]? ) <block-statement>
+
+<declaration> -> <type-specifier> <identifier> [ [ <integer> ] ]? { , <identifier> [ [ <integer> ] ]? }*
+
+### types
+
+<type-specifier> -> <int-type> | bool | float | char
+
+<int-type> -> int 
+
+### identifiers
+
+<identifier> -> <letter> { <letter> | <digit> }*
+
+<letter> -> a | b | c | d | e | f | g | h | i | j | k | l | m | n | o | p | q | r | s | t | u | v | w | x | y | z | A | B | C | D | E | F | G | H | I | J | K | L | M | N | O | P | Q | R | S | T | U | V | W | X | Y | Z
+
+<digit> -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+
+### literals
+
+<literal> -> <integer> | <float> | <char> | <boolean>
+
+<integer> -> <digit> { <digit> }*
+
+<float> -> <integer> . <integer>
+
+<char> -> ' <letter> ' | ' <digit> '
+
+<boolean> -> true | false
+
+### statements
+
+<statement> -> <block-statement> | <assignment-statement> | <if-statement> | <while-statement> | <jump-statement> | ;
+
+<block-statement> -> { { <declaration> }* { <statement> }* }
+
+<assignment-statement> -> <identifier> [ [ <expression> ] ]? = <expression> ;
+
+<if-statement> -> if ( <expression> ) <statement> [ else <statement> ]?
+
+<while-statement> -> while ( <expression> ) <statement>
+
+<jump-statement> -> return <expression> ; | break ; | continue ;
+
+### expressions
+
+<expression> -> <conjunction> { || <conjunction> }*
+
+<conjunction> -> <equality> { && <equality> }*
+
+<equality> -> <relation> { <equality-operator> <relation> }*
+
+<equality-operator> -> == | !=
+
+<relation> -> <addition> [ <relation-operator> <addition> ]*
+
+<relation-operator> -> < | > | <= | >=
+
+<addition> -> <term> { <addition-operator> <term> }*
+
+<addition-operator> -> + | -
+
+<term> -> <factor> { <multiplication-operator> <factor> }*
+
+<multiplication-operator> -> * | / | %
+
+<factor> -> [ <unary-operator> ]? <primary>
+
+<unary-operator> -> - | !
+
+<primary> -> <identifier> [ [ <expression> ] ]? | <literal> | ( <expression> ) | <function-call> | <type-cast>
+
+<function-call> -> <identifier> ( [ <expression> { , <expression> }* ]? )
+
+<type-cast> -> ( <type-specifier> ) <primary>

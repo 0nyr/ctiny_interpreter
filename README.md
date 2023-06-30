@@ -4,7 +4,7 @@
 
 1. (20 points) Write the EBNF style grammar for Tiny and Implement a parser for this grammar (should check for valid programs).
 
-My EBNF style grammar is described in the file `ctiny_grammar.md`
+My EBNF style grammar is described in the file `ctiny_grammar.txt` . You should read first `ctiny_grammar_info.md` so as to get insights on **Ctiny** as well as my notations and design choices.
 
 To run my parser program written in **Rust**, use the following command: `cargo run -- --parse <file_path.ctiny>` or `cargo run -- -p <file_path.ctiny>`
 
