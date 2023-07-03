@@ -1,6 +1,6 @@
 use crate::params;
 
-mod parser;
+pub mod parser;
 
 pub fn syntax_parsing(input_files: Vec<std::path::PathBuf>) {
     println!("{:#?}", params::argv::Pipeline::SyntaxParsing);

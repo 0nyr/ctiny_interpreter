@@ -10,15 +10,20 @@ translation_unit = { SOI ~ function_definition* ~ entry_point_function_definitio
 
 entry_point_function_definition = { "int" ~ "main" ~ "(" ~ ")" ~ block_statement }
 
-function_definition = { type_specifier ~ identifier ~ "(" ~ declaration? ~ ")" ~ block_statement }
+function_definition = { type_specifier ~ identifier ~ "(" ~ parameter_list? ~ ")" ~ block_statement }
 
-declaration = { type_specifier ~ identifier ~ ("[" ~ integer ~ "]")? ~ ("," ~ identifier ~ ("[" ~ integer ~ "]")?)* }
+// parameters and declarations
+parameter_list = { declaration ~ ("," ~ declaration)* }
+multi_declaration = { declaration ~ ("," ~ followup_declaration)* ~ ";" }
+declaration = { type_specifier ~ identifier ~ ("[" ~ integer ~ "]")? }
+followup_declaration = { identifier ~ ("[" ~ integer ~ "]")? }
 
 // types
 type_specifier = { "bool" | "float" | "char" | "int" }
 
 // identifiers
-identifier = @{ ('a'..'z' | 'A'..'Z') ~ ('a'..'z' | 'A'..'Z' | '0'..'9')* }
+identifier = @{ ('a'..'z' | 'A'..'Z' ) ~ ('a'..'z' | 'A'..'Z' | '0'..'9' | "_")* }
+
 
 letter = _{ 'a'..'z' | 'A'..'Z' }
 digit = _{ '0'..'9' }
@@ -34,7 +39,7 @@ boolean = { "true" | "false" }
 // statements
 statement = { block_statement | assignment_statement | if_statement | while_statement | jump_statement | ";" }
 
-block_statement = { "{" ~ declaration* ~ statement* ~ "}" }
+block_statement = { "{" ~ multi_declaration* ~ statement* ~ "}" }
 
 assignment_statement = { identifier ~ ("[" ~ expression ~ "]")? ~ "=" ~ expression ~ ";" }
 

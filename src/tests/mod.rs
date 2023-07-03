@@ -1,0 +1,134 @@
+use pest::{Parser, iterators::Pairs};
+
+use crate::syntax_parsing::parser::{CTinyParser, Rule};
+
+fn print_tokens(pairs: Pairs<'_, Rule>) {
+    let tokens = pairs.tokens();
+
+    for token in tokens {
+        println!("{:?}", token);
+    }
+}
+
+
+#[test]
+fn test_addition() {
+    // to see test output: $ cargo test -- --nocapture
+    let pairs = CTinyParser::parse(Rule::addition, "1773 + 1362").unwrap();
+    
+    // check that the first pair is an the correct addition
+    let pair = pairs.clone().next().unwrap();
+    assert_eq!(pair.as_rule(), Rule::addition);
+    assert_eq!(pair.as_str(), "1773 + 1362");
+    
+    print_tokens(pairs);
+}
+
+// write a test to test the following: { char c; c = 'a'; }
+#[test]
+fn test_block_statement() {
+    let test_string = "{ char c; c = 'a'; }";
+    let pairs = CTinyParser::parse(Rule::statement, test_string)
+        .unwrap().next().unwrap()
+        .into_inner();
+
+    let pair = pairs.clone().next().unwrap();
+    assert_eq!(pair.as_rule(), Rule::block_statement);
+    assert_eq!(pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+// test empty block statement
+#[test]
+fn test_empty_block_statement() {
+    let test_string = "{}";
+    let pairs = CTinyParser::parse(Rule::statement, test_string)
+        .unwrap().next().unwrap()
+        .into_inner();
+
+    let pair = pairs.clone().next().unwrap();
+    assert_eq!(pair.as_rule(), Rule::block_statement);
+    assert_eq!(pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+// write a test to test the following: while (i > 0) {c = 'a';}
+#[test]
+fn test_while_statement() {
+    let test_string = "while (i > 0) {c = 'a';}";
+    let pairs = CTinyParser::parse(Rule::statement, test_string)
+        .unwrap().next().unwrap()
+        .into_inner();
+
+
+    let pair = pairs.clone().next().unwrap();
+    assert_eq!(pair.as_rule(), Rule::while_statement);
+    assert_eq!(pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+// test variable declaration
+#[test]
+fn test_variable_declaration() {
+    let test_string = "int variable_name;";
+    let pairs = CTinyParser::parse(Rule::multi_declaration, test_string)
+        .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+
+    assert_eq!(first_pair.as_rule(), Rule::multi_declaration);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    let second_pair = first_pair.into_inner().next().unwrap();
+    assert_eq!(second_pair.as_rule(), Rule::declaration);
+    assert_eq!(second_pair.as_str(), "int variable_name");
+
+    print_tokens(pairs);
+}
+
+// test multiple variable declaration
+#[test]
+fn test_multiple_variable_declaration() {
+    let test_string = "int variable_name[10], variable_name2;";
+    let pairs = CTinyParser::parse(Rule::multi_declaration, test_string)
+        .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+
+    assert_eq!(first_pair.as_rule(), Rule::multi_declaration);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+// write a test to test the following: int test_function(int a, int b) { return a + b; }
+#[test]
+fn test_function_definition() {
+    let test_string = "int test_function(int a, int b) { return a + b; }";
+    let pairs = CTinyParser::parse(Rule::function_definition, test_string)
+        .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+
+    assert_eq!(first_pair.as_rule(), Rule::function_definition);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+#[test]
+fn test_function_definition_array_parameter() {
+    let test_string = "int test_function(int a[10]) { return a + b; }";
+    let pairs = CTinyParser::parse(Rule::function_definition, test_string)
+        .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+
+    assert_eq!(first_pair.as_rule(), Rule::function_definition);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}

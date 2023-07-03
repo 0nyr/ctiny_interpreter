@@ -6,6 +6,7 @@ mod params;
 mod data_loading;
 mod syntax_parsing;
 mod type_overflow_checking;
+mod tests;
 
 
 fn main() {

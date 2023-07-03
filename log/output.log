@@ -482,3 +482,80 @@ int main () {
   | ^---
   |
   = expected entry_point_function_definition or function_definition
+[2023-07-03T15:22:47 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T15:22:47 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:22:47 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:24:21 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T15:24:21 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:24:21 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:24:21 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int test_function(int a, int b) { return a + b; }
+  | ^---
+  |
+  = expected function_definition
+[2023-07-03T15:25:31 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T15:25:31 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:25:31 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:25:31 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int test_function() { return a + b; }
+  | ^---
+  |
+  = expected function_definition
+[2023-07-03T15:27:14 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T15:27:14 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:27:14 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:27:14 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | bool test_function() { return a + b; }
+  | ^---
+  |
+  = expected function_definition
+[2023-07-03T15:34:52 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T15:34:52 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:34:52 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:34:52 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | bool test_function() { }
+  | ^---
+  |
+  = expected function_definition
+[2023-07-03T15:42:41 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T15:42:41 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:42:41 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T15:42:41 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | bool test_function() { }
+  | ^---
+  |
+  = expected function_definition
+[2023-07-03T16:09:29 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T16:09:29 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:09:29 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:09:44 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T16:09:44 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:09:44 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:09:44 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int variable_name;
+  | ^---
+  |
+  = expected multi_declaration
+[2023-07-03T16:14:31 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T16:14:31 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:14:31 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:14:31 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing successful for file example_1.ctiny!
+[2023-07-03T16:21:08 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T16:21:08 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:21:08 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:21:08 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:24
+  |
+1 | int variable_name[10], variable_name2;
+  |                        ^---
+  |
+  = expected type_specifier
+[2023-07-03T16:24:46 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T16:24:46 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:24:46 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T16:24:46 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing successful for file example_1.ctiny!
