@@ -1,4 +1,6 @@
 // ctiny.pest
+// Failed to install Pest Language Server. Please either run `cargo install pest-language-server`, or set a custom path using the configuration `pestIdeTools.serverPath`.
+
 WHITESPACE = _{ " " | "\t" | "\n" | "\r" | "\r\n" }
 COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" | "//" ~ (!"\n" ~ ANY)* }
 
@@ -6,15 +8,14 @@ COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" | "//" ~ (!"\n" ~ ANY)* }
 // file layout
 translation_unit = { SOI ~ function_definition* ~ entry_point_function_definition ~ EOI }
 
-entry_point_function_definition = { int_type ~ "main" ~ "(" ~ ")" ~ block_statement }
+entry_point_function_definition = { "int" ~ "main" ~ "(" ~ ")" ~ block_statement }
 
 function_definition = { type_specifier ~ identifier ~ "(" ~ declaration? ~ ")" ~ block_statement }
 
 declaration = { type_specifier ~ identifier ~ ("[" ~ integer ~ "]")? ~ ("," ~ identifier ~ ("[" ~ integer ~ "]")?)* }
 
 // types
-type_specifier = { "bool" | "float" | "char" | int_type }
-int_type = { "int" }
+type_specifier = { "bool" | "float" | "char" | "int" }
 
 // identifiers
 identifier = @{ ('a'..'z' | 'A'..'Z') ~ ('a'..'z' | 'A'..'Z' | '0'..'9')* }
