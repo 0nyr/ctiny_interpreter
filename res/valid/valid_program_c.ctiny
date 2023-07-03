@@ -1,3 +1,4 @@
+// a Ctiny example with a function call
 int sum(int a, int b) {
     int c;
 

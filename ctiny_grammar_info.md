@@ -58,4 +58,4 @@ EBNF operators:
 + **()1** : list of alternatives
 + **[]?** : optional sequence, pick one or none
 
-Any other symbol should be understood as a *terminal*.
+Any other symbol should be understood as a *terminals*.

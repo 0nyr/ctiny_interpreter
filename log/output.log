@@ -32,3 +32,413 @@
 [2023-07-01T19:48:11 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_c.ctiny
 [2023-07-01T19:48:11 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_d.ctiny
 [2023-07-01T19:48:11 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_b.ctiny
+[2023-07-03T10:35:34 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T10:35:59 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T10:35:59 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_a.ctiny
+[2023-07-03T10:35:59 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_c.ctiny
+[2023-07-03T10:35:59 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_d.ctiny
+[2023-07-03T10:35:59 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_b.ctiny
+[2023-07-03T10:35:59 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T10:35:59 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_a.ctiny
+[2023-07-03T10:35:59 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_d.ctiny
+[2023-07-03T10:35:59 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_b.ctiny
+[2023-07-03T10:42:09 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T10:43:01 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T10:43:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_a.ctiny
+[2023-07-03T10:43:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_c.ctiny
+[2023-07-03T10:43:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_d.ctiny
+[2023-07-03T10:43:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_b.ctiny
+[2023-07-03T10:43:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T10:43:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_a.ctiny
+[2023-07-03T10:43:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_d.ctiny
+[2023-07-03T10:43:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_b.ctiny
+[2023-07-03T10:43:38 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T10:43:38 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_a.ctiny
+[2023-07-03T10:43:38 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_c.ctiny
+[2023-07-03T10:43:38 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_d.ctiny
+[2023-07-03T10:43:38 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_b.ctiny
+[2023-07-03T10:43:38 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T10:43:38 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_a.ctiny
+[2023-07-03T10:43:38 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_d.ctiny
+[2023-07-03T10:43:38 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_b.ctiny
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_a.ctiny
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_c.ctiny
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_d.ctiny
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/invalid/invalid_program_b.ctiny
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_a.ctiny
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_d.ctiny
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_b.ctiny
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/invalid/invalid_program_a.ctiny
+[2023-07-03T11:54:00 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 6:5
+  |
+6 |     char c; //error: declara-on must be at the beginning
+  |     ^---
+  |
+  = expected statement
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/invalid/invalid_program_c.ctiny
+[2023-07-03T11:54:00 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 4:12
+  |
+4 |     c = a; // error a not defined.
+  |            ^---
+  |
+  = expected statement
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/invalid/invalid_program_d.ctiny
+[2023-07-03T11:54:00 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int x; // global not allowed
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/invalid/invalid_program_b.ctiny
+[2023-07-03T11:54:00 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 2:11
+  |
+2 |     int a = 2; //error; declaration should be in next lines
+  |           ^---
+  |
+  = expected int_type or statement
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T11:54:00 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-03T11:54:00 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:5
+  |
+3 |     float y, z;
+  |     ^---
+  |
+  = expected statement
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-03T11:54:00 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:   --> 11:2
+   |
+11 | }
+   |  ^---
+   |
+   = expected int_type
+[2023-07-03T11:54:00 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-03T11:54:00 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:5
+  |
+3 |     char c;
+  |     ^---
+  |
+  = expected statement
+[2023-07-03T11:57:22 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T11:57:34 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T11:57:34 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T11:57:34 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_a.ctiny
+[2023-07-03T11:57:34 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_d.ctiny
+[2023-07-03T11:57:34 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_b.ctiny
+[2023-07-03T11:57:34 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T11:57:34 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-03T11:57:34 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-03T11:57:34 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:5
+  |
+3 |     float y, z;
+  |     ^---
+  |
+  = expected statement
+[2023-07-03T11:57:34 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-03T11:57:34 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:   --> 11:2
+   |
+11 | }
+   |  ^---
+   |
+   = expected int_type
+[2023-07-03T11:57:34 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-03T11:57:34 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:5
+  |
+3 |     char c;
+  |     ^---
+  |
+  = expected statement
+[2023-07-03T12:06:15 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:06:15 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:06:15 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_a.ctiny
+[2023-07-03T12:06:15 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_d.ctiny
+[2023-07-03T12:06:15 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_b.ctiny
+[2023-07-03T12:06:15 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:06:15 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-03T12:06:15 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-03T12:06:15 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:5
+  |
+3 |     float y, z;
+  |     ^---
+  |
+  = expected statement
+[2023-07-03T12:06:15 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-03T12:06:15 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:   --> 11:2
+   |
+11 | }
+   |  ^---
+   |
+   = expected int_type
+[2023-07-03T12:06:15 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-03T12:06:15 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:5
+  |
+3 |     char c;
+  |     ^---
+  |
+  = expected statement
+[2023-07-03T12:11:50 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:11:50 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:11:50 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_a.ctiny
+[2023-07-03T12:11:50 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_d.ctiny
+[2023-07-03T12:11:50 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_b.ctiny
+[2023-07-03T12:11:50 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:11:50 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-03T12:11:50 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-03T12:11:50 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:5
+  |
+3 |     float y, z;
+  |     ^---
+  |
+  = expected statement
+[2023-07-03T12:11:50 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-03T12:11:50 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:   --> 11:2
+   |
+11 | }
+   |  ^---
+   |
+   = expected int_type
+[2023-07-03T12:11:50 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-03T12:11:50 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:5
+  |
+3 |     char c;
+  |     ^---
+  |
+  = expected statement
+[2023-07-03T12:12:14 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:12:14 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:12:14 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:12:14 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-03T12:13:23 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:13:23 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:13:23 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:13:23 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition or function_definition
+[2023-07-03T12:16:24 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:16:24 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:16:24 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:16:24 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-03T12:16:41 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:16:41 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:16:41 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:16:41 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-03T12:35:21 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:35:21 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:35:21 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:35:21 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-03T12:38:37 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:38:37 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:38:37 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:38:37 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition or function_definition
+[2023-07-03T12:39:01 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:39:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:39:01 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:39:01 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition
+[2023-07-03T12:40:54 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:40:54 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:40:54 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:40:54 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition
+[2023-07-03T12:41:53 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:41:53 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:41:53 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:41:53 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition
+[2023-07-03T12:44:23 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:44:23 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:44:23 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:44:23 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition
+[2023-07-03T12:44:48 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:44:48 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:44:48 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-03T12:44:48 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 2:1
+  |
+2 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition
+[2023-07-03T12:46:55 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:47:12 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:47:12 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:47:12 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:47:12 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:1
+  |
+3 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition
+[2023-07-03T12:47:54 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:47:54 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:47:54 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:47:54 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 1:1
+  |
+1 | // a Ctiny example with a function call
+  | ^---
+  |
+  = unknown parsing error
+[2023-07-03T12:49:23 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:49:23 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:49:23 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:49:23 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:1
+  |
+3 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected function_definition
+[2023-07-03T12:50:09 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:50:09 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:50:09 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:50:09 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:1
+  |
+3 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition or function_definition
+[2023-07-03T12:51:46 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T12:51:46 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:51:46 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T12:51:46 UTC][DEBUG tiny_ebnf_grammar_parser::syntax_parsing::parser] Content of file: // a Ctiny example with a function call
+
+int sum(int a, int b) {
+    int a;
+    a = 10;
+    return c;
+}
+    
+int main () {    
+    return 0;
+}
+[2023-07-03T12:51:46 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:1
+  |
+3 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition or function_definition
+[2023-07-03T13:01:08 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T13:01:08 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T13:01:08 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T13:01:08 UTC][DEBUG tiny_ebnf_grammar_parser::syntax_parsing::parser] Content of file: // a Ctiny example with a function call
+
+int sum(int a, int b) {
+    int a;
+    a = 10;
+    return c;
+}
+    
+int main () {    
+    return 0;
+}
+[2023-07-03T13:01:08 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:1
+  |
+3 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition or function_definition
+[2023-07-03T13:03:27 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T13:03:27 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T13:03:27 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T13:03:27 UTC][DEBUG tiny_ebnf_grammar_parser::syntax_parsing::parser] Content of file: // a Ctiny example with a function call
+
+int sum(int a, int b) {
+    int a;
+    a = 10;
+    return c;
+}
+    
+int main () {    
+    return 0;
+}
+[2023-07-03T13:03:27 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:1
+  |
+3 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition or function_definition
+[2023-07-03T13:03:40 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-03T13:03:40 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Input file: res/building_grammar/example_1.ctiny
+[2023-07-03T13:03:40 UTC][INFO tiny_ebnf_grammar_parser::syntax_parsing] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-03T13:03:40 UTC][DEBUG tiny_ebnf_grammar_parser::syntax_parsing::parser] Content of file: // a Ctiny example with a function call
+
+int sum(int a, int b) {
+    int a;
+    a = 10;
+    return c;
+}
+    
+int main () {    
+    return 0;
+}
+[2023-07-03T13:03:40 UTC][ERROR tiny_ebnf_grammar_parser::syntax_parsing] Parsing error:  --> 3:1
+  |
+3 | int sum(int a, int b) {
+  | ^---
+  |
+  = expected entry_point_function_definition or function_definition
