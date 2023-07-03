@@ -3,7 +3,7 @@ int main () {
 
     i = 20;
 
-    char c; //error: declara-on must be at the beginning
+    char c; //error: declaration must be at the beginning
     
     return 0;
 }

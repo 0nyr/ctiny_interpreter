@@ -132,3 +132,49 @@ fn test_function_definition_array_parameter() {
 
     print_tokens(pairs);
 }
+
+// test very simple main function
+#[test]
+fn test_main_function() {
+    let test_string = "int main() { return 0; }";
+    let pairs = CTinyParser::parse(Rule::entry_point_function_definition, test_string)
+        .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+
+    assert_eq!(first_pair.as_rule(), Rule::entry_point_function_definition);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+// test very basic program
+#[test]
+fn test_basic_program() {
+    let test_string = "int main() { return 0; }";
+    let pairs = CTinyParser::parse(Rule::translation_unit, test_string)
+        .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+
+    assert_eq!(first_pair.as_rule(), Rule::translation_unit);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+// test function call
+// NOTE: to run this specific test: $ cargo test test_function_call -- --nocapture
+#[test]
+fn test_function_call() {
+    let test_string = "test_function(1, 2, a, 2*3)";
+    let pairs = CTinyParser::parse(Rule::expression, test_string)
+        .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+
+    assert_eq!(first_pair.as_rule(), Rule::expression);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}

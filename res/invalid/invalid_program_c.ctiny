@@ -3,7 +3,7 @@ int main () {
 
     c = a; // error a not defined.
     
-    Int a; // not allowed here
+    int a; // not allowed here
 
     return 0;
 }

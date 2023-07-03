@@ -10,7 +10,10 @@ translation_unit = { SOI ~ function_definition* ~ entry_point_function_definitio
 
 entry_point_function_definition = { "int" ~ "main" ~ "(" ~ ")" ~ block_statement }
 
-function_definition = { type_specifier ~ identifier ~ "(" ~ parameter_list? ~ ")" ~ block_statement }
+function_definition = { type_specifier ~ non_main_identifier ~ "(" ~ parameter_list? ~ ")" ~ block_statement }
+
+non_main_identifier = @{ !("main") ~ identifier }
+
 
 // parameters and declarations
 parameter_list = { declaration ~ ("," ~ declaration)* }
@@ -57,7 +60,7 @@ relation = { addition ~ (relation_operator ~ addition)? }
 addition = { term ~ (addition_operator ~ term)* }
 term = { factor ~ (multiplication_operator ~ factor)* }
 factor = { unary_operator? ~ primary }
-primary = { identifier ~ ("[" ~ expression ~ "]")? | literal | "(" ~ expression ~ ")" | function_call | type_cast }
+primary = { function_call | type_cast | identifier ~ ("[" ~ expression ~ "]")? | literal | "(" ~ expression ~ ")" }
 
 function_call = { identifier ~ "(" ~ (expression ~ ("," ~ expression)*)? ~ ")" }
 type_cast = { "(" ~ type_specifier ~ ")" ~ primary }
