@@ -5,7 +5,11 @@ extern crate pest_derive;
 mod params;
 mod data_loading;
 mod syntax_parsing;
-mod type_overflow_checking;
+mod syntax_tree;
+mod semantic_analysis;
+mod pipelines;
+
+#[cfg(test)]
 mod tests;
 
 
@@ -22,7 +26,7 @@ fn main() {
             syntax_parsing::syntax_parsing(input_paths);
         },
         params::argv::Pipeline::TypeOverflowChecking => {
-            type_overflow_checking::overflow_checking(input_paths);
+            pipelines::parsing_and_semantic_analysis(input_paths);
         },
     }
     

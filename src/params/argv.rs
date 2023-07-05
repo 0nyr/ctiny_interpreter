@@ -18,7 +18,7 @@ pub struct Argv {
     pub directories: Option<Vec<String>>, 
 
     /// The pipeline to run
-    #[arg(value_enum, short, long, default_value = "syntax-parsing")]
+    #[arg(value_enum, short, long, default_value = "type-overflow-checking")]
     pub pipeline: Pipeline,
 }
 
