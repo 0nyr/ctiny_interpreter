@@ -1,17 +1,17 @@
-use pest::iterators::Pair;
+use pest::{iterators::Pair, pratt_parser::Op};
 
 use crate::syntax_parsing::parser::Rule;
 
 // Base AST node
 #[derive(Debug, PartialEq)]
 pub struct Node<'a, T> {
-    pub pair: Pair<'a, Rule>,
-    pub inner: T,
+    pub pair: Pair<'a, Rule>,   // contains information about the node's position and string in the source code
+    pub inner: T,               // contains the data, wrapped into an inner type
 }
 
 // Convenient function to create Node
 pub fn make_node<T>(pair: Pair<Rule>, inner: T) -> Node<T> {
-    Node { pair, inner }
+    Node { pair, inner: inner }
 }
 
 impl<'a, T> Node<'a, T> {
@@ -21,20 +21,51 @@ impl<'a, T> Node<'a, T> {
     }
 }
 
+
+
 // AST nodes
 #[derive(Debug, PartialEq)]
-pub enum Program<'a> {
-    TranslationUnit(Vec<Node<'a, FunctionDefinition<'a>>>),
+pub struct ProgramAST<'a> {
+    pub translation_unit: TranslationUnitNode<'a>,
 }
+
+// node alias
+pub type TranslationUnitNode<'a> = Node<'a, TranslationUnit<'a>>;
+pub type FunctionDefinitionNode<'a> = Node<'a, FunctionDefinition<'a>>;
+// pub type TypeSpecifierNode<'a> = Node<'a, TypeSpecifier>;
+pub type DeclarationNode<'a> = Node<'a, Declaration<'a>>;
+pub type ParameterListNode<'a> = Node<'a, ParameterList<'a>>;
+pub type BlockNode<'a> = Node<'a, Block<'a>>;
+pub type StatementNode<'a> = Node<'a, Statement<'a>>;
+pub type AssignmentStatementNode<'a> = Node<'a, AssignmentStatement<'a>>;
+pub type IfStatementNode<'a> = Node<'a, IfStatement<'a>>;
+pub type WhileStatementNode<'a> = Node<'a, WhileStatement<'a>>;
+pub type JumpStatementNode<'a> = Node<'a, JumpStatement<'a>>;
+pub type MultiDeclarationNode<'a> = Node<'a, MultiDeclaration<'a>>;
+pub type ExpressionNode<'a> = Node<'a, Expression<'a>>;
+pub type BinaryExpressionNode<'a> = Node<'a, BinaryExpression<'a>>;
+pub type OperatorNode<'a> = Node<'a, Operator>;
+pub type LiteralNode<'a> = Node<'a, Literal>;
+pub type IdentifierNode<'a> = Node<'a, Identifier>;
+pub type FunctionCallNode<'a> = Node<'a, FunctionCall<'a>>;
+pub type TypeCastNode<'a> = Node<'a, TypeCast<'a>>;
+
+
+#[derive(Debug, PartialEq)]
+pub struct TranslationUnit<'a> {
+    pub functions: Vec<FunctionDefinitionNode<'a>>,
+}
+
+
 
 #[derive(Debug, PartialEq)]
 pub enum FunctionDefinition<'a> {
-    EntryPoint(StatementBlock),
+    EntryPoint(Block<'a>),
     Function {
-        name: String,
+        name: IdentifierNode<'a>,
         return_type: TypeSpecifier,
-        params: Vec<Node<'a, Declaration>>,
-        body: StatementBlock,
+        params: Vec<DeclarationNode<'a>>,
+        body: Block<'a>,
     },
 }
 
@@ -47,68 +78,102 @@ pub enum TypeSpecifier {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Declaration {
+pub struct Declaration<'a> {
     pub type_specifier: TypeSpecifier,
-    pub identifier: String,
+    pub identifier: IdentifierNode<'a>,
+    pub array_size: Option<i32>,  // For "[" ~ integer ~ "]" in the grammar
 }
 
 #[derive(Debug, PartialEq)]
-pub enum StatementBlock {
-    Statements(Vec<Statement>),
+pub struct ParameterList<'a> {
+    pub parameters: Vec<DeclarationNode<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub enum Statement {
-    Block(StatementBlock),
-    Assignment(AssignmentStatement),
-    If(IfStatement),
-    While(WhileStatement),
-    Jump(JumpStatement),
+pub struct MultiDeclaration<'a> {
+    pub declarations: Vec<DeclarationNode<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct AssignmentStatement {
-    pub identifier: String,
-    pub expression: Expression,
+pub struct Block<'a> {
+    pub declarations: Vec<DeclarationNode<'a>>,
+    pub statements: Vec<StatementNode<'a>>,
+}
+
+// WARN: in Ctiny, statements cannot contain declarations
+// this is made to ensure that in a given block, all declarations are at the top
+#[derive(Debug, PartialEq)]
+pub enum Statement<'a> {
+    Assignment(AssignmentStatementNode<'a>),
+    If(IfStatementNode<'a>),
+    While(WhileStatementNode<'a>),
+    Jump(JumpStatementNode<'a>),
 }
 
 #[derive(Debug, PartialEq)]
-pub struct IfStatement {
-    pub condition: Expression,
-    pub if_body: Box<Statement>,
-    pub else_body: Option<Box<Statement>>,
+pub struct AssignmentStatement<'a> {
+    pub identifier: IdentifierNode<'a>,
+    pub expression: ExpressionNode<'a>,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct WhileStatement {
-    pub condition: Expression,
-    pub body: Box<Statement>,
+pub struct IfStatement<'a> {
+    pub condition: ExpressionNode<'a>,
+    pub if_body: Box<StatementNode<'a>>,
+    pub else_body: Option<Box<StatementNode<'a>>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub enum JumpStatement {
-    Return(Expression),
+pub struct WhileStatement<'a> {
+    pub condition: ExpressionNode<'a>,
+    pub body: Box<StatementNode<'a>>,
+}
+
+#[derive(Debug, PartialEq)]
+pub enum JumpStatement<'a> {
+    Return(ExpressionNode<'a>),
     Break,
     Continue,
 }
 
 #[derive(Debug, PartialEq)]
-pub enum Expression {
-    Identifier(String),
-    Literal(Literal),
-    BinaryExpression {
-        left: Box<Expression>,
-        operator: Operator,
-        right: Box<Expression>,
-    },
-    FunctionCall {
-        name: String,
-        arguments: Vec<Expression>,
-    },
-    TypeCast {
-        type_specifier: TypeSpecifier,
-        expression: Box<Expression>,
-    },
+pub enum Expression<'a> {
+    Identifier(IdentifierNode<'a>),
+    Literal(LiteralNode<'a>),
+    BinaryExpression(BinaryExpressionNode<'a>),
+    FunctionCall(FunctionCallNode<'a>),
+    TypeCast(TypeCastNode<'a>),
+    GetValue(GetValueNode<'a>),
+}
+
+#[derive(Debug, PartialEq)]
+pub struct Identifier {
+    pub name: String,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct GetValueNode<'a> {
+    pub identifier: IdentifierNode<'a>,
+    pub index: Option<Box<ExpressionNode<'a>>>,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct BinaryExpression<'a> {
+    left: Box<ExpressionNode<'a>>,
+    operator: OperatorNode<'a>,
+    right: Box<ExpressionNode<'a>>,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct FunctionCall<'a> {
+    name: IdentifierNode<'a>,
+    arguments: Vec<ExpressionNode<'a>>,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct TypeCast<'a> {
+    type_specifier: TypeSpecifier,
+    expression: Box<ExpressionNode<'a>>,
 }
 
 #[derive(Debug, PartialEq)]

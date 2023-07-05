@@ -1,10 +1,12 @@
 # WORKLOG
 
-
 * [ ] Add symbol table to be able to recognize if an identifier is defined or not ! This sould ensure `cargo run -- -p syntax-parsing -f res/invalid/invalid_program_c.ctiny` detects the unknown identifier `a` at line 6.
 * [ ] Add type system with overflow checking
 * [ ] Correct the .txt grammar with modifications done inside .pest PEG file.
 
+### Wed 5 Jul 2023
+
+Removing block from statements, which simplifies things a lot.
 
 ### Mon 3 Jul 2023
 

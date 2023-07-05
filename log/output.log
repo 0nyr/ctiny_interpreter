@@ -792,3 +792,33 @@ int main () {
   |     ^-----^
   |
   = 🔴 Unexpected <statement>: multi_declaration
+[2023-07-05T10:01:31 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-05T10:01:31 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/valid/valid_program_a.ctiny
+[2023-07-05T10:01:31 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-05T10:01:31 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_a.ctiny]!
+[2023-07-05T10:01:31 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_a.ctiny]:  --> 2:5
+  |
+2 |     bool x;
+  |     ^-----^
+  |
+  = 🔴 Unexpected <statement>: multi_declaration
+[2023-07-05T10:01:43 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-05T10:01:43 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/valid/valid_program_a.ctiny
+[2023-07-05T10:01:43 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-05T10:01:43 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_a.ctiny]!
+[2023-07-05T10:01:43 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_a.ctiny]:  --> 2:5
+  |
+2 |     bool x;
+  |     ^-----^
+  |
+  = 🔴 Unexpected <statement>: multi_declaration
+[2023-07-05T10:03:05 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-05T10:03:05 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/valid/valid_program_b.ctiny
+[2023-07-05T10:03:05 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-05T10:03:05 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_b.ctiny]!
+[2023-07-05T10:03:05 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_b.ctiny]:  --> 2:5
+  |
+2 |     int i;
+  |     ^----^
+  |
+  = 🔴 Unexpected <statement>: multi_declaration

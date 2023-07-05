@@ -28,12 +28,12 @@ fn test_addition() {
 #[test]
 fn test_block_statement() {
     let test_string = "{ char c; c = 'a'; }";
-    let pairs = CTinyParser::parse(Rule::statement, test_string)
+    let pairs = CTinyParser::parse(Rule::block, test_string)
         .unwrap().next().unwrap()
         .into_inner();
 
     let pair = pairs.clone().next().unwrap();
-    assert_eq!(pair.as_rule(), Rule::block_statement);
+    assert_eq!(pair.as_rule(), Rule::block);
     assert_eq!(pair.as_str(), test_string);
 
     print_tokens(pairs);
@@ -48,7 +48,7 @@ fn test_empty_block_statement() {
         .into_inner();
 
     let pair = pairs.clone().next().unwrap();
-    assert_eq!(pair.as_rule(), Rule::block_statement);
+    assert_eq!(pair.as_rule(), Rule::block);
     assert_eq!(pair.as_str(), test_string);
 
     print_tokens(pairs);

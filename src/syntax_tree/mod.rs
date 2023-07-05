@@ -9,7 +9,7 @@ use errors::make_error;
 use nodes::*;
 
 
-pub fn convert_to_ast(pairs: Pairs<Rule>) -> Result<Node<Program>, Error<Rule>> {
+pub fn convert_to_ast(pairs: Pairs<Rule>) -> Result<ProgramAST, Error<Rule>> {
     let mut functions = vec![];
 
     // keep a copy of the translation unit pair
@@ -19,22 +19,10 @@ pub fn convert_to_ast(pairs: Pairs<Rule>) -> Result<Node<Program>, Error<Rule>> 
     for pair in translation_unit_pair.clone().into_inner() {
         match pair.as_rule() {
             Rule::function_definition => {
-                let mut inner = pair.clone().into_inner();
-                let return_type = convert_type_specifier(inner.next().unwrap())?;
-                let identifier = inner.next().unwrap().as_str().to_string();
-                let function_parameters = inner.next().unwrap().into_inner()
-                    .map(|pair| convert_declaration(pair))
-                    .collect::<Result<Vec<_>, _>>()?;
-                let body = convert_block_statement(inner.next().unwrap())?;
-                functions.push(make_node(pair, FunctionDefinition::Function {
-                    name: identifier,
-                    return_type: return_type.inner,
-                    params: function_parameters,
-                    body: body.inner,
-                }));
+                functions.push(convert_function(pair)?);
             },
             Rule::entry_point_function_definition => {
-                let body = convert_block_statement(pair.clone().into_inner().next().unwrap())?;
+                let body = convert_block(pair.clone().into_inner().next().unwrap())?;
                 functions.push(make_node(pair, FunctionDefinition::EntryPoint(body.inner)));
             },
             _ => return Err(make_error(
@@ -44,7 +32,33 @@ pub fn convert_to_ast(pairs: Pairs<Rule>) -> Result<Node<Program>, Error<Rule>> 
         }
     }
 
-    Ok(make_node(translation_unit_pair, Program::TranslationUnit(functions)))
+    let translation_unit_node = make_node(
+        translation_unit_pair.clone(), 
+        TranslationUnit { functions }
+    );
+    Ok(ProgramAST { translation_unit: translation_unit_node })
+}
+
+fn convert_function(pair: pest::iterators::Pair<Rule>) -> Result<Node<FunctionDefinition>, Error<Rule>> {
+    let mut inner = pair.clone().into_inner();
+    let return_type = convert_type_specifier(inner.next().unwrap())?;
+
+    let identifier = inner.next().unwrap().as_str().to_string();
+    let identifier_node = make_node(
+        pair.clone(), Identifier { name: identifier }
+    );
+
+    let function_parameters = inner.next().unwrap().into_inner()
+        .map(|pair| convert_declaration(pair))
+        .collect::<Result<Vec<_>, _>>()?;
+    let body = convert_block(inner.next().unwrap())?;
+
+    Ok(make_node(pair, FunctionDefinition::Function {
+        name: identifier_node,
+        return_type: return_type.inner,
+        params: function_parameters,
+        body: body.inner,
+    }))
 }
 
 fn convert_type_specifier(pair: pest::iterators::Pair<Rule>) -> Result<Node<TypeSpecifier>, Error<Rule>> {
@@ -61,56 +75,144 @@ fn convert_type_specifier(pair: pest::iterators::Pair<Rule>) -> Result<Node<Type
     Ok(make_node(pair, inner))
 }
 
+fn convert_block(pair: pest::iterators::Pair<Rule>) -> Result<Node<Block>, Error<Rule>> {
+    let mut declarations = Vec::new();
+    let mut statements = Vec::new();
+
+    for inner_pair in pair.clone().into_inner() {
+        match inner_pair.as_rule() {
+            Rule::multi_declaration => {
+                declarations.extend(convert_multi_declaration(inner_pair)?.inner.declarations);
+            }
+            Rule::statement => {
+                statements.push(convert_statement(inner_pair)?);
+            }
+            _ => unreachable!(),
+        }
+    }
+
+    let block = Block {
+        declarations,
+        statements,
+    };
+    Ok(make_node(pair, block))
+}
+
+fn convert_multi_declaration(pair: pest::iterators::Pair<Rule>) -> Result<Node<MultiDeclaration>, Error<Rule>> {
+    let declarations = pair.clone().into_inner()
+        .map(|pair| convert_declaration(pair))
+        .collect::<Result<Vec<_>, _>>()?;
+    Ok(make_node(pair, MultiDeclaration { declarations }))
+}
+
 fn convert_declaration(pair: pest::iterators::Pair<Rule>) -> Result<Node<Declaration>, Error<Rule>> {
     let mut inner = pair.clone().into_inner();
     let type_specifier = convert_type_specifier(inner.next().unwrap())?;
     let identifier = inner.next().unwrap().as_str().to_string();
-    Ok(make_node(pair, Declaration {
-        type_specifier: type_specifier.inner,
-        identifier: identifier,
-    }))
-}
+    let array_size = inner.next().map(|pair| pair.as_str().parse().unwrap());
 
-fn convert_block_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<StatementBlock>, Error<Rule>> {
-    let statements = pair.clone().into_inner()
-        .map(|pair| convert_statement(pair))
-        .collect::<Result<Vec<_>, _>>()?;
-    let inner_statements = statements.into_iter().map(|node| node.inner).collect();
-    Ok(make_node(pair, StatementBlock::Statements(inner_statements)))
+    Ok(make_node(pair.clone(), Declaration {
+        type_specifier: type_specifier.inner,
+        identifier: make_node(pair.clone(), Identifier { name: identifier }),
+        array_size,
+    }))
 }
 
 fn convert_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Statement>, Error<Rule>> {
     let inner = match pair.as_rule() {
-        Rule::assignment_statement => {
-            let mut inner = pair.clone().into_inner();
-            let identifier = inner.next().unwrap().as_str().to_string();
-            let expression = convert_expression(inner.next().unwrap())?;
-            Statement::Assignment(AssignmentStatement {
-                identifier: identifier,
-                expression: expression.inner,
-            })
-        },
+        Rule::assignment_statement => convert_assignment_statement(pair),
+        Rule::if_statement => convert_if_statement(pair),
+        Rule::while_statement => convert_while_statement(pair),
+        Rule::jump_statement => convert_jump_statement(pair),
         _ => return Err(make_error(
             pair.clone(), 
             format!("🔴 Unexpected <statement>: {:?}", pair.clone().as_rule()).as_str()
         )),
     };
-    Ok(make_node(pair, inner))
+    inner
 }
+
+fn convert_assignment_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Statement>, Error<Rule>> {
+    let mut inner = pair.clone().into_inner();
+    let identifier = inner.next().unwrap().as_str().to_string();
+    let expression = convert_expression(inner.next().unwrap())?;
+
+    Ok(make_node(pair.clone(), Statement::Assignment(
+        make_node(pair.clone(), AssignmentStatement {
+            identifier: make_node(pair.clone(), Identifier { name: identifier }),
+            expression: expression,
+        })
+    )))
+}
+
+fn convert_if_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Statement>, Error<Rule>> {
+    let mut inner = pair.clone().into_inner();
+    let condition = convert_expression(inner.next().unwrap())?;
+    let if_body = convert_statement(inner.next().unwrap())?;
+    let else_body = inner.next().map(convert_statement).transpose()?;
+
+    Ok(make_node(pair.clone(), Statement::If(
+        make_node(pair.clone(), IfStatement {
+            condition: condition,
+            if_body: Box::new(if_body),
+            else_body: else_body.map(Box::new),
+        })
+    )))
+}
+
+fn convert_while_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Statement>, Error<Rule>> {
+    let mut inner = pair.clone().into_inner();
+    let condition = convert_expression(inner.next().unwrap())?;
+    let body = convert_statement(inner.next().unwrap())?;
+
+    Ok(make_node(pair.clone(), Statement::While(
+        make_node(pair.clone(), WhileStatement {
+            condition: condition,
+            body: Box::new(body),
+        })
+    )))
+}
+
+fn convert_jump_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Statement>, Error<Rule>> {
+    let jump = pair.clone().into_inner().next().unwrap();
+    let statement = match jump.as_rule() {
+        Rule::continue_statement => Statement::Jump(make_node(jump, JumpStatement::Continue)),
+        Rule::break_statement => Statement::Jump(make_node(jump, JumpStatement::Break)),
+        Rule::return_statement => {
+            let expression = convert_expression(jump.clone().into_inner().next().unwrap())?;
+            Statement::Jump(make_node(jump.clone(), JumpStatement::Return(expression)))
+        },
+        _ => unreachable!(),
+    };
+    Ok(make_node(pair, statement))
+}
+
+
+// ... similarly, refactor the other statement types ...
 
 fn convert_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let inner = match pair.as_rule() {
-        Rule::identifier => Expression::Identifier(pair.as_str().to_string()),
+        Rule::identifier => Expression::Identifier(
+            make_node(pair.clone(), Identifier { name: pair.clone().as_str().to_string() })
+        ),
         Rule::literal => {
             let value = pair.as_str().to_string();
             if value == "true" || value == "false" {
-                Expression::Literal(Literal::Boolean(value == "true"))
+                Expression::Literal(
+                    make_node(pair.clone(), Literal::Boolean(value == "true"))
+                )
             } else if value.contains('.') {
-                Expression::Literal(Literal::Float(value.parse().unwrap()))
+                Expression::Literal(
+                    make_node(pair.clone(), Literal::Float(value.parse().unwrap()))
+                )
             } else if value.starts_with("'") {
-                Expression::Literal(Literal::Char(value.chars().nth(1).unwrap()))
+                Expression::Literal(
+                    make_node(pair.clone(), Literal::Char(value.chars().nth(1).unwrap()))
+                )
             } else {
-                Expression::Literal(Literal::Integer(value.parse().unwrap()))
+                Expression::Literal(
+                    make_node(pair.clone(), Literal::Integer(value.parse().unwrap()))
+                )
             }
         },
         _ => {
@@ -118,5 +220,5 @@ fn convert_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expressi
             return Err(make_error(pair, &message))
         },
     };
-    Ok(make_node(pair, inner))
+    Ok(make_node(pair.clone(), inner))
 }

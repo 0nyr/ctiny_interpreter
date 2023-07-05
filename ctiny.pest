@@ -8,11 +8,13 @@ COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" | "//" ~ (!"\n" ~ ANY)* }
 // file layout
 translation_unit = { SOI ~ function_definition* ~ entry_point_function_definition ~ EOI }
 
-entry_point_function_definition = { "int" ~ "main" ~ "(" ~ ")" ~ block_statement }
+entry_point_function_definition = { "int" ~ "main" ~ "(" ~ ")" ~ block }
 
-function_definition = { type_specifier ~ non_main_identifier ~ "(" ~ parameter_list? ~ ")" ~ block_statement }
+function_definition = { type_specifier ~ non_main_identifier ~ "(" ~ parameter_list? ~ ")" ~ block }
 
 non_main_identifier = @{ !("main") ~ identifier }
+
+block = { "{" ~ multi_declaration* ~ statement* ~ "}" }
 
 
 // parameters and declarations
@@ -40,9 +42,7 @@ char = @{ "'" ~ (letter | digit) ~ "'" }
 boolean = { "true" | "false" }
 
 // statements
-statement = { block_statement | assignment_statement | if_statement | while_statement | jump_statement | ";" }
-
-block_statement = { "{" ~ multi_declaration* ~ statement* ~ "}" }
+statement = { assignment_statement | if_statement | while_statement | jump_statement | ";" }
 
 assignment_statement = { identifier ~ ("[" ~ expression ~ "]")? ~ "=" ~ expression ~ ";" }
 
@@ -50,7 +50,10 @@ if_statement = { "if" ~ "(" ~ expression ~ ")" ~ statement ~ ("else" ~ statement
 
 while_statement = { "while" ~ "(" ~ expression ~ ")" ~ statement }
 
-jump_statement = { "return" ~ expression ~ ";" | "break" ~ ";" | "continue" ~ ";" }
+jump_statement = { return_statement | break_statement | continue_statement }
+return_statement = { "return" ~ expression ~ ";" }
+break_statement = { "break" ~ ";" }
+continue_statement = { "continue" ~ ";" }
 
 // expressions
 expression = { conjunction ~ ("||" ~ conjunction)* }
@@ -60,7 +63,8 @@ relation = { addition ~ (relation_operator ~ addition)? }
 addition = { term ~ (addition_operator ~ term)* }
 term = { factor ~ (multiplication_operator ~ factor)* }
 factor = { unary_operator? ~ primary }
-primary = { function_call | type_cast | identifier ~ ("[" ~ expression ~ "]")? | literal | "(" ~ expression ~ ")" }
+primary = { function_call | type_cast | get_value | literal | "(" ~ expression ~ ")" }
+get_value = { identifier ~ ("[" ~ expression ~ "]")? }
 
 function_call = { identifier ~ "(" ~ (expression ~ ("," ~ expression)*)? ~ ")" }
 type_cast = { "(" ~ type_specifier ~ ")" ~ primary }
