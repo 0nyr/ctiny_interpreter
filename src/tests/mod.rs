@@ -29,12 +29,11 @@ fn test_addition() {
 fn test_block_statement() {
     let test_string = "{ char c; c = 'a'; }";
     let pairs = CTinyParser::parse(Rule::block, test_string)
-        .unwrap().next().unwrap()
-        .into_inner();
-
-    let pair = pairs.clone().next().unwrap();
-    assert_eq!(pair.as_rule(), Rule::block);
-    assert_eq!(pair.as_str(), test_string);
+        .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+    assert_eq!(first_pair.as_rule(), Rule::block);
+    assert_eq!(first_pair.as_str(), test_string);
 
     print_tokens(pairs);
 }
@@ -43,13 +42,12 @@ fn test_block_statement() {
 #[test]
 fn test_empty_block_statement() {
     let test_string = "{}";
-    let pairs = CTinyParser::parse(Rule::statement, test_string)
-        .unwrap().next().unwrap()
-        .into_inner();
-
-    let pair = pairs.clone().next().unwrap();
-    assert_eq!(pair.as_rule(), Rule::block);
-    assert_eq!(pair.as_str(), test_string);
+    let pairs = CTinyParser::parse(Rule::block, test_string)
+    .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+    assert_eq!(first_pair.as_rule(), Rule::block);
+    assert_eq!(first_pair.as_str(), test_string);
 
     print_tokens(pairs);
 }
@@ -65,6 +63,34 @@ fn test_while_statement() {
 
     let pair = pairs.clone().next().unwrap();
     assert_eq!(pair.as_rule(), Rule::while_statement);
+    assert_eq!(pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+#[test]
+fn test_if_statement() {
+    let test_string = "if (i > 0) {c = 'a';}";
+    let pairs = CTinyParser::parse(Rule::statement, test_string)
+        .unwrap().next().unwrap()
+        .into_inner();
+
+    let pair = pairs.clone().next().unwrap();
+    assert_eq!(pair.as_rule(), Rule::if_statement);
+    assert_eq!(pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+#[test]
+fn test_if_else_statement() {
+    let test_string = "if (i > 0) {c = 'a';} else {c = 3; d = 4;}";
+    let pairs = CTinyParser::parse(Rule::statement, test_string)
+        .unwrap().next().unwrap()
+        .into_inner();
+
+    let pair = pairs.clone().next().unwrap();
+    assert_eq!(pair.as_rule(), Rule::if_statement);
     assert_eq!(pair.as_str(), test_string);
 
     print_tokens(pairs);

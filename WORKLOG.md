@@ -8,6 +8,9 @@
 
 Removing block from statements, which simplifies things a lot.
 
+Heavy refactoring for simplifying the grammar and preparing the AST building process.
+
+
 ### Mon 3 Jul 2023
 
 Added full syntax-parsing using `pest`.
