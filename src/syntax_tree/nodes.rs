@@ -69,7 +69,7 @@ pub enum FunctionDefinition<'a> {
     },
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum TypeSpecifier {
     Bool,
     Float,

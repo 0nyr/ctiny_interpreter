@@ -117,8 +117,22 @@ fn test_variable_declaration() {
 
 // test multiple variable declaration
 #[test]
+fn test_multiple_variable_declaration_with_array() {
+    let test_string = "int variable_name[10], variable_name2, variable_name3[20];";
+    let pairs = CTinyParser::parse(Rule::multi_declaration, test_string)
+        .unwrap();
+    
+    let first_pair = pairs.clone().next().unwrap();
+
+    assert_eq!(first_pair.as_rule(), Rule::multi_declaration);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    print_tokens(pairs);
+}
+
+#[test]
 fn test_multiple_variable_declaration() {
-    let test_string = "int variable_name[10], variable_name2;";
+    let test_string = "float y, z;";
     let pairs = CTinyParser::parse(Rule::multi_declaration, test_string)
         .unwrap();
     
