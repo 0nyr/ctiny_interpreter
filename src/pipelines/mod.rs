@@ -4,17 +4,21 @@ use crate::params;
 use crate::syntax_parsing::parser;
 use crate::syntax_parsing::parser::Rule;
 use crate::syntax_tree::nodes::{Node, ProgramAST};
-use crate::syntax_tree::convert_to_ast;
+//use crate::syntax_tree::convert_to_ast;
 
 fn parse_content_into_ast<'a>(
     file_content: &'a str,
     file_name: &str
-) -> Result<ProgramAST<'a>, Error<Rule>> {
+) -> Result<(), Error<Rule>> {
     let parsing_result = parser::parse(file_content);
     match parsing_result {
-        Ok(pairs) => {
-            log::info!("Basic Parsing successful [f: {}]!", file_name);
-            convert_to_ast(pairs)
+        // Ok(pairs) => {
+        //     log::info!("Basic Parsing successful [f: {}]!", file_name);
+        //     convert_to_ast(pairs)
+        // },
+        Ok(_) => {
+            // TODO: to be removed
+            Ok(())
         },
         Err(e) => {
             log::error!("Basic Parsing error f: {}]: {}", file_name, e);

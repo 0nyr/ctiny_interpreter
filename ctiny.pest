@@ -57,16 +57,18 @@ break_statement = { "break" ~ ";" }
 continue_statement = { "continue" ~ ";" }
 
 // expressions
-expression = { conjunction ~ ("||" ~ conjunction)* }
+expression = { disjunction } // top level expression is disjunction
+disjunction = { conjunction ~ ("||" ~ conjunction)* }
 conjunction = { equality ~ ("&&" ~ equality)* }
 equality = { relation ~ (equality_operator ~ relation)* }
 relation = { addition ~ (relation_operator ~ addition)? }
 addition = { term ~ (addition_operator ~ term)* }
 term = { factor ~ (multiplication_operator ~ factor)* }
 factor = { unary_operator? ~ primary }
-primary = { function_call | type_cast | get_value | literal | "(" ~ expression ~ ")" }
-get_value = { identifier ~ ("[" ~ expression ~ "]")? }
 
+primary = { function_call | type_cast | get_value | literal | parenthesized_expression }
+parenthesized_expression = { "(" ~ expression ~ ")" }
+get_value = { identifier ~ ("[" ~ expression ~ "]")? }
 function_call = { identifier ~ "(" ~ (expression ~ ("," ~ expression)*)? ~ ")" }
 type_cast = { "(" ~ type_specifier ~ ")" ~ primary }
 

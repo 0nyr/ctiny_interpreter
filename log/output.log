@@ -870,3 +870,165 @@ int main () {
   |     ^----^
   |
   = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-06T13:32:26 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-06T13:32:26 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/valid/valid_program_a.ctiny
+[2023-07-06T13:32:26 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-06T13:32:26 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_a.ctiny]!
+[2023-07-06T13:32:26 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_a.ctiny]:  --> 5:5
+  |
+5 |     z = 0;
+  |     ^----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/building_grammar/example_1.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/invalid/invalid_program_a.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/invalid/invalid_program_c.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/invalid/invalid_undefined_error.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/invalid/invalid_program_d.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/invalid/invalid_program_b.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/valid/valid_program_c.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/valid/valid_program_a.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/valid/valid_program_d.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: res/valid/valid_program_b.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: example_1.ctiny]!
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: example_1.ctiny]:  --> 5:5
+  |
+5 |     a = 10;
+  |     ^-----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_a.ctiny
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] Basic Parsing error f: invalid_program_a.ctiny]:  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected statement
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: invalid_program_a.ctiny]:  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected statement
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_c.ctiny
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] Basic Parsing error f: invalid_program_c.ctiny]:  --> 6:5
+  |
+6 |     int a; // not allowed here
+  |     ^---
+  |
+  = expected statement
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: invalid_program_c.ctiny]:  --> 6:5
+  |
+6 |     int a; // not allowed here
+  |     ^---
+  |
+  = expected statement
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_undefined_error.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: invalid_undefined_error.ctiny]!
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: invalid_undefined_error.ctiny]:  --> 4:5
+  |
+4 |     c = a; // error a not defined.
+  |     ^----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_d.ctiny
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] Basic Parsing error f: invalid_program_d.ctiny]:  --> 1:1
+  |
+1 | int x; // global not allowed
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: invalid_program_d.ctiny]:  --> 1:1
+  |
+1 | int x; // global not allowed
+  | ^---
+  |
+  = expected translation_unit
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_b.ctiny
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] Basic Parsing error f: invalid_program_b.ctiny]:  --> 2:5
+  |
+2 |     int a = 2; //error; declaration should be in next lines
+  |     ^---
+  |
+  = expected multi_declaration or statement
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: invalid_program_b.ctiny]:  --> 2:5
+  |
+2 |     int a = 2; //error; declaration should be in next lines
+  |     ^---
+  |
+  = expected multi_declaration or statement
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_c.ctiny]!
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_c.ctiny]:  --> 5:5
+  |
+5 |     a = 10;
+  |     ^-----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_a.ctiny]!
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_a.ctiny]:  --> 5:5
+  |
+5 |     z = 0;
+  |     ^----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_d.ctiny]!
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_d.ctiny]:  --> 4:5
+  |
+4 |     i = 10;
+  |     ^-----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-07T11:43:01 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_b.ctiny]!
+[2023-07-07T11:43:01 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_b.ctiny]:  --> 5:5
+  |
+5 |     i = 20;
+  |     ^-----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T11:43:14 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-07T11:43:30 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-07T11:43:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-07T11:43:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-07T11:43:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_a.ctiny]!
+[2023-07-07T11:43:30 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_a.ctiny]:  --> 5:5
+  |
+5 |     z = 0;
+  |     ^----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T11:51:43 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-07T11:51:43 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-07T11:51:43 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-07T11:51:43 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_a.ctiny]!
+[2023-07-07T11:51:43 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_a.ctiny]:  --> 5:5
+  |
+5 |     z = 0;
+  |     ^----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T12:04:28 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-07T12:04:28 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-07T12:04:28 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-07T12:04:28 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_a.ctiny]!
+[2023-07-07T12:04:28 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_a.ctiny]:  --> 5:5
+  |
+5 |     z = 0;
+  |     ^----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
+[2023-07-07T12:11:05 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-07T12:11:05 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Input file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-07T12:11:05 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-07T12:11:05 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Basic Parsing successful [f: valid_program_a.ctiny]!
+[2023-07-07T12:11:05 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] AST building error [f: valid_program_a.ctiny]:  --> 5:5
+  |
+5 |     z = 0;
+  |     ^----^
+  |
+  = 🔴 [AST building error] 🔴 Unexpected <statement>: statement

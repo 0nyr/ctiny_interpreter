@@ -2,6 +2,9 @@ use pest::{Parser, iterators::Pairs};
 
 use crate::syntax_parsing::parser::{CTinyParser, Rule};
 
+#[cfg(test)]
+mod ast_tests;
+
 fn print_tokens(pairs: Pairs<'_, Rule>) {
     let tokens = pairs.tokens();
 
