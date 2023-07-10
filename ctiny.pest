@@ -3,16 +3,14 @@
 
 WHITESPACE = _{ " " | "\t" | "\n" | "\r" | "\r\n" }
 COMMENT = _{ "/*" ~ (!"*/" ~ ANY)* ~ "*/" | "//" ~ (!"\n" ~ ANY)* }
-
+KEYWORD = _{ "int" | "float" | "char" | "bool" | "if" | "else" | "while" | "return" | "break" | "continue" | "true" | "false" | "main" }
 
 // file layout
 translation_unit = { SOI ~ function_definition* ~ entry_point_function_definition ~ EOI }
 
 entry_point_function_definition = { "int" ~ "main" ~ "(" ~ ")" ~ block }
 
-function_definition = { type_specifier ~ non_main_identifier ~ "(" ~ parameter_list? ~ ")" ~ block }
-
-non_main_identifier = @{ !("main") ~ identifier }
+function_definition = { type_specifier ~ identifier ~ "(" ~ parameter_list? ~ ")" ~ block }
 
 block = { "{" ~ multi_declaration* ~ statement* ~ "}" }
 
@@ -27,7 +25,7 @@ followup_declaration = { identifier ~ ("[" ~ integer ~ "]")? }
 type_specifier = { "bool" | "float" | "char" | "int" }
 
 // identifiers
-identifier = @{ ('a'..'z' | 'A'..'Z' ) ~ ('a'..'z' | 'A'..'Z' | '0'..'9' | "_")* }
+identifier = @{ !(KEYWORD) ~ ('a'..'z' | 'A'..'Z' ) ~ ('a'..'z' | 'A'..'Z' | '0'..'9' | "_")* }
 
 
 letter = _{ 'a'..'z' | 'A'..'Z' }
@@ -78,6 +76,6 @@ conjunction_operator = { "&&" }
 unary_operator = { "-" | "!" }
 addition_operator = { "+" | "-" }
 multiplication_operator = { "*" | "/" | "%" }
-relation_operator = { "<" | ">" | "<=" | ">=" }
+relation_operator = { "<=" | ">=" | "<" | ">" } // WARN: "<=" and ">=" MUST be before "<" and ">" for correct capture precedence.
 equality_operator = { "==" | "!=" }
 
