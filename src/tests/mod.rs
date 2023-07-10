@@ -84,7 +84,7 @@ fn test_if_statement() {
         .into_inner();
 
     let pair = pairs.clone().next().unwrap();
-    assert_eq!(pair.as_rule(), Rule::if_statement);
+    assert_eq!(pair.as_rule(), Rule::if_else_statement);
     assert_eq!(pair.as_str(), test_string);
 
     print_tokens(pairs);
@@ -98,7 +98,7 @@ fn test_if_else_statement() {
         .into_inner();
 
     let pair = pairs.clone().next().unwrap();
-    assert_eq!(pair.as_rule(), Rule::if_statement);
+    assert_eq!(pair.as_rule(), Rule::if_else_statement);
     assert_eq!(pair.as_str(), test_string);
 
     print_tokens(pairs);

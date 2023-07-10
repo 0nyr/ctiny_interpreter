@@ -12,7 +12,7 @@ entry_point_function_definition = { "int" ~ "main" ~ "(" ~ ")" ~ block }
 
 function_definition = { type_specifier ~ identifier ~ "(" ~ parameter_list? ~ ")" ~ block }
 
-block = { "{" ~ multi_declaration* ~ statement* ~ "}" }
+block = { "{" ~ multi_declaration* ~ multi_statement ~ "}" }
 
 
 // parameters and declarations
@@ -40,16 +40,16 @@ char = @{ "'" ~ (letter | digit) ~ "'" }
 boolean = { "true" | "false" }
 
 // statements
-statement = { assignment_statement | if_statement | while_statement | jump_statement | empty_statement }
-empty_statement = { ";" }
-assignment_statement = { identifier ~ ("[" ~ expression ~ "]")? ~ "=" ~ expression ~ ";" }
-if_statement = { "if" ~ "(" ~ expression ~ ")" ~ "{" ~ statement* ~ "}" ~ ("else" ~ "{" ~ statement* ~ "}")? }
-while_statement = { "while" ~ "(" ~ expression ~ ")" ~ "{" ~ statement* ~ "}" }
+statement = { assignment_statement | if_else_statement | while_statement | jump_statement }
+multi_statement = { (";")* ~ (statement ~ (";")+)* }
+assignment_statement = { get_or_set_value ~ "=" ~ expression }
+if_else_statement = { "if" ~ "(" ~ expression ~ ")" ~ "{" ~ multi_statement ~ "}" ~ ("else" ~ "{" ~ multi_statement ~ "}")? }
+while_statement = { "while" ~ "(" ~ expression ~ ")" ~ "{" ~ multi_statement ~ "}" }
 
 jump_statement = { return_statement | break_statement | continue_statement }
-return_statement = { "return" ~ expression ~ ";" }
-break_statement = { "break" ~ ";" }
-continue_statement = { "continue" ~ ";" }
+return_statement = { "return" ~ expression }
+break_statement = { "break" }
+continue_statement = { "continue" }
 
 // expressions
 expression = { disjunction } // top level expression is disjunction
@@ -61,9 +61,9 @@ addition = { term ~ (addition_operator ~ term)* }
 term = { factor ~ (multiplication_operator ~ factor)* }
 factor = { unary_operator? ~ primary }
 
-primary = { function_call | type_cast | get_value | literal | parenthesized_expression }
+primary = { function_call | type_cast | get_or_set_value | literal | parenthesized_expression }
 parenthesized_expression = { "(" ~ expression ~ ")" }
-get_value = { identifier ~ ("[" ~ expression ~ "]")? }
+get_or_set_value = { identifier ~ ("[" ~ expression ~ "]")? }
 function_call = { identifier ~ "(" ~ (expression ~ ("," ~ expression)*)? ~ ")" }
 type_cast = { "(" ~ type_specifier ~ ")" ~ primary }
 

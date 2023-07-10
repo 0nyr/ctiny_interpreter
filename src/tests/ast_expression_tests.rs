@@ -48,7 +48,7 @@ fn test_ast_function_call() {
 
 #[test]
 fn test_as_get_value() {
-    build_test_expression!(Rule::get_value,
+    build_test_expression!(Rule::get_or_set_value,
         "a",
         "a[0]"
     );

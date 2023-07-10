@@ -210,6 +210,19 @@ fn build_factor(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, E
     }
 }
 
+pub fn get_or_set_value_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<GetOrSetValue, Error<Rule>> {
+    let mut inner = pair.clone().into_inner();
+    let identifier = inner.next().unwrap().as_str().to_string();
+    let index = match inner.next() {
+        Some(pair) => Some(Box::new(unwrap_or_err_panic!(build_expression(pair)).data)),
+        None => None,
+    };
+    Ok(GetOrSetValue {
+        identifier: Identifier { name: identifier },
+        index,
+    })
+}
+
 pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let rule = pair.as_rule();
     match rule {
@@ -254,19 +267,9 @@ pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expres
                 }
             ))
         },
-        Rule::get_value => {
-            let mut inner = pair.clone().into_inner();
-            let identifier = inner.next().unwrap().as_str().to_string();
-            let index = match inner.next() {
-                Some(pair) => Some(Box::new(unwrap_or_err_panic!(build_expression(pair)).data)),
-                None => None,
-            };
-            ok_build_node!(pair, Expression::GetValue(
-                GetValue {
-                    identifier: Identifier { name: identifier },
-                    index,
-                }
-            ))
+        Rule::get_or_set_value => {
+            let get_or_set_value = get_or_set_value_from_pair(pair.clone())?;
+            ok_build_node!(pair, Expression::GetOrSetValue(get_or_set_value))
         },
         _ => {
             let message = format!("🔴 Unexpected rule in <expression> match tree: {:?}", rule);

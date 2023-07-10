@@ -99,15 +99,15 @@ pub enum Statement {
 
 #[derive(Debug, PartialEq)]
 pub struct AssignmentStatement {
-    pub identifier: Identifier,
+    pub set_value: GetOrSetValue,
     pub expression: Expression,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct IfStatement {
     pub condition: Expression,
-    pub if_body: Box<Statement>,
-    pub else_body: Option<Box<Statement>>,
+    pub if_body: Vec<Statement>,
+    pub else_body: Option<Vec<Statement>>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -136,7 +136,7 @@ pub enum Expression {
     BinaryExpression(BinaryExpression),
     FunctionCall(FunctionCall),
     TypeCast(TypeCast),
-    GetValue(GetValue),
+    GetOrSetValue(GetOrSetValue),
 }
 
 #[derive(Debug, PartialEq)]
@@ -145,7 +145,7 @@ pub struct Identifier {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct GetValue {
+pub struct GetOrSetValue {
     pub identifier: Identifier,
     pub index: Option<Box<Expression>>,
 }
