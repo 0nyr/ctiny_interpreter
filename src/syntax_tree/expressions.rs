@@ -3,8 +3,6 @@ use pest::error::Error;
 use crate::syntax_parsing::parser::Rule;
 
 use super::nodes::*;
-use super::errors;
-use super::nodes;
 use super::errors::make_ast_error;
 
 // exported macros are available in the crate root (global scope)
@@ -86,7 +84,7 @@ macro_rules! build_chained_operations {
 
 
 
-pub fn build_conjunction(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
+fn build_conjunction(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let mut inner = pair.clone().into_inner().next().unwrap();
             
     let mut conjunctions = Vec::new();
@@ -146,7 +144,7 @@ pub fn build_conjunction(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expre
     }
 }
 
-pub fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
+fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let literal = pair.clone().into_inner().next().unwrap();
     let res = match literal.as_rule() {
         Rule::boolean => Expression::Literal(Literal::Bool(literal.as_str().parse().unwrap())),
@@ -166,7 +164,7 @@ pub fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expressio
     ok_build_node!(pair, res)
 }
 
-pub fn build_type_specifier(pair: pest::iterators::Pair<Rule>) -> Result<Node<TypeSpecifier>, Error<Rule>> {
+fn build_type_specifier(pair: pest::iterators::Pair<Rule>) -> Result<Node<TypeSpecifier>, Error<Rule>> {
     let res = match pair.as_str() {
         "bool" => TypeSpecifier::Bool,
         "float" => TypeSpecifier::Float,
@@ -181,7 +179,7 @@ pub fn build_type_specifier(pair: pest::iterators::Pair<Rule>) -> Result<Node<Ty
 }
 
 // factor = { unary_operator? ~ primary }
-pub fn build_factor(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
+fn build_factor(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let mut inner = pair.clone().into_inner();
 
     // we get the first pair, which is either an operator or a primary
@@ -212,7 +210,6 @@ pub fn build_factor(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression
     }
 }
 
-
 pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let rule = pair.as_rule();
     match rule {
@@ -220,16 +217,8 @@ pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expres
         Rule::disjunction => Ok(build_chained_operations!(pair, BinaryOperator::LogicalOr)),
         Rule::conjunction => Ok(build_chained_operations!(pair, BinaryOperator::LogicalAnd)),
         Rule::equality => Ok(build_chained_operations!(pair, BinaryOperator::Equal, BinaryOperator::NotEqual)),
-        Rule::relation => {
-            let pair_cp = pair.clone();
-            print!("<relation> pair_cp: {:?}\n", pair_cp.as_str());
-            Ok(build_chained_operations!(pair, BinaryOperator::Less, BinaryOperator::LessOrEqual, BinaryOperator::Greater, BinaryOperator::GreaterOrEqual))
-        },
-        Rule::addition => {
-            let pair_cp = pair.clone();
-            print!("<addition> pair_cp: {:?}\n", pair_cp.as_str());
-            Ok(build_chained_operations!(pair, BinaryOperator::Plus, BinaryOperator::Minus))
-        },
+        Rule::relation => Ok(build_chained_operations!(pair, BinaryOperator::Less, BinaryOperator::LessOrEqual, BinaryOperator::Greater, BinaryOperator::GreaterOrEqual)),
+        Rule::addition => Ok(build_chained_operations!(pair, BinaryOperator::Plus, BinaryOperator::Minus)),
         Rule::term => Ok(build_chained_operations!(pair, BinaryOperator::Multiply, BinaryOperator::Divide, BinaryOperator::Modulo)),
         Rule::factor => build_factor(pair),
         Rule::primary => build_expression(pair.into_inner().next().unwrap()),

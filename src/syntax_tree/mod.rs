@@ -7,7 +7,8 @@ use crate::syntax_parsing::parser::Rule;
 
 pub mod nodes;
 pub mod errors;
-pub mod expression;
+pub mod expressions;
+pub mod statements;
 use errors::make_ast_error;
 use nodes::*;
 

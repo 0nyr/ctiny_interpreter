@@ -1,7 +1,7 @@
 use pest::Parser;
 
 use crate::syntax_parsing::parser::{CTinyParser, Rule};
-use crate::syntax_tree::expression::build_expression;
+use crate::syntax_tree::expressions::build_expression;
 
 macro_rules! build_test {
     ($rule:expr, $( $input_str:literal),* ) => {
