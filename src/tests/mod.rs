@@ -3,9 +3,12 @@ use pest::{Parser, iterators::Pairs};
 use crate::syntax_parsing::parser::{CTinyParser, Rule};
 
 #[cfg(test)]
+mod macros;
+#[cfg(test)]
 mod ast_expression_tests;
 #[cfg(test)]
 mod ast_statement_tests;
+
 
 fn print_tokens(pairs: Pairs<'_, Rule>) {
     let tokens = pairs.tokens();

@@ -24,8 +24,16 @@ pub fn build_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Stateme
                 JumpStatement::Return(expression_node.data)
             ))
         },
-        // Rule::break_statement => build_break_statement(pair),
-        // Rule::continue_statement => build_continue_statement(pair),
+        Rule::break_statement => {
+            ok_build_node!(pair, Statement::Jump(
+                JumpStatement::Break
+            ))
+        },
+        Rule::continue_statement => {
+            ok_build_node!(pair, Statement::Jump(
+                JumpStatement::Continue
+            ))
+        },
         // Rule::empty_statement => build_empty_statement(pair),
         _ => Err(make_ast_error(
             pair.clone(), 

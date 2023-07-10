@@ -3,47 +3,24 @@ use pest::Parser;
 use crate::syntax_parsing::parser::{CTinyParser, Rule};
 use crate::syntax_tree::expressions::build_expression;
 
-macro_rules! build_test {
+use crate::build_test;
+
+macro_rules! build_test_expression {
     ($rule:expr, $( $input_str:literal),* ) => {
-
-        let input_strs = {
-            let mut temp_vec = Vec::new();
-            $(
-                temp_vec.push($input_str);
-            )*
-            temp_vec
-        };
-
-        for test_str in input_strs {
-            // Syntax parsing
-            let pairs = CTinyParser::parse($rule, test_str).unwrap();
-
-            let first_pair = pairs.into_iter().next().unwrap();
-            assert_eq!(first_pair.as_rule(), $rule);
-            assert_eq!(first_pair.as_str(), test_str);
-
-            // AST conversion
-            // WARN: don't forget to change the method if needed
-            let ast = build_expression(first_pair)
-                .unwrap_or_else(|error| { 
-                    print!("AST ERROR for {}: \n {}\n", test_str, error); 
-                    panic!(); 
-                });
-            print!("AST for string \"{}\": \n {:#?} \n\n", test_str, ast);
-        }
-    };
+        build_test!($rule, build_expression, $( $input_str),* );
+    }
 }
 
 #[test]
 fn test_ast_literal() {
-    build_test!(Rule::literal, "1024", "'a'", "true", "false", "3.14159", "0.001");
+    build_test_expression!(Rule::literal, "1024", "'a'", "true", "false", "3.14159", "0.001");
 }
 
 #[test]
 fn test_ast_type_cast() {
     // we are not at the intepreter stage yet
     // so we don't need to check for type errors
-    build_test!(Rule::type_cast, 
+    build_test_expression!(Rule::type_cast, 
         "(int) 3.14159", 
         "(float) 1024", 
         "(int) 'a'", 
@@ -60,19 +37,18 @@ fn test_ast_type_cast() {
 
 #[test]
 fn test_ast_function_call() {
-    build_test!(Rule::function_call, 
+    build_test_expression!(Rule::function_call, 
         "foo()",
         "foo(1)",
         "foo(1, 2, 3)", 
         "foo(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)",
-        // TODO: add more complex expressions as arguments, once we have them
         "foo(1 + 2, (3 * 4), bar(true))"
     );
 }
 
 #[test]
 fn test_as_get_value() {
-    build_test!(Rule::get_value,
+    build_test_expression!(Rule::get_value,
         "a",
         "a[0]"
     );
@@ -80,7 +56,7 @@ fn test_as_get_value() {
 
 #[test]
 fn test_ast_parenthesized_expression() {
-    build_test!(Rule::parenthesized_expression,
+    build_test_expression!(Rule::parenthesized_expression,
         "(1 + 2)",
         "(1.001 + (float) 2)",
         "((1 + 2) * foo(3))",
@@ -90,7 +66,7 @@ fn test_ast_parenthesized_expression() {
 
 #[test]
 fn test_ast_primary() {
-    build_test!(Rule::primary,
+    build_test_expression!(Rule::primary,
         "1",
         "1.001",
         "'a'",
@@ -112,7 +88,7 @@ fn test_ast_primary() {
 
 #[test]
 fn test_ast_factor() {
-    build_test!(Rule::factor,
+    build_test_expression!(Rule::factor,
         "-1",
         "-1.001",
         "!true",
@@ -124,14 +100,14 @@ fn test_ast_factor() {
 
 #[test]
 fn test_ast_term() {
-    build_test!(Rule::term,
+    build_test_expression!(Rule::term,
         "1 * (-2)"
     );
 }
 
 #[test]
 fn test_ast_disjunction() {
-    build_test!(Rule::disjunction,
+    build_test_expression!(Rule::disjunction,
         "1 || 2", 
         "1 || 2 || 3", 
         "(1 && 2) || 3"
@@ -140,7 +116,7 @@ fn test_ast_disjunction() {
 
 #[test]
 fn test_ast_conjunction() {
-    build_test!(Rule::conjunction, 
+    build_test_expression!(Rule::conjunction, 
         "1 && 2", 
         "1 && 2 && 3", 
         "1 && (2 || 3)"
@@ -149,7 +125,7 @@ fn test_ast_conjunction() {
 
 #[test]
 fn test_ast_equality() {
-    build_test!(Rule::equality, 
+    build_test_expression!(Rule::equality, 
         "1 == 2", 
         "1 != 2", 
         "1 == 2 != 3"
@@ -158,7 +134,7 @@ fn test_ast_equality() {
 
 #[test]
 fn test_ast_relation() {
-    build_test!(Rule::relation,
+    build_test_expression!(Rule::relation,
         "1",
         "(1 < 2)", 
         "1 < 2", 
@@ -171,7 +147,7 @@ fn test_ast_relation() {
 
 #[test]
 fn test_ast_addition() {
-    build_test!(Rule::addition,
+    build_test_expression!(Rule::addition,
         "1 + 2", 
         "1 - 2", 
         "1 + 2 - 3"
@@ -180,7 +156,7 @@ fn test_ast_addition() {
 
 #[test]
 fn test_ast_expression() {
-    build_test!(Rule::expression, 
+    build_test_expression!(Rule::expression, 
         "1 && 2 || 3", 
         "(1 && 2) || 3", 
         "1 && (2 || 3)",
