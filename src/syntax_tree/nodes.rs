@@ -14,6 +14,21 @@ pub struct Node<T> {
 
 pub type AST<T> = Node<T>;
 
+#[macro_export]
+macro_rules! ok_build_node {
+    ($pair:expr, $data:expr) => {
+        Ok(
+            Node {
+                sp: SpanPosition {
+                    start: $pair.as_span().start(),
+                    end: $pair.as_span().end(),
+                },
+                data: $data,
+            }
+        )
+    }
+}
+
 
 
 // AST nodes

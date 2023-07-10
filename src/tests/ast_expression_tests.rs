@@ -1,6 +1,7 @@
 use pest::Parser;
 
 use crate::syntax_parsing::parser::{CTinyParser, Rule};
+use crate::syntax_tree::expression::build_expression;
 
 macro_rules! build_test {
     ($rule:expr, $( $input_str:literal),* ) => {
@@ -23,7 +24,7 @@ macro_rules! build_test {
 
             // AST conversion
             // WARN: don't forget to change the method if needed
-            let ast = crate::syntax_tree::build_expression(first_pair)
+            let ast = build_expression(first_pair)
                 .unwrap_or_else(|error| { 
                     print!("AST ERROR for {}: \n {}\n", test_str, error); 
                     panic!(); 
@@ -210,7 +211,7 @@ fn test_ast_expression() {
 //         assert_eq!(first_pair.as_str(), test_string);
 
 //         // AST conversion
-//         let ast = crate::syntax_tree::build_expression(first_pair)
+//         let ast = build_expression(first_pair)
 //         .unwrap_or_else(|error| { print!("{}\n", error); panic!(); });
 //         print!("{:#?}", ast);
 // }
