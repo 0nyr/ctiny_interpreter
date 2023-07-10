@@ -168,6 +168,9 @@ pub enum Literal {
     Bool(bool),
 }
 
+
+
+// Operators
 #[derive(Debug, PartialEq)]
 pub enum BinaryOperator {
     Plus,
@@ -175,18 +178,98 @@ pub enum BinaryOperator {
     Multiply,
     Divide,
     Modulo,
-    LessThan,
-    GreaterThan,
-    LessThanOrEqual,
-    GreaterThanOrEqual,
+    Less,
+    Greater,
+    LessOrEqual,
+    GreaterOrEqual,
     Equal,
     NotEqual,
     LogicalAnd,
     LogicalOr,
 }
 
+// trait Operator
+pub trait Operator {
+    fn is_binary(&self) -> bool;
+    fn is_unary(&self) -> bool;
+    fn from_str(s: &str) -> Option<Self> where Self: Sized;
+    fn as_str(&self) -> &'static str;
+}
+
+impl Operator for BinaryOperator {
+    fn is_binary(&self) -> bool {
+        true
+    }
+
+    fn is_unary(&self) -> bool {
+        false
+    }
+
+    fn from_str(s: &str) -> Option<Self> {
+        match s {
+            "+" => Some(BinaryOperator::Plus),
+            "-" => Some(BinaryOperator::Minus),
+            "*" => Some(BinaryOperator::Multiply),
+            "/" => Some(BinaryOperator::Divide),
+            "%" => Some(BinaryOperator::Modulo),
+            "<" => Some(BinaryOperator::Less),
+            ">" => Some(BinaryOperator::Greater),
+            "<=" => Some(BinaryOperator::LessOrEqual),
+            ">=" => Some(BinaryOperator::GreaterOrEqual),
+            "==" => Some(BinaryOperator::Equal),
+            "!=" => Some(BinaryOperator::NotEqual),
+            "&&" => Some(BinaryOperator::LogicalAnd),
+            "||" => Some(BinaryOperator::LogicalOr),
+            _ => None,
+        }
+    }
+
+    fn as_str(&self) -> &'static str {
+        match self {
+            BinaryOperator::Plus => "+",
+            BinaryOperator::Minus => "-",
+            BinaryOperator::Multiply => "*",
+            BinaryOperator::Divide => "/",
+            BinaryOperator::Modulo => "%",
+            BinaryOperator::Less => "<",
+            BinaryOperator::Greater => ">",
+            BinaryOperator::LessOrEqual => "<=",
+            BinaryOperator::GreaterOrEqual => ">=",
+            BinaryOperator::Equal => "==",
+            BinaryOperator::NotEqual => "!=",
+            BinaryOperator::LogicalAnd => "&&",
+            BinaryOperator::LogicalOr => "||",
+        }
+    }
+}
+
 #[derive(Debug, PartialEq)]
 pub enum UnaryOperator {
     Negation,
     Not,
+}
+
+impl Operator for UnaryOperator {
+    fn is_binary(&self) -> bool {
+        false
+    }
+
+    fn is_unary(&self) -> bool {
+        true
+    }
+
+    fn from_str(s: &str) -> Option<Self> {
+        match s {
+            "-" => Some(UnaryOperator::Negation),
+            "!" => Some(UnaryOperator::Not),
+            _ => None,
+        }
+    }
+
+    fn as_str(&self) -> &'static str {
+        match self {
+            UnaryOperator::Negation => "-",
+            UnaryOperator::Not => "!",
+        }
+    }
 }

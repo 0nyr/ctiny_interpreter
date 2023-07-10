@@ -34,7 +34,7 @@ letter = _{ 'a'..'z' | 'A'..'Z' }
 digit = _{ '0'..'9' }
 
 // literals
-literal = { integer | float | char | boolean }
+literal = { float | integer | char | boolean } // WARN: float MUST be before integer for correct capture precedence.
 
 integer = @{ digit+ }
 float = @{ integer ~ "." ~ integer }
@@ -58,8 +58,8 @@ continue_statement = { "continue" ~ ";" }
 
 // expressions
 expression = { disjunction } // top level expression is disjunction
-disjunction = { conjunction ~ ("||" ~ conjunction)* }
-conjunction = { equality ~ ("&&" ~ equality)* }
+disjunction = { conjunction ~ (disjunction_operator ~ conjunction)* }
+conjunction = { equality ~ (conjunction_operator ~ equality)* }
 equality = { relation ~ (equality_operator ~ relation)* }
 relation = { addition ~ (relation_operator ~ addition)? }
 addition = { term ~ (addition_operator ~ term)* }
@@ -73,6 +73,8 @@ function_call = { identifier ~ "(" ~ (expression ~ ("," ~ expression)*)? ~ ")" }
 type_cast = { "(" ~ type_specifier ~ ")" ~ primary }
 
 // operators
+disjunction_operator = { "||" }
+conjunction_operator = { "&&" }
 unary_operator = { "-" | "!" }
 addition_operator = { "+" | "-" }
 multiplication_operator = { "*" | "/" | "%" }

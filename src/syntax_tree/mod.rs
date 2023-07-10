@@ -1,3 +1,5 @@
+use std::fmt::Binary;
+
 use pest::iterators::Pairs;
 use pest::error::Error;
 
@@ -260,87 +262,77 @@ macro_rules! ok_build_node {
 // }
 
 macro_rules! build_chained_operations {
-    ($input_pair:expr, $rule:ident, $operator:expr) => {{
+    ($input_pair:expr, $( $operator:expr ),*) => {{
         let mut pairs = $input_pair.clone().into_inner();
 
-        // Start by building the first operation.
-        let mut operation_tree = build_expression(pairs.next().unwrap())?;
+        // Start by building the first operation. (leftmost)
+        let mut left_operation = build_expression(pairs.next().unwrap())?;
 
         // Then, for each remaining pair, build an operation where the left-hand
         // side is the result of the previous operations and the right-hand side
         // is the current operation.
-        for pair in pairs {
-            let right_operation = build_expression(pair)?;
+        // we are in the "(some_operator ~ relation)*" part
+        // the current pair alternates between an operator and an expression
+        while let (Some(pair_op), Some(pair_expr)) = (pairs.next(), pairs.next()) {
+            // first pair must be an operator
+            let operator_type = {
+                let operator_type = BinaryOperator::from_str(pair_op.clone().as_str());
+                match operator_type {
+                    Some(real_operator_type) => {                    
+                        match real_operator_type.as_str() {
+                            $( x if x == $operator.as_str() => (real_operator_type), )* // do nothing
+                            _ => return Err(make_ast_error(
+                                $input_pair.clone(), 
+                                format!(
+                                    "🟣 matched operator {:?} not in the list of potential operators for rule {:?}", 
+                                    real_operator_type, pair_op.clone().as_rule()).as_str()
+                            )),
+                        }
+                    },
+                    None => {
+                        return Err(make_ast_error(
+                            $input_pair.clone(), 
+                            format!("🟣 couldn't match pair_op with list of potential operators for rule {:?}", 
+                                pair_op.clone().as_rule()).as_str()
+                        ))
+                    }
+                }
+            };
+
+            // second pair must be an expression
+            let right_operation = build_expression(pair_expr)?;
 
             let common_span = SpanPosition {
-                start: operation_tree.sp.start,
+                start: left_operation.sp.start,
                 end: right_operation.sp.end,
             };
 
-            operation_tree = Node {
+            left_operation = Node {
                 sp: common_span,
                 data: Expression::BinaryExpression(
                     BinaryExpression {
-                        operator: $operator,
-                        left: Box::new(operation_tree.data),
+                        operator: operator_type,
+                        left: Box::new(left_operation.data),
                         right: Box::new(right_operation.data),
                     }
                 ),
             }
         }
+        
+        // all pairs must be consumed by now
+        if let Some(last_element) = pairs.next() {
+            return Err(make_ast_error(
+                $input_pair.clone(), 
+                format!("🟣 The list of pairs must be even. The last element is: {:?}", 
+                last_element.clone().as_rule()).as_str()
+            ))
+        }
 
-        operation_tree
+        left_operation
     }};
 }
-macro_rules! build_chained_operations_with_operators {
-    ($input_pair:expr, $rule:ident, $($operator:expr),*) => {{
-        let mut pairs = $input_pair.clone().into_inner();
-
-        // Start by building the first operation.
-        let mut operation_tree = build_expression(pairs.next().unwrap())?;
-
-        // Then, for each remaining pair, build an operation where the left-hand
-        // side is the result of the previous operations and the right-hand side
-        // is the current operation. The operator is determined by the rule pair.
-        for pair in pairs {
-            // The pair should contain an operator and an expression.
-            let mut inner_pairs = pair.into_inner();
-            let operator = match BinaryOperator::from_rule(inner_pairs.next().unwrap())? {
-                $( $operator => $operator, )*
-                _ => return Err(make_ast_error(
-                    pair.clone(), 
-                    format!("🔴 Unexpected rule inside <{}>: {:?}", $rule, pair.clone().as_rule()).as_str()
-                )),
-            };
-            let right_operation = build_expression(inner_pairs.next().unwrap())?;
-
-            let common_span = SpanPosition {
-                start: operation_tree.sp.start,
-                end: right_operation.sp.end,
-            };
-
-            operation_tree = Node {
-                sp: common_span,
-                data: Expression::BinaryExpression(
-                    BinaryExpression {
-                        operator,
-                        left: Box::new(operation_tree.data),
-                        right: Box::new(right_operation.data),
-                    }
-                ),
-            }
-        }
-
-        operation_tree
-    }}
-}
 
 
-
-
-pub fn build_disjunction(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
-    Ok(build_chained_operations!(pair, disjunction, BinaryOperator::LogicalOr))
-}
 
 pub fn build_conjunction(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let mut inner = pair.clone().into_inner().next().unwrap();
@@ -406,9 +398,20 @@ pub fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expressio
     let literal = pair.clone().into_inner().next().unwrap();
     let res = match literal.as_rule() {
         Rule::boolean => Expression::Literal(Literal::Bool(literal.as_str().parse().unwrap())),
-        Rule::float => Expression::Literal(Literal::Float(literal.as_str().parse().unwrap())),
-        Rule::char => Expression::Literal(Literal::Char(literal.as_str().chars().next().unwrap())),
-        Rule::integer => Expression::Literal(Literal::Int(literal.as_str().parse().unwrap())),
+        Rule::float => {
+            let float_literal = literal.as_str().parse().unwrap();
+            print!("float? : {}", float_literal);
+            Expression::Literal(Literal::Float(float_literal))
+        },
+        Rule::char => {
+            // convert &str containing single quotes to char
+            let char_literal = literal.as_str();
+            let char_trimmed = char_literal.trim_start_matches('\'').trim_end_matches('\'');
+            let real_char = char_trimmed.chars().next().unwrap();
+            Expression::Literal(Literal::Char(real_char))},
+        Rule::integer => {
+            print!("inside integer match");
+            Expression::Literal(Literal::Int(literal.as_str().parse().unwrap()))},
         _ => {
             let message = format!("🔴 Unexpected rule in <literal> match tree: {:?}", literal.as_rule());
             return Err(make_ast_error(pair, &message))
@@ -431,14 +434,63 @@ pub fn build_type_specifier(pair: pest::iterators::Pair<Rule>) -> Result<Node<Ty
     ok_build_node!(pair, res)
 }
 
+// factor = { unary_operator? ~ primary }
+pub fn build_factor(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
+    let mut inner = pair.clone().into_inner();
+    let unary_operator = match inner.next() {
+        Some(pair) => {
+            let operator_type = UnaryOperator::from_str(pair.clone().as_str());
+            match operator_type {
+                Some(real_operator_type) => {                    
+                    match real_operator_type.as_str() {
+                        "-" => Some(real_operator_type),
+                        _ => return Err(make_ast_error(
+                            pair.clone(), 
+                            format!(
+                                "🟣 matched operator {:?} not in the list of potential operators for rule {:?}", 
+                                real_operator_type, pair.clone().as_rule()).as_str()
+                        )),
+                    }
+                },
+                None => {
+                    return Err(make_ast_error(
+                        pair.clone(), 
+                        format!("🟣 couldn't match pair_op with list of potential operators for rule {:?}", 
+                            pair.clone().as_rule()).as_str()
+                    ))
+                }
+            }
+        },
+        None => None,
+    };
+    let primary = inner.next().unwrap();
+    let primary = build_expression(primary)?;
+    let res = match unary_operator {
+        Some(operator) => 
+        Expression::UnaryExpression(
+            UnaryExpression {
+                operator,
+                expression: Box::new(primary.data),
+            }
+        ),
+        None => primary.data,
+    };
+    ok_build_node!(pair, res)
+}
+
 
 pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let rule = pair.as_rule();
     match rule {
         Rule::expression => build_expression(pair.into_inner().next().unwrap()),
-        Rule::disjunction => Ok(build_chained_operations!(pair, disjunction, BinaryOperator::LogicalOr)),
-        Rule::conjunction => Ok(build_chained_operations!(pair, conjunction, BinaryOperator::LogicalAnd)),
-        Rule::equality => Ok(build_chained_operations_with_operators!(pair, rule, BinaryOperator::Equal, BinaryOperator::NotEqual)),
+        Rule::disjunction => Ok(build_chained_operations!(pair, BinaryOperator::LogicalOr)),
+        Rule::conjunction => Ok(build_chained_operations!(pair, BinaryOperator::LogicalAnd)),
+        Rule::equality => Ok(build_chained_operations!(pair, BinaryOperator::Equal, BinaryOperator::NotEqual)),
+        Rule::relation => Ok(build_chained_operations!(pair, BinaryOperator::Less, BinaryOperator::LessOrEqual, BinaryOperator::Greater, BinaryOperator::GreaterOrEqual)),
+        Rule::addition => Ok(build_chained_operations!(pair, BinaryOperator::Plus, BinaryOperator::Minus)),
+        Rule::term => Ok(build_chained_operations!(pair, BinaryOperator::Multiply, BinaryOperator::Divide, BinaryOperator::Modulo)),
+        Rule::factor => build_factor(pair),
+        Rule::primary => build_expression(pair.into_inner().next().unwrap()),
         Rule::parenthesized_expression => build_expression(pair.into_inner().next().unwrap()),
         Rule::literal => build_literal(pair),
         Rule::function_call => {
@@ -479,7 +531,6 @@ pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expres
                 }
             ))
         },
-        // TODO: add all underlying expression rules...
         _ => {
             let message = format!("🔴 Unexpected rule in <expression> match tree: {:?}", rule);
             return Err(make_ast_error(pair, &message))
