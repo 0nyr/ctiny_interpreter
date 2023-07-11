@@ -66,6 +66,22 @@ fn build_if_else_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Sta
     ))
 }
 
+fn build_while_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Statement>, Error<Rule>> {
+    let mut inner_pairs = pair.clone().into_inner();
+    let first_pair = inner_pairs.next().unwrap();
+    let second_pair = inner_pairs.next().unwrap();
+
+    let condition_expression = unwrap_or_err_panic!(build_expression(first_pair));
+    let body_statements: Vec<Statement> = unwrap_or_err_panic!(multi_statement_vector_from_pair(second_pair));
+
+    ok_build_node!(pair, Statement::While(
+        WhileStatement {
+            condition: condition_expression.data,
+            body: body_statements,
+        }
+    ))
+}
+
 pub fn build_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Statement>, Error<Rule>> {
     match pair.as_rule() {
         Rule::statement => {
@@ -77,7 +93,7 @@ pub fn build_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Stateme
         },
         Rule::assignment_statement => build_assignment_statement(pair),
         Rule::if_else_statement => build_if_else_statement(pair),
-        // Rule::while_statement => build_while_statement(pair),
+        Rule::while_statement => build_while_statement(pair),
         Rule::jump_statement => build_statement(pair.into_inner().next().unwrap()),
         Rule::return_statement => {
             let first_pair = pair.clone().into_inner().next().unwrap();

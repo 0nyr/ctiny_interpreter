@@ -113,7 +113,7 @@ pub struct IfStatement {
 #[derive(Debug, PartialEq)]
 pub struct WhileStatement {
     pub condition: Expression,
-    pub body: Box<Statement>,
+    pub body: Vec<Statement>,
 }
 
 #[derive(Debug, PartialEq)]

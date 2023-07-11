@@ -14,36 +14,41 @@ macro_rules! build_test_statement {
 #[test]
 fn test_ast_return() {
     build_test_statement!(Rule::return_statement,
-        "return 1",
-        "return 1 + 2",
-        "return 1 + 2 * 3",
-        "return 1 + foo(true) * 3 - 4"
+        "return 1;",
+        "return 1 + 2;",
+        "return 1 + 2 * 3;",
+        "return 1 + foo(true) * 3 - 4;"
     ); 
-    // WARN: forgetting the semicolon will cause an error due 
+    // WARN: forgetting the semicolon after macro call will cause an error due 
     // to the fact that the function will try to return the last expression...
 }
 
 #[test]
 fn test_ast_break() {
     build_test_statement!(Rule::break_statement,
-        "break"
+        "break;",
+        "break ;"
     );
 }
 
 #[test]
 fn test_ast_continue() {
     build_test_statement!(Rule::continue_statement,
-        "continue"
+        "continue;",
+        "continue ;"
     );
 }
 
 #[test]
 fn test_ast_assignment() {
     build_test_statement!(Rule::assignment_statement,
-        "a = 1",
-        "a = 1 + 2",
-        "a = 1 + 2 * 3",
-        "a = 1 + foo(true) * 3 - 4"
+        "a = 1;",
+        "a = true;",
+        "a = 3.14159;",
+        "a = 'a';",
+        "a = 1 + 2;",
+        "a = 1 + 2 * 3;",
+        "a = 1 + foo(true) * 3 - 4;"
     );
 }
 
@@ -62,7 +67,7 @@ fn test_multi_statement_vector_from_pair() {
     assert!(multi_statement.is_ok());
     assert_eq!(multi_statement.unwrap().len(), 3);
 
-    // test with an empty statements
+    // test other statements
     let test_string = "a = foo(10); return 1;";
     let pairs = CTinyParser::parse(Rule::multi_statement, test_string)
         .unwrap();
@@ -89,6 +94,48 @@ fn test_ast_if_else() {
         "if (false) { } else { }",
         "if (a != false) { a = 3; } else { return true; }",
         "if (true) { a = (5 + foo(1024)); continue; } else { a = bar(3.14159); }"
+    );
+}
+
+#[test]
+fn test_while_statement() {
+    build_test_statement!(Rule::while_statement,
+        "while (true) { }",
+        "while (a == b) { }",
+        "while (false) { }",
+        "while (a != false) { a = 3; }",
+        "while (true) { a = (5 + foo(1024)); continue; }",
+        "while (a < 10) { if (a % 2 == 0) { a = a + 1; } else { a = a + 2; } }"
+    );
+}
+
+#[test]
+fn test_ast_statement() {
+    build_test_statement!(Rule::statement,
+        "a = 1;",
+        "a = true;",
+        "a = 3.14159;",
+        "a = 'a';",
+        "a = 1 + 2;",
+        "a = 1 + 2 * 3;",
+        "a = 1 + foo(true) * 3 - 4;",
+        "return 1;",
+        "return 1 + 2;",
+        "return 1 + 2 * 3;",
+        "return 1 + foo(true) * 3 - 4;",
+        "break;",
+        "continue;",
+        "if (true) { }",
+        "if (a == b) { }",
+        "if (false) { } else { }",
+        "if (a != false) { a = 3; } else { return true; }",
+        "if (true) { a = (5 + foo(1024)); continue; } else { a = bar(3.14159); }",
+        "while (true) { }",
+        "while (a == b) { }",
+        "while (false) { }",
+        "while (a != false) { a = 3; }",
+        "while (true) { a = (5 + foo(1024)); continue; }",
+        "while (a < 10) { if (a % 2 == 0) { a = a + 1; } else { a = a + 2; } }"
     );
 }
 
