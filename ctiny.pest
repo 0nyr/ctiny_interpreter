@@ -40,8 +40,9 @@ char = @{ "'" ~ (letter | digit) ~ "'" }
 boolean = { "true" | "false" }
 
 // statements
+// NOTE: no empty statement allowed
 statement = { assignment_statement | if_else_statement | while_statement | jump_statement }
-multi_statement = { (";")* ~ (statement ~ (";")+)* }
+multi_statement = {  (statement ~ (";"))* }
 assignment_statement = { get_or_set_value ~ "=" ~ expression }
 if_else_statement = { "if" ~ "(" ~ expression ~ ")" ~ "{" ~ multi_statement ~ "}" ~ ("else" ~ "{" ~ multi_statement ~ "}")? }
 while_statement = { "while" ~ "(" ~ expression ~ ")" ~ "{" ~ multi_statement ~ "}" }

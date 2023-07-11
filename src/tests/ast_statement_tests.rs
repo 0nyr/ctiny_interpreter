@@ -47,18 +47,6 @@ fn test_ast_assignment() {
     );
 }
 
-// #[test]
-// fn test_ast_empty_statement() {
-//     let test_string = ";";
-
-//     // pair parsing
-//     let pairs = CTinyParser::parse(Rule::empty_statement, test_string);
-//     print!("pairs: {:?}\n", pairs);
-//     // check that pairs OK and empty
-//     assert!(pairs.is_ok());
-//     assert_eq!(pairs.unwrap().count(), 0);
-// }
-
 #[test]
 fn test_multi_statement_vector_from_pair() {
     // test with assignment statements
@@ -75,20 +63,7 @@ fn test_multi_statement_vector_from_pair() {
     assert_eq!(multi_statement.unwrap().len(), 3);
 
     // test with an empty statements
-    let test_string = "; ; ;";
-    let pairs = CTinyParser::parse(Rule::multi_statement, test_string)
-        .unwrap();
-    
-    let first_pair = pairs.clone().next().unwrap();
-    assert_eq!(first_pair.as_rule(), Rule::multi_statement);
-    assert_eq!(first_pair.as_str(), test_string);
-
-    let multi_statement = multi_statement_vector_from_pair(first_pair);
-    assert!(multi_statement.is_ok());
-    assert_eq!(multi_statement.unwrap().len(), 0);
-
-    // test with an empty statements
-    let test_string = "; true; foo(10);;";
+    let test_string = "a = foo(10); return 1;";
     let pairs = CTinyParser::parse(Rule::multi_statement, test_string)
         .unwrap();
 
@@ -110,10 +85,10 @@ fn test_multi_statement_vector_from_pair() {
 fn test_ast_if_else() {
     build_test_statement!(Rule::if_else_statement,
         "if (true) { }",
-        "if (true) { ; }",
-        "if (true) { ; } else { }",
-        "if (true) { 3; } else { true; }",
-        "if (true) { 5 + foo(1024) } else { bar(3.14159); }"
+        "if (a == b) { }",
+        "if (false) { } else { }",
+        "if (a != false) { a = 3; } else { return true; }",
+        "if (true) { a = (5 + foo(1024)); continue; } else { a = bar(3.14159); }"
     );
 }
 
