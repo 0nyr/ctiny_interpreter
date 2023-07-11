@@ -10,13 +10,12 @@ pub mod errors;
 pub mod expressions;
 pub mod statements;
 pub mod declarations;
+pub mod functions;
 use errors::make_ast_error;
 use nodes::*;
 
 
-
-
-
+// TODO: define here build_translation_unit
 
 
 
