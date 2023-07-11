@@ -68,10 +68,10 @@ pub fn build_declaration(pair: pest::iterators::Pair<Rule>) -> Result<Node<Decla
     })
 }
 
-fn declaration_vector_from_followup(
+fn declaration_from_followup(
     pair: pest::iterators::Pair<Rule>,
     common_type: TypeSpecifier,
-) -> Result<Declaration, Error<Rule>> {
+) -> Result<Node<Declaration>, Error<Rule>> {
     let mut inner_pairs = pair.clone().into_inner();
     let first_pair = inner_pairs.next().unwrap();
     let potential_array_pair = inner_pairs.next();
@@ -79,15 +79,15 @@ fn declaration_vector_from_followup(
     let identifier = unwrap_or_err_panic!(identifier_from_pair(first_pair));
     let array_size: Option<usize> = unwrap_or_err_panic!(potential_array_size_from_pair(potential_array_pair));
     
-    Ok(Declaration {
+    ok_build_node!(pair, Declaration {
         type_specifier: common_type,
         identifier,
         array_size,
-    });
+    })
 }
 
-pub fn declaration_vector_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Declaration>, Error<Rule>> {
-    let mut declarations = Vec::new();
+pub fn build_multi_declaration(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Node<Declaration>>, Error<Rule>> {
+    let mut declarations: Vec<Node<Declaration>> = Vec::new();
 
     // multiple declarations are separated by a comma
     // and we need to get their common type specifier from the first declaration
@@ -95,19 +95,15 @@ pub fn declaration_vector_from_pair(pair: pest::iterators::Pair<Rule>) -> Result
     let first_pair = inner_pairs.next().unwrap();
     let first_declaration = unwrap_or_err_panic!(build_declaration(first_pair));
     let common_type = first_declaration.data.type_specifier;
-    declarations.push(first_declaration.data);
+    declarations.push(first_declaration);
 
     // iterate over the rest of the declarations
     for inner_pair in inner_pairs {
         let followup_declaration = unwrap_or_err_panic!(
-            declaration_vector_from_followup(inner_pair, common_type)
+            declaration_from_followup(inner_pair, common_type)
         );
         declarations.push(followup_declaration);
     }
 
-    // for inner_pair in inner_pairs {
-    //     let declaration_node = unwrap_or_err_panic!(build_declaration(inner_pair));
-    //     declarations.push(declaration_node.data);
-    // }
     Ok(declarations)
 }

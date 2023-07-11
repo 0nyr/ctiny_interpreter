@@ -95,8 +95,8 @@ pub struct Declaration {
 
 #[derive(Debug, PartialEq)]
 pub struct Block {
-    pub declarations: Vec<Declaration>,
-    pub statements: Vec<Statement>,
+    pub declarations: Vec<Node<Declaration>>,
+    pub statements: Vec<Node<Statement>>,
 }
 
 // WARN: in Ctiny, statements cannot contain declarations
