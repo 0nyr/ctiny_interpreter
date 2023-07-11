@@ -9,6 +9,7 @@ pub mod nodes;
 pub mod errors;
 pub mod expressions;
 pub mod statements;
+pub mod declarations;
 use errors::make_ast_error;
 use nodes::*;
 

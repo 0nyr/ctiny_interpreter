@@ -8,6 +8,8 @@ mod macros;
 mod ast_expression_tests;
 #[cfg(test)]
 mod ast_statement_tests;
+#[cfg(test)]
+mod ast_declaration_tests;
 
 
 fn print_tokens(pairs: Pairs<'_, Rule>) {

@@ -41,6 +41,7 @@ pub struct ProgramAST {
 #[derive(Debug, PartialEq)]
 pub struct TranslationUnit {
     pub functions: Vec<FunctionDefinition>,
+    pub main_function: FunctionDefinition,
 }
 
 
@@ -64,21 +65,32 @@ pub enum TypeSpecifier {
     Int,
 }
 
+impl TypeSpecifier {
+    pub fn from_str(s: &str) -> Option<Self> {
+        match s {
+            "bool" => Some(TypeSpecifier::Bool),
+            "float" => Some(TypeSpecifier::Float),
+            "char" => Some(TypeSpecifier::Char),
+            "int" => Some(TypeSpecifier::Int),
+            _ => None,
+        }
+    }
+
+    pub fn as_str(&self) -> &'static str {
+        match self {
+            TypeSpecifier::Bool => "bool",
+            TypeSpecifier::Float => "float",
+            TypeSpecifier::Char => "char",
+            TypeSpecifier::Int => "int",
+        }
+    }
+}
+
 #[derive(Debug, PartialEq)]
 pub struct Declaration {
     pub type_specifier: TypeSpecifier,
     pub identifier: Identifier,
-    pub array_size: Option<i32>,  // For "[" ~ integer ~ "]" in the grammar
-}
-
-#[derive(Debug, PartialEq)]
-pub struct ParameterList {
-    pub parameters: Vec<Declaration>,
-}
-
-#[derive(Debug, PartialEq)]
-pub struct MultiDeclaration {
-    pub declarations: Vec<Declaration>,
+    pub array_size: Option<usize>,  // For "[" ~ integer ~ "]" in the grammar
 }
 
 #[derive(Debug, PartialEq)]

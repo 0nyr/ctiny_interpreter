@@ -1,7 +1,113 @@
 use pest::error::Error;
 
 use crate::syntax_parsing::parser::Rule;
+use crate::syntax_tree::expressions::identifier_from_pair;
 use crate::syntax_tree::statements::{build_statement, multi_statement_vector_from_pair};
 
 use super::nodes::*;
 use super::errors::make_ast_error;
+
+// exported macros are available in the crate root (global scope)
+use crate::unwrap_or_err_panic;
+use crate::ok_build_node;
+
+
+pub fn parameter_list_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Declaration>, Error<Rule>> {
+    let mut parameters = Vec::new();
+
+    for inner_pair in pair.into_inner() {
+        let parameter_node = unwrap_or_err_panic!(build_declaration(inner_pair));
+        parameters.push(parameter_node.data);
+    }
+    Ok(parameters)
+}
+
+fn get_type_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<TypeSpecifier, Error<Rule>> {
+    let type_specifier = match TypeSpecifier::from_str(pair.clone().as_str()) {
+        Some(type_specifier) => type_specifier,
+        None => return Err(make_ast_error(pair, "Invalid type specifier")),
+    };
+    Ok(type_specifier)
+}
+
+fn potential_array_size_from_pair(potential_pair: Option<pest::iterators::Pair<Rule>>) -> Result<Option<usize>, Error<Rule>> {
+    match potential_pair {
+        Some(actual_array_size_pair) => {
+            let array_size_str = actual_array_size_pair.as_str();
+            match array_size_str.parse::<usize>() {
+                Ok(array_size) => Ok(Some(array_size)),
+                Err(_) => return Err(make_ast_error(
+                    actual_array_size_pair, 
+                    format!(
+                        "🟠 Invalid array size (must be a positive integer): {}", 
+                        array_size_str
+                    ).as_str()
+                )),
+            }
+        },
+        None => Ok(None),
+    }
+}
+
+
+
+pub fn build_declaration(pair: pest::iterators::Pair<Rule>) -> Result<Node<Declaration>, Error<Rule>> {
+    let mut inner_pairs = pair.clone().into_inner();
+    let first_pair = inner_pairs.next().unwrap();
+    let second_pair = inner_pairs.next().unwrap();
+    let potential_third_pair = inner_pairs.next();
+
+    let declaration_type = unwrap_or_err_panic!(get_type_from_pair(first_pair));
+    let identifier = unwrap_or_err_panic!(identifier_from_pair(second_pair));
+    let array_size: Option<usize> = unwrap_or_err_panic!(potential_array_size_from_pair(potential_third_pair));
+
+    ok_build_node!(pair, Declaration {
+        type_specifier: declaration_type,
+        identifier,
+        array_size,
+    })
+}
+
+fn declaration_vector_from_followup(
+    pair: pest::iterators::Pair<Rule>,
+    common_type: TypeSpecifier,
+) -> Result<Declaration, Error<Rule>> {
+    let mut inner_pairs = pair.clone().into_inner();
+    let first_pair = inner_pairs.next().unwrap();
+    let potential_array_pair = inner_pairs.next();
+    
+    let identifier = unwrap_or_err_panic!(identifier_from_pair(first_pair));
+    let array_size: Option<usize> = unwrap_or_err_panic!(potential_array_size_from_pair(potential_array_pair));
+    
+    Ok(Declaration {
+        type_specifier: common_type,
+        identifier,
+        array_size,
+    });
+}
+
+pub fn declaration_vector_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Declaration>, Error<Rule>> {
+    let mut declarations = Vec::new();
+
+    // multiple declarations are separated by a comma
+    // and we need to get their common type specifier from the first declaration
+    let mut inner_pairs = pair.clone().into_inner();
+    let first_pair = inner_pairs.next().unwrap();
+    let first_declaration = unwrap_or_err_panic!(build_declaration(first_pair));
+    let common_type = first_declaration.data.type_specifier;
+    declarations.push(first_declaration.data);
+
+    // iterate over the rest of the declarations
+    for inner_pair in inner_pairs {
+        let followup_declaration = unwrap_or_err_panic!(
+            declaration_vector_from_followup(inner_pair, common_type)
+        );
+        declarations.push(followup_declaration);
+    }
+
+    // for inner_pair in inner_pairs {
+    //     let declaration_node = unwrap_or_err_panic!(build_declaration(inner_pair));
+    //     declarations.push(declaration_node.data);
+    // }
+    Ok(declarations)
+}

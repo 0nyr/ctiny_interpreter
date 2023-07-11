@@ -35,6 +35,10 @@ My Ctiny grammar is inspired by:
 * [The syntax of C in Backus-Naur Form](https://cs.wmich.edu/~gupta/teaching/cs4850/sumII06/The%20syntax%20of%20C%20in%20Backus-Naur%20form.htm), itself "adapted from Section A13 of  *The C programming language* , 2nd edition, by Brian W. Kernighan and Dennis M. Ritchie,Prentice Hall, 1988."
 * *Programming Languages: Principles and Paradigms*, second edition, by Allen B. Tucker and Robert E. Noonan, 2007 (especially p38).
 
+Dependencies and libraries
+
+* [PEST](https://pest.rs/) PEG parser.
+
 ### My Ctiny design choices
 
 * empty blocks are supported
@@ -45,6 +49,8 @@ My Ctiny grammar is inspired by:
 * full `if-else` and `while` statements with `break` and `continue` support.
 * programs without a `main` function are not allowed.
 * in any program, the `main` function must be the last function defined.
+* empty statements like `;;;` are not allowed.
+* array sizes must be positive
 
 ### Note about my EBNF notation
 

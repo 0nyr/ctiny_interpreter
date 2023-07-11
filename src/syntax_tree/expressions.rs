@@ -223,6 +223,11 @@ pub fn get_or_set_value_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<G
     })
 }
 
+pub fn identifier_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<Identifier, Error<Rule>> {
+    let identifier = pair.clone().as_str().to_string();
+    Ok(Identifier { name: identifier })
+}
+
 pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let rule = pair.as_rule();
     match rule {
@@ -239,7 +244,7 @@ pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expres
         Rule::literal => build_literal(pair),
         Rule::function_call => {
             let mut inner = pair.clone().into_inner();
-            let identifier = inner.next().unwrap().as_str().to_string();
+            let identifier = unwrap_or_err_panic!(identifier_from_pair(inner.next().unwrap()));
 
             // function call may have 0 or more arguments
             let arguments = {
@@ -251,7 +256,7 @@ pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expres
             };
             ok_build_node!(pair, Expression::FunctionCall(
                 FunctionCall {
-                    name: Identifier { name: identifier },
+                    name: identifier,
                     arguments: arguments,
                 }
             ))
