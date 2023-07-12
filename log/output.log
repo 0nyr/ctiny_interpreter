@@ -1034,3 +1034,2027 @@ int main () {
   = 🔴 [AST building error] 🔴 Unexpected <statement>: statement
 [2023-07-10T14:03:44 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
 [2023-07-10T14:03:56 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T14:58:07 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T14:58:28 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T14:58:28 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-12T15:00:52 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T15:00:52 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-12T15:03:47 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T15:03:47 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-12T15:04:11 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T15:04:11 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-12T15:04:11 UTC][INFO tiny_ebnf_grammar_parser::syntax_tree::functions] inner_pairs len: 0
+[2023-07-12T15:05:04 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T15:05:04 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-12T15:05:04 UTC][INFO tiny_ebnf_grammar_parser::syntax_tree::functions] inner_pairs len: 0
+[2023-07-12T15:05:04 UTC][INFO tiny_ebnf_grammar_parser::syntax_tree::functions] pairs to string: ""
+[2023-07-12T15:07:56 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T15:07:56 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-12T15:07:56 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 AST ERROR [f: valid_program_a.ctiny]: 
+   --> 16:2
+   |
+16 | 
+   | ^
+   |
+   = 🔴 [AST building error] Last function must be the entry point function.
+
+[2023-07-12T15:21:08 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T15:21:08 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-12T15:21:08 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-12T15:21:08 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 167,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: SpanPosition {
+                start: 0,
+                end: 167,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 12,
+                        end: 167,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 18,
+                                    end: 24,
+                                },
+                                data: Declaration {
+                                    type_specifier: Bool,
+                                    identifier: Identifier {
+                                        name: "x",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 30,
+                                    end: 37,
+                                },
+                                data: Declaration {
+                                    type_specifier: Float,
+                                    identifier: Identifier {
+                                        name: "y",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 39,
+                                    end: 40,
+                                },
+                                data: Declaration {
+                                    type_specifier: Float,
+                                    identifier: Identifier {
+                                        name: "z",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 47,
+                                    end: 53,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "z",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 58,
+                                    end: 64,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "y",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 69,
+                                    end: 78,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "x",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Bool(
+                                                true,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 84,
+                                    end: 151,
+                                },
+                                data: If(
+                                    IfStatement {
+                                        condition: GetOrSetValue(
+                                            GetOrSetValue {
+                                                identifier: Identifier {
+                                                    name: "x",
+                                                },
+                                                index: None,
+                                            },
+                                        ),
+                                        if_body: [
+                                            Assignment(
+                                                AssignmentStatement {
+                                                    set_value: GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "y",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                    expression: BinaryExpression(
+                                                        BinaryExpression {
+                                                            left: GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Identifier {
+                                                                        name: "y",
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                            operator: Plus,
+                                                            right: GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Identifier {
+                                                                        name: "z",
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                        else_body: Some(
+                                            [
+                                                Assignment(
+                                                    AssignmentStatement {
+                                                        set_value: GetOrSetValue {
+                                                            identifier: Identifier {
+                                                                name: "y",
+                                                            },
+                                                            index: None,
+                                                        },
+                                                        expression: BinaryExpression(
+                                                            BinaryExpression {
+                                                                left: GetOrSetValue(
+                                                                    GetOrSetValue {
+                                                                        identifier: Identifier {
+                                                                            name: "y",
+                                                                        },
+                                                                        index: None,
+                                                                    },
+                                                                ),
+                                                                operator: Minus,
+                                                                right: GetOrSetValue(
+                                                                    GetOrSetValue {
+                                                                        identifier: Identifier {
+                                                                            name: "z",
+                                                                        },
+                                                                        index: None,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 156,
+                                    end: 165,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_c.ctiny
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_c.ctiny!
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 232,
+    },
+    data: TranslationUnit {
+        functions: Some(
+            [
+                Node {
+                    sp: SpanPosition {
+                        start: 40,
+                        end: 131,
+                    },
+                    data: Function {
+                        name: Identifier {
+                            name: "sum",
+                        },
+                        return_type: Int,
+                        params: Some(
+                            [
+                                Node {
+                                    sp: SpanPosition {
+                                        start: 48,
+                                        end: 53,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Identifier {
+                                            name: "a",
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                                Node {
+                                    sp: SpanPosition {
+                                        start: 55,
+                                        end: 60,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Identifier {
+                                            name: "b",
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                            ],
+                        ),
+                        body: Node {
+                            sp: SpanPosition {
+                                start: 62,
+                                end: 131,
+                            },
+                            data: Block {
+                                declarations: [
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 68,
+                                            end: 73,
+                                        },
+                                        data: Declaration {
+                                            type_specifier: Int,
+                                            identifier: Identifier {
+                                                name: "c",
+                                            },
+                                            array_size: None,
+                                        },
+                                    },
+                                ],
+                                statements: [
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 80,
+                                            end: 87,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                set_value: GetOrSetValue {
+                                                    identifier: Identifier {
+                                                        name: "a",
+                                                    },
+                                                    index: None,
+                                                },
+                                                expression: Literal(
+                                                    Int(
+                                                        10,
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 92,
+                                            end: 99,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                set_value: GetOrSetValue {
+                                                    identifier: Identifier {
+                                                        name: "b",
+                                                    },
+                                                    index: None,
+                                                },
+                                                expression: Literal(
+                                                    Int(
+                                                        20,
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 104,
+                                            end: 114,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                set_value: GetOrSetValue {
+                                                    identifier: Identifier {
+                                                        name: "c",
+                                                    },
+                                                    index: None,
+                                                },
+                                                expression: BinaryExpression(
+                                                    BinaryExpression {
+                                                        left: GetOrSetValue(
+                                                            GetOrSetValue {
+                                                                identifier: Identifier {
+                                                                    name: "a",
+                                                                },
+                                                                index: None,
+                                                            },
+                                                        ),
+                                                        operator: Plus,
+                                                        right: GetOrSetValue(
+                                                            GetOrSetValue {
+                                                                identifier: Identifier {
+                                                                    name: "b",
+                                                                },
+                                                                index: None,
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 120,
+                                            end: 129,
+                                        },
+                                        data: Jump(
+                                            Return(
+                                                GetOrSetValue(
+                                                    GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "c",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                ),
+                                            ),
+                                        ),
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                },
+            ],
+        ),
+        main_function: Node {
+            sp: SpanPosition {
+                start: 137,
+                end: 232,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 149,
+                        end: 232,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 155,
+                                    end: 160,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "a",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 162,
+                                    end: 163,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "b",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 165,
+                                    end: 166,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "c",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 173,
+                                    end: 180,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "a",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                10,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 185,
+                                    end: 192,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "b",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                20,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 197,
+                                    end: 211,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "c",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: FunctionCall(
+                                            FunctionCall {
+                                                name: Identifier {
+                                                    name: "sum",
+                                                },
+                                                arguments: [
+                                                    GetOrSetValue(
+                                                        GetOrSetValue {
+                                                            identifier: Identifier {
+                                                                name: "a",
+                                                            },
+                                                            index: None,
+                                                        },
+                                                    ),
+                                                    GetOrSetValue(
+                                                        GetOrSetValue {
+                                                            identifier: Identifier {
+                                                                name: "b",
+                                                            },
+                                                            index: None,
+                                                        },
+                                                    ),
+                                                ],
+                                            },
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 221,
+                                    end: 230,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 167,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: SpanPosition {
+                start: 0,
+                end: 167,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 12,
+                        end: 167,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 18,
+                                    end: 24,
+                                },
+                                data: Declaration {
+                                    type_specifier: Bool,
+                                    identifier: Identifier {
+                                        name: "x",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 30,
+                                    end: 37,
+                                },
+                                data: Declaration {
+                                    type_specifier: Float,
+                                    identifier: Identifier {
+                                        name: "y",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 39,
+                                    end: 40,
+                                },
+                                data: Declaration {
+                                    type_specifier: Float,
+                                    identifier: Identifier {
+                                        name: "z",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 47,
+                                    end: 53,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "z",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 58,
+                                    end: 64,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "y",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 69,
+                                    end: 78,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "x",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Bool(
+                                                true,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 84,
+                                    end: 151,
+                                },
+                                data: If(
+                                    IfStatement {
+                                        condition: GetOrSetValue(
+                                            GetOrSetValue {
+                                                identifier: Identifier {
+                                                    name: "x",
+                                                },
+                                                index: None,
+                                            },
+                                        ),
+                                        if_body: [
+                                            Assignment(
+                                                AssignmentStatement {
+                                                    set_value: GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "y",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                    expression: BinaryExpression(
+                                                        BinaryExpression {
+                                                            left: GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Identifier {
+                                                                        name: "y",
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                            operator: Plus,
+                                                            right: GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Identifier {
+                                                                        name: "z",
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                        else_body: Some(
+                                            [
+                                                Assignment(
+                                                    AssignmentStatement {
+                                                        set_value: GetOrSetValue {
+                                                            identifier: Identifier {
+                                                                name: "y",
+                                                            },
+                                                            index: None,
+                                                        },
+                                                        expression: BinaryExpression(
+                                                            BinaryExpression {
+                                                                left: GetOrSetValue(
+                                                                    GetOrSetValue {
+                                                                        identifier: Identifier {
+                                                                            name: "y",
+                                                                        },
+                                                                        index: None,
+                                                                    },
+                                                                ),
+                                                                operator: Minus,
+                                                                right: GetOrSetValue(
+                                                                    GetOrSetValue {
+                                                                        identifier: Identifier {
+                                                                            name: "z",
+                                                                        },
+                                                                        index: None,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 156,
+                                    end: 165,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_d.ctiny
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_d.ctiny!
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 108,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: SpanPosition {
+                start: 0,
+                end: 108,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 11,
+                        end: 108,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 17,
+                                    end: 26,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "a",
+                                    },
+                                    array_size: Some(
+                                        10,
+                                    ),
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 28,
+                                    end: 29,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "i",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 36,
+                                    end: 43,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "i",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                10,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 49,
+                                    end: 87,
+                                },
+                                data: While(
+                                    WhileStatement {
+                                        condition: BinaryExpression(
+                                            BinaryExpression {
+                                                left: GetOrSetValue(
+                                                    GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "i",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                ),
+                                                operator: Greater,
+                                                right: Literal(
+                                                    Int(
+                                                        0,
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        body: [
+                                            Assignment(
+                                                AssignmentStatement {
+                                                    set_value: GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "a",
+                                                        },
+                                                        index: Some(
+                                                            GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Identifier {
+                                                                        name: "i",
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                        ),
+                                                    },
+                                                    expression: GetOrSetValue(
+                                                        GetOrSetValue {
+                                                            identifier: Identifier {
+                                                                name: "i",
+                                                            },
+                                                            index: None,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 97,
+                                    end: 106,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_b.ctiny
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_b.ctiny!
+[2023-07-12T15:22:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 114,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: SpanPosition {
+                start: 0,
+                end: 114,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 12,
+                        end: 114,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 18,
+                                    end: 23,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "i",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 29,
+                                    end: 35,
+                                },
+                                data: Declaration {
+                                    type_specifier: Char,
+                                    identifier: Identifier {
+                                        name: "c",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 42,
+                                    end: 49,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "i",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                20,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 55,
+                                    end: 93,
+                                },
+                                data: While(
+                                    WhileStatement {
+                                        condition: BinaryExpression(
+                                            BinaryExpression {
+                                                left: GetOrSetValue(
+                                                    GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "i",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                ),
+                                                operator: Greater,
+                                                right: Literal(
+                                                    Int(
+                                                        0,
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        body: [
+                                            Assignment(
+                                                AssignmentStatement {
+                                                    set_value: GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "c",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                    expression: Literal(
+                                                        Char(
+                                                            'a',
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 103,
+                                    end: 112,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_c.ctiny
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_c.ctiny!
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 232,
+    },
+    data: TranslationUnit {
+        functions: Some(
+            [
+                Node {
+                    sp: SpanPosition {
+                        start: 40,
+                        end: 131,
+                    },
+                    data: Function {
+                        name: Identifier {
+                            name: "sum",
+                        },
+                        return_type: Int,
+                        params: Some(
+                            [
+                                Node {
+                                    sp: SpanPosition {
+                                        start: 48,
+                                        end: 53,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Identifier {
+                                            name: "a",
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                                Node {
+                                    sp: SpanPosition {
+                                        start: 55,
+                                        end: 60,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Identifier {
+                                            name: "b",
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                            ],
+                        ),
+                        body: Node {
+                            sp: SpanPosition {
+                                start: 62,
+                                end: 131,
+                            },
+                            data: Block {
+                                declarations: [
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 68,
+                                            end: 73,
+                                        },
+                                        data: Declaration {
+                                            type_specifier: Int,
+                                            identifier: Identifier {
+                                                name: "c",
+                                            },
+                                            array_size: None,
+                                        },
+                                    },
+                                ],
+                                statements: [
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 80,
+                                            end: 87,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                set_value: GetOrSetValue {
+                                                    identifier: Identifier {
+                                                        name: "a",
+                                                    },
+                                                    index: None,
+                                                },
+                                                expression: Literal(
+                                                    Int(
+                                                        10,
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 92,
+                                            end: 99,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                set_value: GetOrSetValue {
+                                                    identifier: Identifier {
+                                                        name: "b",
+                                                    },
+                                                    index: None,
+                                                },
+                                                expression: Literal(
+                                                    Int(
+                                                        20,
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 104,
+                                            end: 114,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                set_value: GetOrSetValue {
+                                                    identifier: Identifier {
+                                                        name: "c",
+                                                    },
+                                                    index: None,
+                                                },
+                                                expression: BinaryExpression(
+                                                    BinaryExpression {
+                                                        left: GetOrSetValue(
+                                                            GetOrSetValue {
+                                                                identifier: Identifier {
+                                                                    name: "a",
+                                                                },
+                                                                index: None,
+                                                            },
+                                                        ),
+                                                        operator: Plus,
+                                                        right: GetOrSetValue(
+                                                            GetOrSetValue {
+                                                                identifier: Identifier {
+                                                                    name: "b",
+                                                                },
+                                                                index: None,
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            },
+                                        ),
+                                    },
+                                    Node {
+                                        sp: SpanPosition {
+                                            start: 120,
+                                            end: 129,
+                                        },
+                                        data: Jump(
+                                            Return(
+                                                GetOrSetValue(
+                                                    GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "c",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                ),
+                                            ),
+                                        ),
+                                    },
+                                ],
+                            },
+                        },
+                    },
+                },
+            ],
+        ),
+        main_function: Node {
+            sp: SpanPosition {
+                start: 137,
+                end: 232,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 149,
+                        end: 232,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 155,
+                                    end: 160,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "a",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 162,
+                                    end: 163,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "b",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 165,
+                                    end: 166,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "c",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 173,
+                                    end: 180,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "a",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                10,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 185,
+                                    end: 192,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "b",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                20,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 197,
+                                    end: 211,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "c",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: FunctionCall(
+                                            FunctionCall {
+                                                name: Identifier {
+                                                    name: "sum",
+                                                },
+                                                arguments: [
+                                                    GetOrSetValue(
+                                                        GetOrSetValue {
+                                                            identifier: Identifier {
+                                                                name: "a",
+                                                            },
+                                                            index: None,
+                                                        },
+                                                    ),
+                                                    GetOrSetValue(
+                                                        GetOrSetValue {
+                                                            identifier: Identifier {
+                                                                name: "b",
+                                                            },
+                                                            index: None,
+                                                        },
+                                                    ),
+                                                ],
+                                            },
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 221,
+                                    end: 230,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 167,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: SpanPosition {
+                start: 0,
+                end: 167,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 12,
+                        end: 167,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 18,
+                                    end: 24,
+                                },
+                                data: Declaration {
+                                    type_specifier: Bool,
+                                    identifier: Identifier {
+                                        name: "x",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 30,
+                                    end: 37,
+                                },
+                                data: Declaration {
+                                    type_specifier: Float,
+                                    identifier: Identifier {
+                                        name: "y",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 39,
+                                    end: 40,
+                                },
+                                data: Declaration {
+                                    type_specifier: Float,
+                                    identifier: Identifier {
+                                        name: "z",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 47,
+                                    end: 53,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "z",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 58,
+                                    end: 64,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "y",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 69,
+                                    end: 78,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "x",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Bool(
+                                                true,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 84,
+                                    end: 151,
+                                },
+                                data: If(
+                                    IfStatement {
+                                        condition: GetOrSetValue(
+                                            GetOrSetValue {
+                                                identifier: Identifier {
+                                                    name: "x",
+                                                },
+                                                index: None,
+                                            },
+                                        ),
+                                        if_body: [
+                                            Assignment(
+                                                AssignmentStatement {
+                                                    set_value: GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "y",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                    expression: BinaryExpression(
+                                                        BinaryExpression {
+                                                            left: GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Identifier {
+                                                                        name: "y",
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                            operator: Plus,
+                                                            right: GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Identifier {
+                                                                        name: "z",
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                        else_body: Some(
+                                            [
+                                                Assignment(
+                                                    AssignmentStatement {
+                                                        set_value: GetOrSetValue {
+                                                            identifier: Identifier {
+                                                                name: "y",
+                                                            },
+                                                            index: None,
+                                                        },
+                                                        expression: BinaryExpression(
+                                                            BinaryExpression {
+                                                                left: GetOrSetValue(
+                                                                    GetOrSetValue {
+                                                                        identifier: Identifier {
+                                                                            name: "y",
+                                                                        },
+                                                                        index: None,
+                                                                    },
+                                                                ),
+                                                                operator: Minus,
+                                                                right: GetOrSetValue(
+                                                                    GetOrSetValue {
+                                                                        identifier: Identifier {
+                                                                            name: "z",
+                                                                        },
+                                                                        index: None,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        ),
+                                                    },
+                                                ),
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 156,
+                                    end: 165,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_d.ctiny
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_d.ctiny!
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 108,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: SpanPosition {
+                start: 0,
+                end: 108,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 11,
+                        end: 108,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 17,
+                                    end: 26,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "a",
+                                    },
+                                    array_size: Some(
+                                        10,
+                                    ),
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 28,
+                                    end: 29,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "i",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 36,
+                                    end: 43,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "i",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                10,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 49,
+                                    end: 87,
+                                },
+                                data: While(
+                                    WhileStatement {
+                                        condition: BinaryExpression(
+                                            BinaryExpression {
+                                                left: GetOrSetValue(
+                                                    GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "i",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                ),
+                                                operator: Greater,
+                                                right: Literal(
+                                                    Int(
+                                                        0,
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        body: [
+                                            Assignment(
+                                                AssignmentStatement {
+                                                    set_value: GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "a",
+                                                        },
+                                                        index: Some(
+                                                            GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Identifier {
+                                                                        name: "i",
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                        ),
+                                                    },
+                                                    expression: GetOrSetValue(
+                                                        GetOrSetValue {
+                                                            identifier: Identifier {
+                                                                name: "i",
+                                                            },
+                                                            index: None,
+                                                        },
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 97,
+                                    end: 106,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_b.ctiny
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_b.ctiny!
+[2023-07-12T15:24:30 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 114,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: SpanPosition {
+                start: 0,
+                end: 114,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 12,
+                        end: 114,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 18,
+                                    end: 23,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "i",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 29,
+                                    end: 35,
+                                },
+                                data: Declaration {
+                                    type_specifier: Char,
+                                    identifier: Identifier {
+                                        name: "c",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 42,
+                                    end: 49,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "i",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                20,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 55,
+                                    end: 93,
+                                },
+                                data: While(
+                                    WhileStatement {
+                                        condition: BinaryExpression(
+                                            BinaryExpression {
+                                                left: GetOrSetValue(
+                                                    GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "i",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                ),
+                                                operator: Greater,
+                                                right: Literal(
+                                                    Int(
+                                                        0,
+                                                    ),
+                                                ),
+                                            },
+                                        ),
+                                        body: [
+                                            Assignment(
+                                                AssignmentStatement {
+                                                    set_value: GetOrSetValue {
+                                                        identifier: Identifier {
+                                                            name: "c",
+                                                        },
+                                                        index: None,
+                                                    },
+                                                    expression: Literal(
+                                                        Char(
+                                                            'a',
+                                                        ),
+                                                    ),
+                                                },
+                                            ),
+                                        ],
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 103,
+                                    end: 112,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}

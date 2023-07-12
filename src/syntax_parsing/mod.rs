@@ -1,31 +1,13 @@
-use crate::params;
+use pest::error::Error;
 
-pub mod parser;
+use pest::Parser;
+use pest::iterators::Pairs;
 
-pub fn syntax_parsing(input_files: Vec<std::path::PathBuf>) {
-    println!("{:#?}", params::argv::Pipeline::SyntaxParsing);
+#[derive(Parser)]
+#[grammar = "ctiny.pest"]
+pub struct CTinyParser;
 
-    // log all input files
-    for file in &input_files {
-        log::info!("Input file: {}", (*file).to_str().unwrap());
-    }
-
-    // run syntax parsing on all input files
-    for file in &input_files {
-        log::info!("Parsing file: {}", file.to_str().unwrap());
-        let file_name = file.file_name().unwrap().to_str().unwrap();
-        let file_content = std::fs::read_to_string(file).unwrap();
-        let ast = parser::parse(file_content.as_str());
-        match ast {
-            Ok(_) => {
-                log::info!("Parsing successful for file {}!", file_name);
-            },
-            Err(e) => {
-                log::error!("Parsing error: {}", e);
-                continue;
-            }
-        }
-            
-    }
-    
+pub fn parse(rule: Rule, file_content: &str) -> Result<Pairs<'_, Rule>, Error<Rule>> {
+    let pairs = CTinyParser::parse(rule, file_content);
+    pairs
 }

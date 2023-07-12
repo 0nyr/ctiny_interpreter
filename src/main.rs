@@ -5,7 +5,7 @@ extern crate pest_derive;
 mod params;
 mod data_loading;
 mod syntax_parsing;
-mod syntax_tree;
+mod abstract_syntax_tree;
 mod semantic_analysis;
 mod pipelines;
 
@@ -22,11 +22,11 @@ fn main() {
 
     // run the pipeline
     match params::ARGV.pipeline {
-        params::argv::Pipeline::SyntaxParsing => {
-            syntax_parsing::syntax_parsing(input_paths);
+        params::argv::Pipeline::SyntaxAndASTParsing => {
+            pipelines::pipeline_syntax_and_ast(input_paths);
         },
         params::argv::Pipeline::TypeOverflowChecking => {
-            pipelines::parsing_and_semantic_analysis(input_paths);
+            pipelines::pipeline_syntax_and_ast(input_paths);
         },
     }
     

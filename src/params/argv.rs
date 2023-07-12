@@ -25,7 +25,7 @@ pub struct Argv {
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]
 pub enum Pipeline {
     /// run the syntax parsing
-    SyntaxParsing,
+    SyntaxAndASTParsing,
     /// run the type overflow checking
     TypeOverflowChecking,
 }

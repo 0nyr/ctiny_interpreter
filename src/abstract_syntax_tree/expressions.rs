@@ -1,6 +1,6 @@
 use pest::error::Error;
 
-use crate::syntax_parsing::parser::Rule;
+use crate::syntax_parsing::Rule;
 
 use super::nodes::*;
 use super::errors::make_ast_error;

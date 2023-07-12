@@ -1,7 +1,7 @@
 use pest::error::{Error, ErrorVariant};
 use pest::iterators::Pair;
 
-use crate::syntax_parsing::parser::Rule;
+use crate::syntax_parsing::Rule;
 
 #[macro_export]
 macro_rules! unwrap_or_err_panic {

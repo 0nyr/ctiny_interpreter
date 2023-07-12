@@ -10,3 +10,5 @@ mod ast_statement_tests;
 mod ast_declaration_tests;
 #[cfg(test)]
 mod ast_function_tests;
+#[cfg(test)]
+mod ast_program_tests;

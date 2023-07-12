@@ -1,7 +1,7 @@
 use pest::Parser;
 
-use crate::syntax_parsing::parser::{CTinyParser, Rule};
-use crate::syntax_tree::declarations::{build_declaration, build_parameter_list, build_multi_declaration};
+use crate::syntax_parsing::{CTinyParser, Rule};
+use crate::abstract_syntax_tree::declarations::{build_declaration, build_parameter_list, build_multi_declaration};
 
 use crate::build_test;
 

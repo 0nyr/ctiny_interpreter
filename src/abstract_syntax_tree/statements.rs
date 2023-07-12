@@ -1,8 +1,8 @@
 use pest::error::Error;
 
-use crate::syntax_parsing::parser::Rule;
-use crate::syntax_tree::expressions::build_expression;
-use crate::syntax_tree::expressions::get_or_set_value_from_pair;
+use crate::syntax_parsing::Rule;
+use crate::abstract_syntax_tree::expressions::build_expression;
+use crate::abstract_syntax_tree::expressions::get_or_set_value_from_pair;
 
 use super::nodes::*;
 use super::errors::make_ast_error;

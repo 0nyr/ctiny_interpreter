@@ -1,15 +1,14 @@
 use pest::error::Error;
 use pest::iterators::Pair;
 
-use crate::syntax_parsing::parser::Rule;
+use crate::syntax_parsing::Rule;
 
 use super::declarations::build_parameter_list;
 use super::declarations::build_multi_declaration;
 use super::declarations::get_type_from_pair;
 use super::expressions::identifier_from_pair;
-use crate::syntax_tree::statements::{build_statement, multi_statement_vector_from_pair, build_multi_statement};
+use crate::abstract_syntax_tree::statements::build_multi_statement;
 use super::nodes::*;
-use super::errors::make_ast_error;
 
 // exported macros are available in the crate root (global scope)
 use crate::unwrap_or_err_panic;
@@ -80,6 +79,8 @@ pub fn build_function_definition(pair: Pair<Rule>) -> Result<Node<Function>, Err
 
 pub fn build_entry_point_function(pair: Pair<Rule>) -> Result<Node<Function>, Error<Rule>> {
     let mut inner_pairs = pair.clone().into_inner();
+    //log::info!("inner_pairs len: {:?}", inner_pairs.clone().count());
+    //log::info!("pairs to string: {:?}", inner_pairs.clone().as_str());
     let first_pair = inner_pairs.next().unwrap();
 
     let identifier = Identifier { name: "main".to_string() };
