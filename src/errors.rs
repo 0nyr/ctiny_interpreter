@@ -20,7 +20,12 @@ fn make_error(pair: Pair<Rule>, message: &str) -> Error<Rule> {
 }
 
 const AST_ERROR_PREFIX: &str = "🔴 [AST building error]";
+const SEMANTIC_ERROR_PREFIX: &str = "🔴 [Semantic error]";
 
 pub fn make_ast_error(pair: pest::iterators::Pair<Rule>, message: &str) -> Error<Rule> {
     make_error(pair, format!("{} {}", AST_ERROR_PREFIX, message).as_str())
+}
+
+pub fn make_semantic_error(pair: pest::iterators::Pair<Rule>, message: &str) -> Error<Rule> {
+    make_error(pair, format!("{} {}", SEMANTIC_ERROR_PREFIX, message).as_str())
 }

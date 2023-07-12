@@ -3,6 +3,7 @@ extern crate pest_derive;
 
 // link modules
 mod params;
+mod errors;
 mod data_loading;
 mod syntax_parsing;
 mod abstract_syntax_tree;
@@ -26,6 +27,9 @@ fn main() {
             pipelines::pipeline_syntax_and_ast(input_paths);
         },
         params::argv::Pipeline::TypeOverflowChecking => {
+            pipelines::pipeline_syntax_and_ast(input_paths);
+        },
+        params::argv::Pipeline::SemanticAnalysis => {
             pipelines::pipeline_syntax_and_ast(input_paths);
         },
     }

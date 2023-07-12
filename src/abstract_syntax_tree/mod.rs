@@ -5,11 +5,10 @@ use crate::abstract_syntax_tree::functions::{build_entry_point_function, build_f
 use crate::{ok_build_node, unwrap_or_err_panic};
 use crate::syntax_parsing::Rule;
 
-use errors::make_ast_error;
+use crate::errors::make_ast_error;
 use nodes::*;
 
 pub mod nodes;
-pub mod errors;
 pub mod expressions;
 pub mod statements;
 pub mod declarations;

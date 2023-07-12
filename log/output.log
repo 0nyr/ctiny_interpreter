@@ -3058,3 +3058,113 @@ int main () {
         },
     },
 }
+[2023-07-12T15:40:27 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-12T15:40:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/invalid/invalid_undefined_error.ctiny
+[2023-07-12T15:40:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file invalid_undefined_error.ctiny!
+[2023-07-12T15:40:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: SpanPosition {
+        start: 0,
+        end: 94,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: SpanPosition {
+                start: 0,
+                end: 94,
+            },
+            data: Function {
+                name: Identifier {
+                    name: "main",
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: SpanPosition {
+                        start: 12,
+                        end: 94,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 18,
+                                    end: 23,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Identifier {
+                                        name: "c",
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: SpanPosition {
+                                    start: 30,
+                                    end: 36,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "c",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: GetOrSetValue(
+                                            GetOrSetValue {
+                                                identifier: Identifier {
+                                                    name: "a",
+                                                },
+                                                index: None,
+                                            },
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 70,
+                                    end: 77,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        set_value: GetOrSetValue {
+                                            identifier: Identifier {
+                                                name: "c",
+                                            },
+                                            index: None,
+                                        },
+                                        expression: Literal(
+                                            Int(
+                                                10,
+                                            ),
+                                        ),
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: SpanPosition {
+                                    start: 83,
+                                    end: 92,
+                                },
+                                data: Jump(
+                                    Return(
+                                        Literal(
+                                            Int(
+                                                0,
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                            },
+                        ],
+                    },
+                },
+            },
+        },
+    },
+}

@@ -12,3 +12,5 @@ mod ast_declaration_tests;
 mod ast_function_tests;
 #[cfg(test)]
 mod ast_program_tests;
+#[cfg(test)]
+mod semantic_analysis_tests;

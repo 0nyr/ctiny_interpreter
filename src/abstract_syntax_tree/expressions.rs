@@ -3,7 +3,7 @@ use pest::error::Error;
 use crate::syntax_parsing::Rule;
 
 use super::nodes::*;
-use super::errors::make_ast_error;
+use crate::errors::make_ast_error;
 
 // exported macros are available in the crate root (global scope)
 use crate::unwrap_or_err_panic;

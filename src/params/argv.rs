@@ -26,6 +26,8 @@ pub struct Argv {
 pub enum Pipeline {
     /// run the syntax parsing
     SyntaxAndASTParsing,
+    // semantic analysis
+    SemanticAnalysis,
     /// run the type overflow checking
     TypeOverflowChecking,
 }

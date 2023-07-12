@@ -5,7 +5,7 @@ use crate::abstract_syntax_tree::expressions::build_expression;
 use crate::abstract_syntax_tree::expressions::get_or_set_value_from_pair;
 
 use super::nodes::*;
-use super::errors::make_ast_error;
+use crate::errors::make_ast_error;
 
 // exported macros are available in the crate root (global scope)
 use crate::unwrap_or_err_panic;

@@ -1,5 +1,12 @@
 use crate::params;
 
+use crate::abstract_syntax_tree::nodes::AST;
+
+use self::errors::SemanticError;
+
+mod errors;
+mod symbol_table;
+
 pub fn overflow_checking(input_files: Vec<std::path::PathBuf>) {
     println!("{:#?}", params::argv::Pipeline::TypeOverflowChecking);
 
@@ -7,4 +14,10 @@ pub fn overflow_checking(input_files: Vec<std::path::PathBuf>) {
     for file in input_files {
         log::info!("Input file: {}", file.to_str().unwrap());
     }
+}
+
+pub fn semantic_analysis(ast: AST) -> Result<(), Vec<SemanticError>> {
+    println!("{:#?}", params::argv::Pipeline::SemanticAnalysis);
+
+    return Ok(());
 }
