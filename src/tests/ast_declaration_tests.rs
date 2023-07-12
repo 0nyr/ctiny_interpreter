@@ -1,7 +1,7 @@
 use pest::Parser;
 
 use crate::syntax_parsing::parser::{CTinyParser, Rule};
-use crate::syntax_tree::declarations::{build_declaration, parameter_list_from_pair, build_multi_declaration};
+use crate::syntax_tree::declarations::{build_declaration, build_parameter_list, build_multi_declaration};
 
 use crate::build_test;
 
@@ -27,7 +27,7 @@ fn test_ast_declaration() {
 
 #[test]
 fn test_ast_parameter_list() {
-    build_test!(Rule::parameter_list, parameter_list_from_pair,
+    build_test!(Rule::parameter_list, build_parameter_list,
         "int x",
         "int x[10]",
         "char x",

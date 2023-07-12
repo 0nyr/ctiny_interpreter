@@ -27,7 +27,11 @@ fn build_assignment_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<
     ))
 }
 
-pub fn multi_statement_vector_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Statement>, Error<Rule>> {
+// code redundancy eliminated by using a Higher Order Function
+pub fn build_multi_statement_core<F, T>(pair: pest::iterators::Pair<Rule>, mut transform: F) -> Result<Vec<T>, Error<Rule>>
+where
+    F: FnMut(Node<Statement>) -> T,
+{
     let mut statements = Vec::new();
 
     for inner_pair in pair.into_inner() {
@@ -37,10 +41,19 @@ pub fn multi_statement_vector_from_pair(pair: pest::iterators::Pair<Rule>) -> Re
         }
 
         let statement_node = unwrap_or_err_panic!(build_statement(inner_pair));
-        statements.push(statement_node.data);
+        statements.push(transform(statement_node));
     }
     Ok(statements)
 }
+
+pub fn multi_statement_vector_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Statement>, Error<Rule>> {
+    build_multi_statement_core(pair, |node| node.data)
+}
+
+pub fn build_multi_statement(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Node<Statement>>, Error<Rule>> {
+    build_multi_statement_core(pair, |node| node)
+}
+
 
 fn build_if_else_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Statement>, Error<Rule>> {
     let mut inner_pairs = pair.clone().into_inner();

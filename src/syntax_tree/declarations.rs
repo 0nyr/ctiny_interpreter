@@ -12,17 +12,17 @@ use crate::unwrap_or_err_panic;
 use crate::ok_build_node;
 
 
-pub fn parameter_list_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Declaration>, Error<Rule>> {
+pub fn build_parameter_list(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Node<Declaration>>, Error<Rule>> {
     let mut parameters = Vec::new();
 
     for inner_pair in pair.into_inner() {
         let parameter_node = unwrap_or_err_panic!(build_declaration(inner_pair));
-        parameters.push(parameter_node.data);
+        parameters.push(parameter_node);
     }
     Ok(parameters)
 }
 
-fn get_type_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<TypeSpecifier, Error<Rule>> {
+pub fn get_type_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<TypeSpecifier, Error<Rule>> {
     let type_specifier = match TypeSpecifier::from_str(pair.clone().as_str()) {
         Some(type_specifier) => type_specifier,
         None => return Err(make_ast_error(pair, "Invalid type specifier")),
@@ -48,8 +48,6 @@ fn potential_array_size_from_pair(potential_pair: Option<pest::iterators::Pair<R
         None => Ok(None),
     }
 }
-
-
 
 pub fn build_declaration(pair: pest::iterators::Pair<Rule>) -> Result<Node<Declaration>, Error<Rule>> {
     let mut inner_pairs = pair.clone().into_inner();

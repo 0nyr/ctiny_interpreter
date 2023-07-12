@@ -40,21 +40,16 @@ pub struct ProgramAST {
 
 #[derive(Debug, PartialEq)]
 pub struct TranslationUnit {
-    pub functions: Vec<FunctionDefinition>,
-    pub main_function: FunctionDefinition,
+    pub functions: Vec<Node<Function>>,
+    pub main_function: Node<Function>,
 }
 
-
-
 #[derive(Debug, PartialEq)]
-pub enum FunctionDefinition {
-    EntryPoint(Block),
-    Function {
-        name: Identifier,
-        return_type: TypeSpecifier,
-        params: Vec<Declaration>,
-        body: Block,
-    },
+pub struct Function {
+    pub name: Identifier,
+    pub return_type: TypeSpecifier,
+    pub params: Option<Vec<Node<Declaration>>>,
+    pub body: Node<Block>,
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
