@@ -3,7 +3,7 @@ use pest::error::Error;
 use crate::params;
 use crate::syntax_parsing::parser;
 use crate::syntax_parsing::parser::Rule;
-use crate::syntax_tree::nodes::{Node, ProgramAST};
+use crate::syntax_tree::nodes::{Node, AST};
 //use crate::syntax_tree::convert_to_ast;
 
 fn parse_content_into_ast<'a>(

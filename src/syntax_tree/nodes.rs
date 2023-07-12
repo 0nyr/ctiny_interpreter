@@ -12,8 +12,6 @@ pub struct Node<T> {
     pub data: T,            // contains the data, wrapped into an inner type
 }
 
-pub type AST<T> = Node<T>;
-
 #[macro_export]
 macro_rules! ok_build_node {
     ($pair:expr, $data:expr) => {
@@ -29,18 +27,12 @@ macro_rules! ok_build_node {
     }
 }
 
-
+pub type AST = Node<TranslationUnit>;
 
 // AST nodes
 #[derive(Debug, PartialEq)]
-pub struct ProgramAST {
-    pub translation_unit: TranslationUnit,
-}
-
-
-#[derive(Debug, PartialEq)]
 pub struct TranslationUnit {
-    pub functions: Vec<Node<Function>>,
+    pub functions: Option<Vec<Node<Function>>>,
     pub main_function: Node<Function>,
 }
 

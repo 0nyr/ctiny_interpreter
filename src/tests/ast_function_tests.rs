@@ -35,7 +35,6 @@ fn test_ast_entry_point_function() {
         "int main() { int x; }",
         "int main() { int x; int y; }",
         "int main() { int x; char y[10]; x = 3; y[0] = 4; }",
-        "int main() { int x; char y[10]; x = 3; y[0] = 4; if (x == y[0]) { y[1] = y[0]; } }",
         "int main() { int x; char y[10]; x = 3; y[0] = 4; if (x == y[0]) { y[1] = y[0]; } }"
     );
 }
