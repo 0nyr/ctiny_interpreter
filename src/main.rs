@@ -9,6 +9,7 @@ mod syntax_parsing;
 mod abstract_syntax_tree;
 mod semantic_analysis;
 mod pipelines;
+mod symbol_table;
 
 #[cfg(test)]
 mod tests;

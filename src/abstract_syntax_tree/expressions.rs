@@ -1,3 +1,4 @@
+use pest::Span;
 use pest::error::Error;
 
 use crate::syntax_parsing::Rule;
@@ -52,10 +53,15 @@ macro_rules! build_chained_operations {
             // second pair must be an expression
             let right_operation = build_expression(pair_expr)?;
 
-            let common_span = SpanPosition {
-                start: left_operation.sp.start,
-                end: right_operation.sp.end,
-            };
+            let common_span = Span::new(
+                left_operation.sp.start(),
+                right_operation.sp.end(),
+            ).expect(format!(
+                "🔴 Couldn't build a span from the left and right operations. str: {}, start: {}, end: {}",
+                $input_pair.as_str(),
+                left_operation.sp.start(),
+                right_operation.sp.end(),
+            ).as_str());
 
             left_operation = Node {
                 sp: common_span,
@@ -82,68 +88,6 @@ macro_rules! build_chained_operations {
     }};
 }
 
-
-
-fn build_conjunction(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
-    let mut inner = pair.clone().into_inner().next().unwrap();
-            
-    let mut conjunctions = Vec::new();
-    while inner.as_rule() == Rule::conjunction {
-        conjunctions.push(build_expression(inner.clone())?);
-        inner = match inner.into_inner().next() {
-            Some(pair) => pair,
-            None => break,
-        };
-    }
-    if conjunctions.len() == 1 {
-        return Ok(conjunctions.pop().unwrap());
-    } else {
-        let mut conjunction_tree = {
-            let right_conjunction = conjunctions.pop().unwrap();
-            let left_conjunction = conjunctions.pop().unwrap();
-
-            // reconstruct the common span
-            let common_span = SpanPosition {
-                start: left_conjunction.sp.start,
-                end: right_conjunction.sp.end,
-            };
-
-            Node {
-                sp: common_span,
-                data: Expression::BinaryExpression(
-                    BinaryExpression {
-                        operator: BinaryOperator::LogicalOr,
-                        left: Box::new(left_conjunction.data),
-                        right: Box::new(right_conjunction.data),
-                    }
-                ),
-            }
-        };
-        while conjunctions.len() > 0 {
-            let right_conjunction = conjunction_tree;
-            let left_conjunction = conjunctions.pop().unwrap();
-
-            // reconstruct the common span
-            let common_span = SpanPosition {
-                start: left_conjunction.sp.start,
-                end: right_conjunction.sp.end,
-            };
-            
-            conjunction_tree = Node {
-                sp: common_span,
-                data: Expression::BinaryExpression(
-                    BinaryExpression {
-                        operator: BinaryOperator::LogicalOr,
-                        left: Box::new(left_conjunction.data),
-                        right: Box::new(right_conjunction.data),
-                    }
-                ),
-            }
-        }
-        return Ok(conjunction_tree);
-    }
-}
-
 fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let literal = pair.clone().into_inner().next().unwrap();
     let res = match literal.as_rule() {
@@ -154,7 +98,8 @@ fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, 
             let char_literal = literal.as_str();
             let char_trimmed = char_literal.trim_start_matches('\'').trim_end_matches('\'');
             let real_char = char_trimmed.chars().next().unwrap();
-            Expression::Literal(Literal::Char(real_char))},
+            let real_char_ascii = real_char as u8;
+            Expression::Literal(Literal::Char(real_char_ascii))},
         Rule::integer => Expression::Literal(Literal::Int(literal.as_str().parse().unwrap())),
         _ => {
             let message = format!("🔴 Unexpected rule in <literal> match tree: {:?}", literal.as_rule());
@@ -212,20 +157,20 @@ fn build_factor(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, E
 
 pub fn get_or_set_value_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<GetOrSetValue, Error<Rule>> {
     let mut inner = pair.clone().into_inner();
-    let identifier = inner.next().unwrap().as_str().to_string();
+    let identifier = unwrap_or_err_panic!(build_identifier(inner.next().unwrap()));
     let index = match inner.next() {
         Some(pair) => Some(Box::new(unwrap_or_err_panic!(build_expression(pair)).data)),
         None => None,
     };
     Ok(GetOrSetValue {
-        identifier: Identifier { name: identifier },
+        identifier,
         index,
     })
 }
 
-pub fn identifier_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<Identifier, Error<Rule>> {
+pub fn build_identifier(pair: pest::iterators::Pair<Rule>) -> Result<Node<Identifier>, Error<Rule>> {
     let identifier = pair.clone().as_str().to_string();
-    Ok(Identifier { name: identifier })
+    ok_build_node!(pair, Identifier { name: identifier })
 }
 
 pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
@@ -244,7 +189,7 @@ pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expres
         Rule::literal => build_literal(pair),
         Rule::function_call => {
             let mut inner = pair.clone().into_inner();
-            let identifier = unwrap_or_err_panic!(identifier_from_pair(inner.next().unwrap()));
+            let identifier = unwrap_or_err_panic!(build_identifier(inner.next().unwrap()));
 
             // function call may have 0 or more arguments
             let arguments = {

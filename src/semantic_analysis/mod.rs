@@ -4,8 +4,7 @@ use crate::abstract_syntax_tree::nodes::AST;
 
 use self::errors::SemanticError;
 
-mod errors;
-mod symbol_table;
+pub mod errors;
 
 pub fn overflow_checking(input_files: Vec<std::path::PathBuf>) {
     println!("{:#?}", params::argv::Pipeline::TypeOverflowChecking);

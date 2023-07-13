@@ -1,14 +1,26 @@
+use pest::Span;
 
 #[derive(Debug, PartialEq, Clone, Copy)]
-pub struct SpanPosition {
+pub struct SpanPosition<'a> {
+    pub input: &'a str,
     pub start: usize,
     pub end: usize,
 }
 
+impl SpanPosition<'_> {
+    from_span(input: &'a str, span: Span<'a>) -> Self {
+        Self {
+            input,
+            start: span.start(),
+            end: span.end(),
+        }
+    }
+}
+
 // Base AST node
 #[derive(Debug, PartialEq)]
-pub struct Node<T> {
-    pub sp: SpanPosition,   // contains information about the node's position (position of span) to be matched to string in the source code
+pub struct Node<'a, T> {
+    pub sp: SpanPosition<'a>,   // contains information about the node's position (position of span) to be matched to string in the source code
     pub data: T,            // contains the data, wrapped into an inner type
 }
 
@@ -17,31 +29,28 @@ macro_rules! ok_build_node {
     ($pair:expr, $data:expr) => {
         Ok(
             Node {
-                sp: SpanPosition {
-                    start: $pair.as_span().start(),
-                    end: $pair.as_span().end(),
-                },
+                sp: $pair.as_span(),
                 data: $data,
             }
         )
     }
 }
 
-pub type AST = Node<TranslationUnit>;
+pub type AST<'a> = Node<'a, TranslationUnit<'a>>;
 
 // AST nodes
 #[derive(Debug, PartialEq)]
-pub struct TranslationUnit {
-    pub functions: Option<Vec<Node<Function>>>,
-    pub main_function: Node<Function>,
+pub struct TranslationUnit<'a> {
+    pub functions: Option<Vec<Node<'a, Function<'a>>>>,
+    pub main_function: Node<'a, Function<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Function {
-    pub name: Identifier,
+pub struct Function<'a> {
+    pub name: Node<'a, Identifier>,
     pub return_type: TypeSpecifier,
-    pub params: Option<Vec<Node<Declaration>>>,
-    pub body: Node<Block>,
+    pub params: Option<Vec<Node<'a, Declaration<'a>>>>,
+    pub body: Node<'a, Block<'a>>,
 }
 
 #[derive(Debug, PartialEq, Clone, Copy)]
@@ -74,50 +83,50 @@ impl TypeSpecifier {
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Declaration {
+pub struct Declaration<'a> {
     pub type_specifier: TypeSpecifier,
-    pub identifier: Identifier,
+    pub identifier: Node<'a, Identifier>,
     pub array_size: Option<usize>,  // For "[" ~ integer ~ "]" in the grammar
 }
 
 #[derive(Debug, PartialEq)]
-pub struct Block {
-    pub declarations: Vec<Node<Declaration>>,
-    pub statements: Vec<Node<Statement>>,
+pub struct Block<'a> {
+    pub declarations: Vec<Node<'a, Declaration<'a>>>,
+    pub statements: Vec<Node<'a, Statement<'a>>>,
 }
 
 // WARN: in Ctiny, statements cannot contain declarations
 // this is made to ensure that in a given block, all declarations are at the top
 #[derive(Debug, PartialEq)]
-pub enum Statement {
-    Assignment(AssignmentStatement),
-    If(IfStatement),
-    While(WhileStatement),
-    Jump(JumpStatement),
+pub enum Statement<'a> {
+    Assignment(AssignmentStatement<'a>),
+    If(IfStatement<'a>),
+    While(WhileStatement<'a>),
+    Jump(JumpStatement<'a>),
 }
 
 #[derive(Debug, PartialEq)]
-pub struct AssignmentStatement {
-    pub set_value: GetOrSetValue,
-    pub expression: Expression,
+pub struct AssignmentStatement<'a> {
+    pub set_value: GetOrSetValue<'a>,
+    pub expression: Expression<'a>,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct IfStatement {
-    pub condition: Expression,
-    pub if_body: Vec<Statement>,
-    pub else_body: Option<Vec<Statement>>,
+pub struct IfStatement<'a> {
+    pub condition: Expression<'a>,
+    pub if_body: Vec<Node<'a, Statement<'a>>>,
+    pub else_body: Option<Vec<Node<'a, Statement<'a>>>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct WhileStatement {
-    pub condition: Expression,
-    pub body: Vec<Statement>,
+pub struct WhileStatement<'a> {
+    pub condition: Expression<'a>,
+    pub body: Vec<Node<'a, Statement<'a>>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub enum JumpStatement {
-    Return(Expression),
+pub enum JumpStatement<'a> {
+    Return(Expression<'a>),
     Break,
     Continue,
 }
@@ -129,56 +138,56 @@ pub enum JumpStatement {
 
 // Expressions
 #[derive(Debug, PartialEq)]
-pub enum Expression {
+pub enum Expression<'a> {
     Literal(Literal), // direct value
-    UnaryExpression(UnaryExpression),
-    BinaryExpression(BinaryExpression),
-    FunctionCall(FunctionCall),
-    TypeCast(TypeCast),
-    GetOrSetValue(GetOrSetValue),
+    UnaryExpression(UnaryExpression<'a>),
+    BinaryExpression(BinaryExpression<'a>),
+    FunctionCall(FunctionCall<'a>),
+    TypeCast(TypeCast<'a>),
+    GetOrSetValue(GetOrSetValue<'a>),
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq)]
 pub struct Identifier {
     pub name: String,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct GetOrSetValue {
-    pub identifier: Identifier,
-    pub index: Option<Box<Expression>>,
+pub struct GetOrSetValue<'a> {
+    pub identifier: Node<'a, Identifier>,
+    pub index: Option<Box<Expression<'a>>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct BinaryExpression {
-    pub left: Box<Expression>,
+pub struct BinaryExpression<'a> {
+    pub left: Box<Expression<'a>>,
     pub operator: BinaryOperator,
-    pub right: Box<Expression>,
+    pub right: Box<Expression<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct UnaryExpression {
+pub struct UnaryExpression<'a> {
     pub operator: UnaryOperator,
-    pub expression: Box<Expression>,
+    pub expression: Box<Expression<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct FunctionCall {
-    pub name: Identifier,
-    pub arguments: Vec<Expression>,
+pub struct FunctionCall<'a> {
+    pub name: Node<'a, Identifier>,
+    pub arguments: Vec<Expression<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct TypeCast {
+pub struct TypeCast<'a> {
     pub type_specifier: TypeSpecifier,
-    pub expression: Box<Expression>,
+    pub expression: Box<Expression<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
 pub enum Literal {
-    Int(i32),
+    Int(i16),
     Float(f32),
-    Char(char),
+    Char(u8),
     Bool(bool),
 }
 

@@ -6,7 +6,7 @@ use crate::syntax_parsing::Rule;
 use super::declarations::build_parameter_list;
 use super::declarations::build_multi_declaration;
 use super::declarations::get_type_from_pair;
-use super::expressions::identifier_from_pair;
+use super::expressions::build_identifier;
 use crate::abstract_syntax_tree::statements::build_multi_statement;
 use super::nodes::*;
 
@@ -49,7 +49,7 @@ pub fn build_function_definition(pair: Pair<Rule>) -> Result<Node<Function>, Err
     let potential_fourth_pair = inner_pairs.next();
 
     let type_specifier = unwrap_or_err_panic!(get_type_from_pair(first_pair));
-    let identifier = unwrap_or_err_panic!(identifier_from_pair(second_pair));
+    let identifier = unwrap_or_err_panic!(build_identifier(second_pair));
     
     if let Some(actual_fourth_pair) = potential_fourth_pair {
         // if there is as fourth pair, then parse the parameters
@@ -83,7 +83,10 @@ pub fn build_entry_point_function(pair: Pair<Rule>) -> Result<Node<Function>, Er
     //log::info!("pairs to string: {:?}", inner_pairs.clone().as_str());
     let first_pair = inner_pairs.next().unwrap();
 
-    let identifier = Identifier { name: "main".to_string() };
+    let identifier = Node {
+        sp: pair.as_span(),
+        data: Identifier { name: String::from("main") },
+    };
     let body = unwrap_or_err_panic!(build_block(first_pair));
 
     ok_build_node!(pair, 

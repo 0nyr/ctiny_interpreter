@@ -7,7 +7,7 @@ use crate::abstract_syntax_tree::nodes::AST;
 pub fn parse_content_into_ast<'a>(
     file_content: &'a str,
     file_name: Option<&str>,
-) -> AST {
+) -> AST<'a> {
     let optional_file_annotation = match file_name {
         Some(file_name) => format!(" [f: {}]", file_name),
         None => String::from(""),

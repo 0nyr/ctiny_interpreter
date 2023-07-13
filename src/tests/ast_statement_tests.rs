@@ -1,7 +1,7 @@
 use pest::Parser;
 
 use crate::syntax_parsing::{CTinyParser, Rule};
-use crate::abstract_syntax_tree::statements::{build_statement, multi_statement_vector_from_pair};
+use crate::abstract_syntax_tree::statements::{build_statement, build_multi_statement};
 
 use crate::build_test;
 
@@ -53,7 +53,7 @@ fn test_ast_assignment() {
 }
 
 #[test]
-fn test_multi_statement_vector_from_pair() {
+fn test_build_multi_statement() {
     // test with assignment statements
     let test_string = "a = 1; b = 2; c = 3;";
     let pairs = CTinyParser::parse(Rule::multi_statement, test_string)
@@ -63,7 +63,7 @@ fn test_multi_statement_vector_from_pair() {
     assert_eq!(first_pair.as_rule(), Rule::multi_statement);
     assert_eq!(first_pair.as_str(), test_string);
 
-    let multi_statement = multi_statement_vector_from_pair(first_pair);
+    let multi_statement = build_multi_statement(first_pair);
     assert!(multi_statement.is_ok());
     assert_eq!(multi_statement.unwrap().len(), 3);
 
@@ -81,7 +81,7 @@ fn test_multi_statement_vector_from_pair() {
     assert_eq!(first_pair.as_rule(), Rule::multi_statement);
     assert_eq!(first_pair.as_str(), test_string);
 
-    let multi_statement = multi_statement_vector_from_pair(first_pair);
+    let multi_statement = build_multi_statement(first_pair);
     assert!(multi_statement.is_ok());
     assert_eq!(multi_statement.unwrap().len(), 2);
 }

@@ -28,10 +28,7 @@ fn build_assignment_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<
 }
 
 // code redundancy eliminated by using a Higher Order Function
-pub fn build_multi_statement_core<F, T>(pair: pest::iterators::Pair<Rule>, mut transform: F) -> Result<Vec<T>, Error<Rule>>
-where
-    F: FnMut(Node<Statement>) -> T,
-{
+pub fn build_multi_statement(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Node<Statement>>, Error<Rule>> {
     let mut statements = Vec::new();
 
     for inner_pair in pair.into_inner() {
@@ -41,19 +38,10 @@ where
         }
 
         let statement_node = unwrap_or_err_panic!(build_statement(inner_pair));
-        statements.push(transform(statement_node));
+        statements.push(statement_node);
     }
     Ok(statements)
 }
-
-pub fn multi_statement_vector_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Statement>, Error<Rule>> {
-    build_multi_statement_core(pair, |node| node.data)
-}
-
-pub fn build_multi_statement(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Node<Statement>>, Error<Rule>> {
-    build_multi_statement_core(pair, |node| node)
-}
-
 
 fn build_if_else_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Statement>, Error<Rule>> {
     let mut inner_pairs = pair.clone().into_inner();
@@ -62,10 +50,10 @@ fn build_if_else_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Sta
     let potential_third_pair = inner_pairs.next();
 
     let condition_expression = unwrap_or_err_panic!(build_expression(first_pair));
-    let if_body_statements: Vec<Statement> = unwrap_or_err_panic!(multi_statement_vector_from_pair(second_pair));
-    let else_body_statements: Option<Vec<Statement>> = match potential_third_pair {
+    let if_body_statements = unwrap_or_err_panic!(build_multi_statement(second_pair));
+    let else_body_statements = match potential_third_pair {
         Some(third_pair) => {
-            Some(unwrap_or_err_panic!(multi_statement_vector_from_pair(third_pair)))
+            Some(unwrap_or_err_panic!(build_multi_statement(third_pair)))
         },
         None => None,
     };
@@ -85,7 +73,7 @@ fn build_while_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<State
     let second_pair = inner_pairs.next().unwrap();
 
     let condition_expression = unwrap_or_err_panic!(build_expression(first_pair));
-    let body_statements: Vec<Statement> = unwrap_or_err_panic!(multi_statement_vector_from_pair(second_pair));
+    let body_statements = unwrap_or_err_panic!(build_multi_statement(second_pair));
 
     ok_build_node!(pair, Statement::While(
         WhileStatement {

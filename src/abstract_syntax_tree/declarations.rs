@@ -1,7 +1,7 @@
 use pest::error::Error;
 
 use crate::syntax_parsing::Rule;
-use crate::abstract_syntax_tree::expressions::identifier_from_pair;
+use crate::abstract_syntax_tree::expressions::build_identifier;
 
 use super::nodes::*;
 use crate::errors::make_ast_error;
@@ -55,7 +55,7 @@ pub fn build_declaration(pair: pest::iterators::Pair<Rule>) -> Result<Node<Decla
     let potential_third_pair = inner_pairs.next();
 
     let declaration_type = unwrap_or_err_panic!(get_type_from_pair(first_pair));
-    let identifier = unwrap_or_err_panic!(identifier_from_pair(second_pair));
+    let identifier = unwrap_or_err_panic!(build_identifier(second_pair));
     let array_size: Option<usize> = unwrap_or_err_panic!(potential_array_size_from_pair(potential_third_pair));
 
     ok_build_node!(pair, Declaration {
@@ -73,7 +73,7 @@ fn declaration_from_followup(
     let first_pair = inner_pairs.next().unwrap();
     let potential_array_pair = inner_pairs.next();
     
-    let identifier = unwrap_or_err_panic!(identifier_from_pair(first_pair));
+    let identifier = unwrap_or_err_panic!(build_identifier(first_pair));
     let array_size: Option<usize> = unwrap_or_err_panic!(potential_array_size_from_pair(potential_array_pair));
     
     ok_build_node!(pair, Declaration {

@@ -4,6 +4,16 @@
 * [ ] Add type system with overflow checking
 * [ ] Correct the .txt grammar with modifications done inside .pest PEG file.
 
+### Thu 13 Jul 2023
+
+I have a problem with spans... I want to use pest spans... but their are immutable and it's impossible to merge two spans... This is a real problem...
+
+I have 2 options... either I drop spans completly... not ideal, lot of rework needed... debugging very hard...
+
+Or I declare my own mutable span... But I will need to find a way to pass the input string reference all around... The best would be a king of global variable. Ugly but no need to pass it on every function params...
+
+Otherwise I will need to pass that to every function that need to build a Node... o_O...
+
 ### Mon 10 Jul 2023
 
 I stayed quite a while on anoying bugs
