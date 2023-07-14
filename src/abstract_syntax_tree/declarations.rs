@@ -4,7 +4,7 @@ use crate::syntax_parsing::Rule;
 use crate::abstract_syntax_tree::expressions::build_identifier;
 
 use super::nodes::*;
-use crate::errors::make_ast_error;
+use crate::errors::make_ast_error_from_pair;
 
 // exported macros are available in the crate root (global scope)
 use crate::unwrap_or_err_panic;
@@ -24,7 +24,7 @@ pub fn build_parameter_list(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Nod
 pub fn get_type_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<TypeSpecifier, Error<Rule>> {
     let type_specifier = match TypeSpecifier::from_str(pair.clone().as_str()) {
         Some(type_specifier) => type_specifier,
-        None => return Err(make_ast_error(pair, "Invalid type specifier")),
+        None => return Err(make_ast_error_from_pair(pair, "Invalid type specifier")),
     };
     Ok(type_specifier)
 }
@@ -35,7 +35,7 @@ fn potential_array_size_from_pair(potential_pair: Option<pest::iterators::Pair<R
             let array_size_str = actual_array_size_pair.as_str();
             match array_size_str.parse::<usize>() {
                 Ok(array_size) => Ok(Some(array_size)),
-                Err(_) => return Err(make_ast_error(
+                Err(_) => return Err(make_ast_error_from_pair(
                     actual_array_size_pair, 
                     format!(
                         "🟠 Invalid array size (must be a positive integer): {}", 

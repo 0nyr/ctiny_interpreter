@@ -12,5 +12,5 @@ dotenv = "0.15.0"
 fern = "0.6.2"
 lazy_static = "1.4.0"
 log = "0.4.19"
-pest = "2.7.0"
+pest = { git = "https://github.com/0nyr/pest.git", branch = "master" }
 pest_derive = "2.7.0"

@@ -1,21 +1,21 @@
 use pest::error::Error;
-use pest::iterators::Pair;
+use pest::Span;
 use std::fmt;
 
 use crate::syntax_parsing::Rule;
 use crate::errors::make_semantic_error;
 
 pub trait SemanticErrorTrait {
-    fn init(pair: Pair<Rule>, message: &str) -> Self where Self: Sized;
+    fn init<'a>(span: Span<'a>, message: &str) -> Self where Self: Sized;
     fn get_error(&self) -> Error<Rule>;
 }
 
 macro_rules! impl_semantic_error {
     ($error_type:ty) => {
         impl SemanticErrorTrait for $error_type {
-            fn init(pair: Pair<Rule>, message: &str) -> Self {
+            fn init<'a>(span: Span<'a>, message: &str) -> Self {
                 Self {
-                    error: make_semantic_error(pair, message),
+                    error: make_semantic_error(span, message),
                 }
             }
 

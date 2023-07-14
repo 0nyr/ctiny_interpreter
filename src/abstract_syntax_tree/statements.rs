@@ -2,10 +2,10 @@ use pest::error::Error;
 
 use crate::syntax_parsing::Rule;
 use crate::abstract_syntax_tree::expressions::build_expression;
-use crate::abstract_syntax_tree::expressions::get_or_set_value_from_pair;
+use crate::abstract_syntax_tree::expressions::build_get_or_set_value;
 
 use super::nodes::*;
-use crate::errors::make_ast_error;
+use crate::errors::make_ast_error_from_pair;
 
 // exported macros are available in the crate root (global scope)
 use crate::unwrap_or_err_panic;
@@ -16,13 +16,13 @@ fn build_assignment_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<
     let first_pair = inner_pairs.next().unwrap();
     let second_pair = inner_pairs.next().unwrap();
 
-    let set_value_node = unwrap_or_err_panic!(get_or_set_value_from_pair(first_pair));
+    let set_value_node = unwrap_or_err_panic!(build_get_or_set_value(first_pair));
     let expression_node = unwrap_or_err_panic!(build_expression(second_pair));
 
     ok_build_node!(pair, Statement::Assignment(
         AssignmentStatement {
             set_value: set_value_node,
-            expression: expression_node.data,
+            expression: expression_node,
         }
     ))
 }
@@ -60,7 +60,7 @@ fn build_if_else_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Sta
 
     ok_build_node!(pair, Statement::If(
         IfStatement {
-            condition: condition_expression.data,
+            condition: condition_expression,
             if_body: if_body_statements,
             else_body: else_body_statements,
         }
@@ -77,7 +77,7 @@ fn build_while_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<State
 
     ok_build_node!(pair, Statement::While(
         WhileStatement {
-            condition: condition_expression.data,
+            condition: condition_expression,
             body: body_statements,
         }
     ))
@@ -105,7 +105,7 @@ pub fn build_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Stateme
         },
         Rule::break_statement => {
             ok_build_node!(pair, Statement::Jump(
-                JumpStatement::Break
+                JumpStatement::Break()
             ))
         },
         Rule::continue_statement => {
@@ -113,7 +113,7 @@ pub fn build_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Stateme
                 JumpStatement::Continue
             ))
         },
-        _ => Err(make_ast_error(
+        _ => Err(make_ast_error_from_pair(
             pair.clone(), 
             format!("🔴 Unexpected rule inside <statement>: {:?}", pair.clone().as_rule()).as_str()
         )),

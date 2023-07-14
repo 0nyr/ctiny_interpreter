@@ -1,26 +1,16 @@
+
 use pest::Span;
 
-#[derive(Debug, PartialEq, Clone, Copy)]
-pub struct SpanPosition<'a> {
-    pub input: &'a str,
-    pub start: usize,
-    pub end: usize,
-}
-
-impl SpanPosition<'_> {
-    from_span(input: &'a str, span: Span<'a>) -> Self {
-        Self {
-            input,
-            start: span.start(),
-            end: span.end(),
-        }
-    }
-}
+// #[derive(Debug, PartialEq, Clone, Copy)]
+// pub struct SpanPosition {
+//     pub start: usize,
+//     pub end: usize,
+// }
 
 // Base AST node
 #[derive(Debug, PartialEq)]
 pub struct Node<'a, T> {
-    pub sp: SpanPosition<'a>,   // contains information about the node's position (position of span) to be matched to string in the source code
+    pub sp: Span<'a>,   // contains information about the node's position (position of span) to be matched to string in the source code
     pub data: T,            // contains the data, wrapped into an inner type
 }
 
@@ -107,27 +97,27 @@ pub enum Statement<'a> {
 
 #[derive(Debug, PartialEq)]
 pub struct AssignmentStatement<'a> {
-    pub set_value: GetOrSetValue<'a>,
-    pub expression: Expression<'a>,
+    pub set_value: Node<'a, GetOrSetValue<'a>>,
+    pub expression: Node<'a, Expression<'a>>,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct IfStatement<'a> {
-    pub condition: Expression<'a>,
+    pub condition: Node<'a, Expression<'a>>,
     pub if_body: Vec<Node<'a, Statement<'a>>>,
     pub else_body: Option<Vec<Node<'a, Statement<'a>>>>,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct WhileStatement<'a> {
-    pub condition: Expression<'a>,
+    pub condition: Node<'a, Expression<'a>>,
     pub body: Vec<Node<'a, Statement<'a>>>,
 }
 
 #[derive(Debug, PartialEq)]
 pub enum JumpStatement<'a> {
     Return(Expression<'a>),
-    Break,
+    Break(),
     Continue,
 }
 

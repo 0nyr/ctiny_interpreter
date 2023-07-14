@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Literal, Function}, semantic_analysis::errors::SemanticError};
+use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Literal, Function, Node}, semantic_analysis::errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}};
 
 
 
@@ -37,25 +37,24 @@ pub struct SymbolTable<'a> {
 
 // implementations
 impl SymbolTable<'_> {
-    pub fn get_scope(&self, scope_id: &Identifier) -> Option<&Scope> {
-        self.scopes.get(scope_id)
+    pub fn get_scope(&self, scope_id: &Node<Identifier>) -> Option<&Scope> {
+        self.scopes.get(&scope_id.data)
     }
 }
 
-// TODO: I need the pair or span of the variable to make the error
-// impl Scope<'_> {
-//     pub fn get_variable(&self, var_id: &Node<'a, Identifier>) -> Result<&Variable, SemanticError> {
-//         match self.variables.get(var_id) {
-//             Some(var) => Ok(var),
-//             None => Err(
-//                 SemanticError::UndeclaredVariable(
-//                     SemanticError::UndeclaredVariableError::init(
-//                         var_id.get_pair().unwrap(),
-//                         &format!("Undeclared variable: {}", var_id.get_name())
-//                     )
-//                 )
-//             ),
-//         }
-//     }
-// }
+impl Scope<'_> {
+    pub fn get_variable<'a>(&self, var_id_node: &Node<'a, Identifier>) -> Result<&Variable, SemanticError> {
+        match self.variables.get(&var_id_node.data) {
+            Some(var) => Ok(var),
+            None => Err(
+                SemanticError::UndeclaredVariable(
+                    UndeclaredVariableError::init(
+                        var_id_node.sp,
+                        &format!("Undeclared variable: {}", var_id_node.data.name)
+                    )
+                )
+            ),
+        }
+    }
+}
 

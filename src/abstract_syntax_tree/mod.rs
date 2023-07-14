@@ -5,7 +5,7 @@ use crate::abstract_syntax_tree::functions::{build_entry_point_function, build_f
 use crate::{ok_build_node, unwrap_or_err_panic};
 use crate::syntax_parsing::Rule;
 
-use crate::errors::make_ast_error;
+use crate::errors::make_ast_error_from_pair;
 use nodes::*;
 
 pub mod nodes;
@@ -40,14 +40,14 @@ pub fn build_translation_unit(pair: Pair<Rule>) -> Result<AST, Error<Rule>> {
             Some(pair) => {
                 match pair.as_rule() {
                     Rule::entry_point_function_definition => pair,
-                    _ => return Err(make_ast_error(
+                    _ => return Err(make_ast_error_from_pair(
                         pair, 
                         "Last function must be the entry point function."
                     )),
                 }
             }
             None => return Err(
-                make_ast_error(pair, "Empty program not allowed. Missing main function.")
+                make_ast_error_from_pair(pair, "Empty program not allowed. Missing main function.")
             ),
         }
     };

@@ -1,14 +1,22 @@
-use pest::Span;
 use pest::error::Error;
 
 use crate::syntax_parsing::Rule;
 
 use super::nodes::*;
-use crate::errors::make_ast_error;
+use crate::errors::make_ast_error_from_pair;
 
 // exported macros are available in the crate root (global scope)
 use crate::unwrap_or_err_panic;
 use crate::ok_build_node;
+
+macro_rules! merge_spans_no_check {
+    ($span1:expr, $span2:expr) => {{
+        let input = $span1.get_input();
+        let start = $span1.start();
+        let end = $span2.end();
+        pest::Span::new(input, start, end)
+    }};
+}
 
 macro_rules! build_chained_operations {
     ($input_pair:expr, $( $operator:expr ),*) => {{
@@ -30,7 +38,7 @@ macro_rules! build_chained_operations {
                     Some(real_operator_type) => {                    
                         match real_operator_type.as_str() {
                             $( x if x == $operator.as_str() => (real_operator_type), )* // do nothing
-                            _ => return Err(make_ast_error(
+                            _ => return Err(make_ast_error_from_pair(
                                 $input_pair.clone(), 
                                 format!(
                                     "🟣 matched operator {:?} not in the list of potential operators for rule {:?}", 
@@ -41,7 +49,7 @@ macro_rules! build_chained_operations {
                     None => {
                         let vec_of_op_str = vec![$( $operator.as_str() ),*];
                         let str_of_possible_operators = format!("{:?}", vec_of_op_str);
-                        return Err(make_ast_error(
+                        return Err(make_ast_error_from_pair(
                             $input_pair.clone(), 
                             format!("🟣 couldn't match pair_op with list of potential operators ({}) for rule {:?}", 
                                 str_of_possible_operators, pair_op.clone().as_rule()).as_str()
@@ -53,16 +61,31 @@ macro_rules! build_chained_operations {
             // second pair must be an expression
             let right_operation = build_expression(pair_expr)?;
 
-            let common_span = Span::new(
-                left_operation.sp.start(),
-                right_operation.sp.end(),
-            ).expect(format!(
-                "🔴 Couldn't build a span from the left and right operations. str: {}, start: {}, end: {}",
-                $input_pair.as_str(),
-                left_operation.sp.start(),
-                right_operation.sp.end(),
-            ).as_str());
+            // let common_span = Span::new(
+            //     left_operation.sp.start(),
+            //     right_operation.sp.end(),
+            // ).expect(format!(
+            //     "🔴 Couldn't build a span from the left and right operations. str: {}, start: {}, end: {}",
+            //     $input_pair.as_str(),
+            //     left_operation.sp.start(),
+            //     right_operation.sp.end(),
+            // ).as_str());
 
+            let common_span = merge_spans_no_check!(
+                &left_operation.sp,
+                &right_operation.sp
+            ).ok_or(make_ast_error_from_pair(
+                $input_pair.clone(), 
+                format!("🔴 Couldn't build a span from the left and right operations. 
+                    str_len: {}, left_start: {}, left_end: {}, right_start: {}, right_end: {}",
+                    $input_pair.as_str().len(),
+                    left_operation.sp.start(),
+                    left_operation.sp.end(),
+                    right_operation.sp.start(),
+                    right_operation.sp.end(),
+                ).as_str())
+            )?;
+            
             left_operation = Node {
                 sp: common_span,
                 data: Expression::BinaryExpression(
@@ -77,7 +100,7 @@ macro_rules! build_chained_operations {
         
         // all pairs must be consumed by now
         if let Some(last_element) = pairs.next() {
-            return Err(make_ast_error(
+            return Err(make_ast_error_from_pair(
                 $input_pair.clone(), 
                 format!("🟣 The list of pairs must be even. The last element is: {:?}", 
                 last_element.clone().as_rule()).as_str()
@@ -103,7 +126,7 @@ fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, 
         Rule::integer => Expression::Literal(Literal::Int(literal.as_str().parse().unwrap())),
         _ => {
             let message = format!("🔴 Unexpected rule in <literal> match tree: {:?}", literal.as_rule());
-            return Err(make_ast_error(pair, &message))
+            return Err(make_ast_error_from_pair(pair, &message))
         },
     };
     ok_build_node!(pair, res)
@@ -117,7 +140,7 @@ fn build_type_specifier(pair: pest::iterators::Pair<Rule>) -> Result<Node<TypeSp
         "int" => TypeSpecifier::Int,
         _ => {
             let message = format!("🔴 Unexpected <type_specifier>: {}", pair.clone().as_str());
-            return Err(make_ast_error(pair, &message))
+            return Err(make_ast_error_from_pair(pair, &message))
         },
     };
     ok_build_node!(pair, res)
@@ -150,19 +173,19 @@ fn build_factor(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, E
         },
         _ => {
             let message = format!("🔴 Unexpected rule in <factor> match tree: {:?}", first_pair_rule);
-            return Err(make_ast_error(pair, &message))
+            return Err(make_ast_error_from_pair(pair, &message))
         },
     }
 }
 
-pub fn get_or_set_value_from_pair(pair: pest::iterators::Pair<Rule>) -> Result<GetOrSetValue, Error<Rule>> {
+pub fn build_get_or_set_value(pair: pest::iterators::Pair<Rule>) -> Result<Node<GetOrSetValue>, Error<Rule>> {
     let mut inner = pair.clone().into_inner();
     let identifier = unwrap_or_err_panic!(build_identifier(inner.next().unwrap()));
     let index = match inner.next() {
         Some(pair) => Some(Box::new(unwrap_or_err_panic!(build_expression(pair)).data)),
         None => None,
     };
-    Ok(GetOrSetValue {
+    ok_build_node!(pair, GetOrSetValue {
         identifier,
         index,
     })
@@ -218,12 +241,12 @@ pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expres
             ))
         },
         Rule::get_or_set_value => {
-            let get_or_set_value = get_or_set_value_from_pair(pair.clone())?;
-            ok_build_node!(pair, Expression::GetOrSetValue(get_or_set_value))
+            let get_or_set_value = build_get_or_set_value(pair.clone())?;
+            ok_build_node!(pair, Expression::GetOrSetValue(get_or_set_value.data))
         },
         _ => {
             let message = format!("🔴 Unexpected rule in <expression> match tree: {:?}", rule);
-            return Err(make_ast_error(pair, &message))
+            return Err(make_ast_error_from_pair(pair, &message))
         },
     }
 }
