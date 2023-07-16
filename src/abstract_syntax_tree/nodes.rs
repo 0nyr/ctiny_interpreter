@@ -179,7 +179,7 @@ pub struct TypeCast<'a> {
     pub expression: Box<Expression<'a>>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Literal {
     Int(i16),
     Float(f32),
