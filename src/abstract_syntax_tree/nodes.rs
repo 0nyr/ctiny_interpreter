@@ -79,6 +79,12 @@ pub struct Declaration<'a> {
     pub array_size: Option<usize>,  // For "[" ~ integer ~ "]" in the grammar
 }
 
+impl Declaration<'_> {
+    pub fn is_array(&self) -> bool {
+        self.array_size.is_some()
+    }
+}
+
 #[derive(Debug, PartialEq)]
 pub struct Block<'a> {
     pub declarations: Vec<Node<'a, Declaration<'a>>>,
@@ -137,7 +143,7 @@ pub enum Expression<'a> {
     GetOrSetValue(GetOrSetValue<'a>),
 }
 
-#[derive(Debug, Eq, Hash, PartialEq)]
+#[derive(Debug, Eq, Hash, PartialEq, Clone)]
 pub struct Identifier {
     pub name: String,
 }
@@ -181,6 +187,16 @@ pub enum Literal {
     Bool(bool),
 }
 
+impl Literal {
+    pub fn as_type_specifier(&self) -> TypeSpecifier {
+        match self {
+            Literal::Int(_) => TypeSpecifier::Int,
+            Literal::Float(_) => TypeSpecifier::Float,
+            Literal::Char(_) => TypeSpecifier::Char,
+            Literal::Bool(_) => TypeSpecifier::Bool,
+        }
+    }
+}
 
 
 // Operators

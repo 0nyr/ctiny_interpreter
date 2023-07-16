@@ -14,3 +14,5 @@ mod ast_function_tests;
 mod ast_program_tests;
 #[cfg(test)]
 mod semantic_analysis_tests;
+#[cfg(test)]
+mod symbol_table_tests;

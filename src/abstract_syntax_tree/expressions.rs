@@ -9,6 +9,9 @@ use crate::errors::make_ast_error_from_pair;
 use crate::unwrap_or_err_panic;
 use crate::ok_build_node;
 
+// in this situation, pest removes whitespace and everything in between the pairs.
+// So I just need to combine the spans of the two pairs, without checking if they are
+// consecutive or not.
 macro_rules! merge_spans_no_check {
     ($span1:expr, $span2:expr) => {{
         let input = $span1.get_input();
