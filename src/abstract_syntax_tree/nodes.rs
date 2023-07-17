@@ -151,7 +151,7 @@ pub struct Identifier {
 #[derive(Debug, PartialEq)]
 pub struct GetOrSetValue<'a> {
     pub identifier: Node<'a, Identifier>,
-    pub index: Option<Box<Expression<'a>>>,
+    pub index: Option<Box<Node<'a, Expression<'a>>>>,
 }
 
 #[derive(Debug, PartialEq)]

@@ -5,6 +5,7 @@ use crate::abstract_syntax_tree::nodes::AST;
 use self::errors::SemanticError;
 
 pub mod errors;
+pub mod type_casts;
 
 pub fn overflow_checking(input_files: Vec<std::path::PathBuf>) {
     println!("{:#?}", params::argv::Pipeline::TypeOverflowChecking);

@@ -74,20 +74,6 @@ impl Scope {
         }
     }
 
-    pub fn get_variable<'a>(&self, var_id_node: &Node<'a, Identifier>) -> Result<&Variable, SemanticError> {
-        match self.variables.get(&var_id_node.data) {
-            Some(var) => Ok(var),
-            None => Err(
-                SemanticError::UndeclaredVariable(
-                    UndeclaredVariableError::init(
-                        var_id_node.sp,
-                        &format!("Undeclared variable: {}", var_id_node.data.name)
-                    )
-                )
-            ),
-        }
-    }
-
     // The following function is used for testing purposes
     #[cfg(test)]
     pub fn get_variable_from_id(&self, var_id: &Identifier) -> Result<&Variable, String> {
@@ -125,6 +111,37 @@ impl Scope {
             ),
             Variable::ArrayVar(array_var_data) => Ok(array_var_data),
         }
+    }
+
+    pub fn get_variable<'a>(&self, var_id_node: &Node<'a, Identifier>) -> Result<&Variable, SemanticError> {
+        match self.variables.get(&var_id_node.data) {
+            Some(var) => Ok(var),
+            None => Err(
+                SemanticError::UndeclaredVariable(
+                    UndeclaredVariableError::init(
+                        var_id_node.sp,
+                        &format!("Undeclared variable: {}", var_id_node.data.name)
+                    )
+                )
+            ),
+        }
+    }
+
+    /// Get a variable value.
+    /// If the variable is an array, get the value at the given index.
+    /// 
+    /// This function make use get_normal_variable and get_array_variable.
+    /// 
+    /// The function check that the variable is an array if the index is given.
+    /// The function check that the index is a positive integer.
+    pub fn get_variable_value<'a>(
+        &self, 
+        var_id_node: &Node<'a, Identifier>, 
+        potential_index: Option<Node<'a, Literal>>
+    ) -> Result<Node<'a, Literal>, SemanticError> {
+        // check if the variable is an array or a normal variable
+        // if the index is given, make sure its value is a positive integer
+        // TODO: complete this function
     }
 
     pub fn set_normal_variable<'a>(

@@ -32,13 +32,35 @@ macro_rules! impl_semantic_error {
     };
 }
 
+macro_rules! define_and_implement_semantic_error {
+    ($error_type:ident) => {
+        #[derive(Clone, Debug, Eq, Hash, PartialEq)]
+        pub struct $error_type {
+            error: Error<Rule>,
+        }
+        impl_semantic_error!($error_type);
+    };
+}
+
 pub enum SemanticError {
     UndeclaredVariable(UndeclaredVariableError),
+    UnexpectedExpressionParsing(UnexpectedExpressionParsingError),
+    NegativeArrayIndex(NegativeArrayIndexError),
+    UnexpectedLiteralType(UnexpectedLiteralTypeError),
 }
 
+define_and_implement_semantic_error!(UndeclaredVariableError);
+define_and_implement_semantic_error!(UnexpectedExpressionParsingError);
+define_and_implement_semantic_error!(NegativeArrayIndexError);
+define_and_implement_semantic_error!(UnexpectedLiteralTypeError);
 
-#[derive(Clone, Debug, Eq, Hash, PartialEq)]
-pub struct UndeclaredVariableError {
-    error: Error<Rule>,
+impl fmt::Display for SemanticError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            SemanticError::UndeclaredVariable(error) => write!(f, "{}", error),
+            SemanticError::UnexpectedExpressionParsing(error) => write!(f, "{}", error),
+            SemanticError::NegativeArrayIndex(error) => write!(f, "{}", error),
+            SemanticError::UnexpectedLiteralType(error) => write!(f, "{}", error),
+        }
+    }
 }
-impl_semantic_error!(UndeclaredVariableError);

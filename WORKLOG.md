@@ -4,13 +4,21 @@
 * [ ] Add type system with overflow checking
 * [ ] Correct the .txt grammar with modifications done inside .pest PEG file.
 
+### Mon 17 Jul 2023
+
+Started to work on interpretation. I'm starting with expression interpretation.
+
+* [ ] Complete ``get_variable_value``
+* [ ] Complete `interpret_expression`
+* [ ] Test `interpret_expression`
+
 ### Sun 16 Jul 2023
 
 I added the static symbol table.
 
 I also made a PR on Pest that was merged into `master`. This PR introduce the possibility to merge Spans, which was crucial in building BinaryExpression.
 
-* [ ] Now that we have the AST and Static Symbol Table, it's time to head towards interpreting the code.
+* [X] Now that we have the AST and Static Symbol Table, it's time to head towards interpreting the code.
 
 ### Thu 13 Jul 2023
 
