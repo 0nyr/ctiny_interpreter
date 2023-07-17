@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Literal, Node}, semantic_analysis::errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}};
+use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Literal, Node}, semantic_analysis::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::get_index_value_from_literal}};
 
 #[derive(Debug)]
 pub enum Variable {
@@ -28,7 +28,25 @@ impl PartialEq for Variable {
 pub struct NormalVarData {
     pub id: Identifier,
     pub type_specifier: TypeSpecifier,
-    pub value: Option<Literal>,
+    value: Option<Literal>,
+}
+
+impl NormalVarData {
+    pub fn new(id: Identifier, type_specifier: TypeSpecifier) -> Self {
+        Self {
+            id,
+            type_specifier,
+            value: None,
+        }
+    }
+
+    pub fn set_value(&mut self, value: Literal) {
+        self.value = Some(value);
+    }
+
+    pub fn get_value(&self) -> Option<&Literal> {
+        self.value.as_ref()
+    }
 }
 
 #[derive(Debug, PartialEq)]
@@ -36,7 +54,26 @@ pub struct ArrayVarData {
     pub id: Identifier,
     pub type_specifier: TypeSpecifier,
     pub size: usize,
-    pub values: HashMap<usize, Literal>,
+    values: HashMap<usize, Literal>,
+}
+
+impl ArrayVarData {
+    pub fn new(id: Identifier, type_specifier: TypeSpecifier, size: usize) -> Self {
+        Self {
+            id,
+            type_specifier,
+            size,
+            values: HashMap::new(),
+        }
+    }
+
+    pub fn set_value(&mut self, index: usize, value: Literal) {
+        self.values.insert(index, value);
+    }
+
+    pub fn get_value(&self, index: usize) -> Option<&Literal> {
+        self.values.get(&index)
+    }
 }
 
 // in Ctiny, a scope is equivalent to a block of a function
@@ -141,7 +178,50 @@ impl Scope {
     ) -> Result<Node<'a, Literal>, SemanticError> {
         // check if the variable is an array or a normal variable
         // if the index is given, make sure its value is a positive integer
-        // TODO: complete this function
+        match potential_index {
+            Some(index) => {
+                // case: array
+                let index_span = index.sp;
+                let index_value = get_index_value_from_literal(index)?;
+                let array_var_data = self.get_array_variable(var_id_node)?;
+                match array_var_data.get_value(index_value) {
+                    Some(value) => Ok(
+                        Node {
+                            sp: index_span,
+                            data: value.clone(),
+                        }
+                    ),
+                    None => Err(
+                        SemanticError::UndeclaredVariable(
+                            UndeclaredVariableError::init(
+                                index_span,
+                                &format!("Array <{}> does not have a value at index {}", var_id_node.data.name, index_value)
+                            )
+                        )
+                    ),
+                }
+            },
+            None => {
+                // case: normal variable
+                let normal_var_data = self.get_normal_variable(var_id_node)?;
+                match normal_var_data.get_value() {
+                    Some(value) => Ok(
+                        Node {
+                            sp: var_id_node.sp,
+                            data: value.clone(),
+                        }
+                    ),
+                    None => Err(
+                        SemanticError::UndeclaredVariable(
+                            UndeclaredVariableError::init(
+                                var_id_node.sp,
+                                &format!("Variable <{}> does not have a value", var_id_node.data.name)
+                            )
+                        )
+                    ),
+                }
+            },
+        }
     }
 
     pub fn set_normal_variable<'a>(

@@ -9,18 +9,16 @@ pub mod structs;
 
 fn build_variable(declaration: &Declaration) -> Variable {
     if declaration.is_array() {
-        Variable::ArrayVar(ArrayVarData {
-            id: declaration.identifier.data.clone(),
-            type_specifier: declaration.type_specifier,
-            size: declaration.array_size.unwrap(),
-            values: HashMap::new(),
-        })
+        Variable::ArrayVar(ArrayVarData::new(
+            declaration.identifier.data.clone(),
+            declaration.type_specifier,
+            declaration.array_size.unwrap(),
+        ))
     } else {
-        Variable::NormalVar(NormalVarData {
-            id: declaration.identifier.data.clone(),
-            type_specifier: declaration.type_specifier,
-            value: None,
-        })
+        Variable::NormalVar(NormalVarData::new(
+            declaration.identifier.data.clone(),
+            declaration.type_specifier,
+        ))
     }
 }
 

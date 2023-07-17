@@ -42,6 +42,7 @@ macro_rules! define_and_implement_semantic_error {
     };
 }
 
+#[derive(Debug)]
 pub enum SemanticError {
     UndeclaredVariable(UndeclaredVariableError),
     UnexpectedExpressionParsing(UnexpectedExpressionParsingError),

@@ -16,3 +16,5 @@ mod ast_program_tests;
 mod semantic_analysis_tests;
 #[cfg(test)]
 mod symbol_table_tests;
+#[cfg(test)]
+mod interpret_expression_tests;
