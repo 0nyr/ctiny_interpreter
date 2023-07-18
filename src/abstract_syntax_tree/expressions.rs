@@ -118,7 +118,27 @@ fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, 
     let literal = pair.clone().into_inner().next().unwrap();
     let res = match literal.as_rule() {
         Rule::boolean => Expression::Literal(Literal::Bool(literal.as_str().parse().unwrap())),
-        Rule::float => Expression::Literal(Literal::Float(literal.as_str().parse().unwrap())),
+        Rule::float => {
+            // need to check for potential overflow
+            let float_value_for_test: f64 = literal.as_str().parse().unwrap();
+            if float_value_for_test > std::f32::MAX as f64 {
+                let message = format!(
+                    "🔴 Float literal {} is too big. Max possible value is {}.", 
+                    float_value_for_test, 
+                    std::f32::MAX
+                );
+                return Err(make_ast_error_from_pair(pair, &message))
+            } else if float_value_for_test < std::f32::MIN as f64 {
+                let message = format!(
+                    "🔴 Float literal {} is too small. Min possible value is {}.", 
+                    float_value_for_test, 
+                    std::f32::MIN
+                );
+                return Err(make_ast_error_from_pair(pair, &message))
+            }
+            // return correct value as f32
+            Expression::Literal(Literal::Float(literal.as_str().parse().unwrap()))
+        },
         Rule::char => {
             // convert &str containing single quotes to char
             let char_literal = literal.as_str();
@@ -126,7 +146,27 @@ fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, 
             let real_char = char_trimmed.chars().next().unwrap();
             let real_char_ascii = real_char as u8;
             Expression::Literal(Literal::Char(real_char_ascii))},
-        Rule::integer => Expression::Literal(Literal::Int(literal.as_str().parse().unwrap())),
+        Rule::integer => {
+            // need to check for potential overflow
+            let int_value_for_test: i64 = literal.as_str().parse().unwrap();
+            if int_value_for_test > std::i16::MAX as i64 {
+                let message = format!(
+                    "🔴 Integer literal {} is too big. Max possible value is {}.", 
+                    int_value_for_test, 
+                    std::i16::MAX
+                );
+                return Err(make_ast_error_from_pair(pair, &message))
+            } else if int_value_for_test < std::i16::MIN as i64 {
+                let message = format!(
+                    "🔴 Integer literal {} is too small. Min possible value is {}.", 
+                    int_value_for_test, 
+                    std::i16::MIN
+                );
+                return Err(make_ast_error_from_pair(pair, &message))
+            }
+            // return correct value as i32
+            Expression::Literal(Literal::Int(literal.as_str().parse().unwrap()))
+        },
         _ => {
             let message = format!("🔴 Unexpected rule in <literal> match tree: {:?}", literal.as_rule());
             return Err(make_ast_error_from_pair(pair, &message))

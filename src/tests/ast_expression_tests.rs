@@ -11,10 +11,60 @@ macro_rules! build_test_expression {
     }
 }
 
+macro_rules! build_test_expression_error {
+    ($rule:expr, $input_str:expr ) => {
+        // pair parsing
+        let pairs = CTinyParser::parse($rule, $input_str)
+            .unwrap();
+
+        // print all pairs
+        let nb_pairs = pairs.clone().count();
+        print!("nb pairs: {}\n", nb_pairs);
+        for pair in pairs.clone().into_iter() {
+            print!("pair {:?}: {}\n", pair.as_rule(), pair.as_str());
+        }
+
+        let first_pair = pairs.into_iter().next().unwrap();
+        assert_eq!(first_pair.as_rule(), $rule);
+        assert_eq!(first_pair.as_str(), $input_str);
+
+        // AST conversion
+        let ast = build_expression(first_pair);
+        assert!(ast.is_err());
+        print!("Error: {}\n", ast.err().unwrap());
+    };
+}
+
 #[test]
 fn test_ast_literal() {
     build_test_expression!(Rule::literal, "1024", "'a'", "true", "false", "3.14159", "0.001");
 }
+
+#[test]
+fn test_ast_literal_float_overflow_max() {
+    let overflowing_float: f64 = 2.0*(f32::MAX as f64); // just adding a small float won't overflow due to rounding
+    let overflowing_float_string = overflowing_float.to_string() + ".0";
+    let test_string = overflowing_float_string.as_str();
+    print!("test string: {}\n", test_string);
+    let rule = Rule::literal;
+
+    build_test_expression_error!(rule, test_string);
+}
+
+#[test]
+fn test_ast_literal_int_overflow_max() {
+    let overflowing_int: i32 = 2*(i16::MAX as i32);
+    let overflowing_int_string = overflowing_int.to_string();
+    let test_string = overflowing_int_string.as_str();
+    print!("test string: {}\n", test_string);
+    let rule = Rule::literal;
+
+    build_test_expression_error!(rule, test_string);
+}
+
+// NOTE: Note that we cannot test the overflow of the min value
+// this is because the parser cannot parse the minus sign in the Literal rule
+// (it actually make it a unary minus operator, not a Literal).
 
 #[test]
 fn test_ast_type_cast() {

@@ -10,6 +10,54 @@ use crate::symbol_table::structs::{NormalVarData, Variable, Scope, SymbolTable};
 use crate::abstract_syntax_tree::expressions::build_expression;
 use crate::syntax_parsing::{CTinyParser, Rule};
 
+macro_rules! create_literal_test {
+    ($test_str:expr, $test_value:expr, $rule:expr, $literal_conversion:ident) => {
+        // Syntax parsing
+        let pairs = CTinyParser::parse($rule, $test_str).unwrap();
+
+        let first_pair = pairs.into_iter().next().unwrap();
+        assert_eq!(first_pair.as_rule(), $rule);
+        assert_eq!(first_pair.as_str(), $test_str);
+
+        // AST conversion
+        let expression_node = build_expression(first_pair)
+            .unwrap_or_else(|error| { 
+                print!("AST ERROR for {}: \n {}\n", $test_str, error); 
+                panic!(); 
+            });
+        print!("AST for string \"{}\": \n {:#?} \n\n", $test_str, expression_node);
+
+        // for the need of the test, build a symbol table from scratch with one scope "main"
+        let mut symbol_table = SymbolTable::new();
+        let main_scope_id_node = Node {
+            sp: Span::new(&$test_str, 0, 1).unwrap(),
+            data: Identifier {name: "main".to_string()},
+        };
+        let main_scope = Scope::new(
+            main_scope_id_node.data.clone(),
+            HashMap::new(),
+        );
+        symbol_table.add_scope(main_scope);
+
+        // interpretation
+        let interpreted_literal = interpret_expression(
+            &expression_node,
+            &symbol_table,
+            &main_scope_id_node,
+        )
+        .unwrap();
+
+        // Check that the interpreted literal matches the value we expect.
+        match &interpreted_literal.data {
+            Literal::$literal_conversion(literal_value) => {
+                assert_eq!(*literal_value, $test_value);
+                print!("Interpreted literal <{}>: {} of type {}\n\n", $test_str, *literal_value, stringify!($literal_conversion));
+            },
+            _ => panic!("Expected an Int literal."),
+        }
+        
+    }
+}
 
 #[test]
 fn test_interpret_expression_literal() {
@@ -59,9 +107,10 @@ fn test_interpret_expression_literal() {
 }
 
 #[test]
-fn test_interpret_expression_literal_2() {
+fn test_interpret_expression_literal_int() {
     // this test is a simpler version of the preceding test
     let test_str = "1";
+    let test_value: i16 = 1;
     let rule = Rule::expression;
 
     // Syntax parsing
@@ -102,9 +151,38 @@ fn test_interpret_expression_literal_2() {
     // Check that the interpreted literal matches the value we expect.
     // In this case, we expect the literal to be 1.
     match &interpreted_literal.data {
-        Literal::Int(literal_value) => assert_eq!(*literal_value, 1),
+        Literal::Int(literal_value) => assert_eq!(*literal_value, test_value),
         _ => panic!("Expected an Int literal."),
     }
 }
 
 // TODO: do the same for Char, Bool, Float
+#[test]
+fn test_interpret_expression_literal_char() {
+    create_literal_test!(
+        "'a'", 
+        b'a', // transformed to a u8
+        Rule::expression,
+        Char
+    );
+}
+
+#[test]
+fn test_interpret_expression_literal_bool() {
+    create_literal_test!(
+        "true", 
+        true, 
+        Rule::expression,
+        Bool
+    );
+}
+
+#[test]
+fn test_interpret_expression_literal_float() {
+    create_literal_test!(
+        "3.14159", 
+        3.14159, 
+        Rule::expression,
+        Float
+    );
+}
