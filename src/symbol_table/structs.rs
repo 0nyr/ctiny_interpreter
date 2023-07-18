@@ -98,6 +98,10 @@ impl SymbolTable {
         self.scopes.get(&scope_id.data)
     }
 
+    pub fn get_mut_scope(&mut self, scope_id: &Node<Identifier>) -> Option<&mut Scope> {
+        self.scopes.get_mut(&scope_id.data)
+    }
+
     pub fn add_scope(&mut self, scope: Scope) {
         self.scopes.insert(scope.id.clone(), scope);
     }
@@ -150,8 +154,24 @@ impl Scope {
         }
     }
 
-    pub fn get_variable<'a>(&self, var_id_node: &Node<'a, Identifier>) -> Result<&Variable, SemanticError> {
-        match self.variables.get(&var_id_node.data) {
+    pub fn get_variable(&self, var_id_node: &Node<Identifier>) -> Result<&Variable, SemanticError> {
+        let potential_var = self.variables.get(&var_id_node.data);
+        match potential_var {
+            Some(var) => Ok(var),
+            None => Err(
+                SemanticError::UndeclaredVariable(
+                    UndeclaredVariableError::init(
+                        var_id_node.sp,
+                        &format!("Undeclared variable: {}", var_id_node.data.name)
+                    )
+                )
+            ),
+        }
+    }
+
+    pub fn get_mut_variable<'a>(&mut self, var_id_node: &Node<'a, Identifier>) -> Result<&mut Variable, SemanticError> {
+        let potential_mut_var = self.variables.get_mut(&var_id_node.data);
+        match potential_mut_var {
             Some(var) => Ok(var),
             None => Err(
                 SemanticError::UndeclaredVariable(
@@ -224,12 +244,12 @@ impl Scope {
         }
     }
 
-    pub fn set_normal_variable<'a>(
-        &self, 
+    pub fn set_normal_variable_value<'a>(
+        &mut self, 
         var_id_node: &Node<'a, Identifier>, 
         value: Literal
-    ) -> Result<(), SemanticError> {
-        match self.get_variable(var_id_node)? {
+    ) -> Result<&NormalVarData, SemanticError> {
+        match self.get_mut_variable(var_id_node)? {
             Variable::NormalVar(normal_var_data) => {
                 let value_type = value.as_type_specifier();
                 if normal_var_data.type_specifier != value_type {
@@ -244,9 +264,9 @@ impl Scope {
                     );
                 } else {
                     // set the value
-
+                    normal_var_data.set_value(value);
                 }
-                Ok(())
+                Ok(normal_var_data)
             },
             Variable::ArrayVar(_) => Err(
                 SemanticError::UndeclaredVariable(
