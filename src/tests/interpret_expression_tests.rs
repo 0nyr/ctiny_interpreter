@@ -240,7 +240,10 @@ fn interpret_expression_get_value_for_testing<'a>(
             sp: Span::new(&test_str, 0, 1).unwrap(),
             data: x_var_id.clone(),
         },
-        test_value,
+        Node {
+            sp: Span::new(&test_str, 0, 1).unwrap(),
+            data: test_value,
+        },
     ).unwrap();
 
     // interpretation

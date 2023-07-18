@@ -3,7 +3,13 @@
 * [ ] Add symbol table to be able to recognize if an identifier is defined or not ! This sould ensure `cargo run -- -p syntax-parsing -f res/invalid/invalid_program_c.ctiny` detects the unknown identifier `a` at line 6.
 * [ ] Add type system with overflow checking
 * [ ] Correct the .txt grammar with modifications done inside .pest PEG file.
-* [ ] Add a max number of while loop !!!
+* [ ] Add a max number of while loop !!
+
+### Tue 18 Jul 2023
+
+Started to work on type casts.
+
+* [ ] add all necessary tests for valid and invalid type casts
 
 ### Mon 17 Jul 2023
 

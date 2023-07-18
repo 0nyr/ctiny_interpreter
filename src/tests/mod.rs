@@ -17,4 +17,6 @@ mod semantic_analysis_tests;
 #[cfg(test)]
 mod symbol_table_tests;
 #[cfg(test)]
+mod type_cast_tests;
+#[cfg(test)]
 mod interpret_expression_tests;

@@ -48,12 +48,18 @@ pub enum SemanticError {
     UnexpectedExpressionParsing(UnexpectedExpressionParsingError),
     NegativeArrayIndex(NegativeArrayIndexError),
     UnexpectedLiteralType(UnexpectedLiteralTypeError),
+    IntToCharCastOverflow(IntToCharCastOverflowError),
+    FloatToCharCastOverflow(FloatToCharCastOverflowError),
+    FloatToIntCastOverflow(FloatToIntCastOverflowError),
 }
 
 define_and_implement_semantic_error!(UndeclaredVariableError);
 define_and_implement_semantic_error!(UnexpectedExpressionParsingError);
 define_and_implement_semantic_error!(NegativeArrayIndexError);
 define_and_implement_semantic_error!(UnexpectedLiteralTypeError);
+define_and_implement_semantic_error!(IntToCharCastOverflowError);
+define_and_implement_semantic_error!(FloatToCharCastOverflowError);
+define_and_implement_semantic_error!(FloatToIntCastOverflowError);
 
 impl fmt::Display for SemanticError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -62,6 +68,9 @@ impl fmt::Display for SemanticError {
             SemanticError::UnexpectedExpressionParsing(error) => write!(f, "{}", error),
             SemanticError::NegativeArrayIndex(error) => write!(f, "{}", error),
             SemanticError::UnexpectedLiteralType(error) => write!(f, "{}", error),
+            SemanticError::IntToCharCastOverflow(error) => write!(f, "{}", error),
+            SemanticError::FloatToCharCastOverflow(error) => write!(f, "{}", error),
+            SemanticError::FloatToIntCastOverflow(error) => write!(f, "{}", error),
         }
     }
 }

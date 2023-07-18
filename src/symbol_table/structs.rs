@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Literal, Node}, semantic_analysis::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::get_index_value_from_literal}};
+use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Literal, Node}, semantic_analysis::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::{get_index_value_from_literal, cast_literal_to_type}}};
 
 #[derive(Debug)]
 pub enum Variable {
@@ -40,8 +40,20 @@ impl NormalVarData {
         }
     }
 
-    pub fn set_value(&mut self, value: Literal) {
-        self.value = Some(value);
+    pub fn set_value<'a>(&mut self, value_node: Node<'a, Literal>) -> Result<(), SemanticError> {
+        // check that the type of the value is the same as the type of the variable
+        let value_type = value_node.data.as_type_specifier();
+        if self.type_specifier != value_type {
+            // TODO: at this point, we need to do an auto-cast
+            let casted_value_node = cast_literal_to_type(
+                value_node, self.type_specifier
+            )?;
+            self.value = Some(casted_value_node.data);
+            Ok(())
+        } else {
+            self.value = Some(value_node.data);
+            Ok(())
+        }
     }
 
     pub fn get_value(&self) -> Option<&Literal> {
@@ -247,26 +259,13 @@ impl Scope {
     pub fn set_normal_variable_value<'a>(
         &mut self, 
         var_id_node: &Node<'a, Identifier>, 
-        value: Literal
-    ) -> Result<&NormalVarData, SemanticError> {
+        value_node: Node<'a, Literal>,
+    ) -> Result<(), SemanticError> {
         match self.get_mut_variable(var_id_node)? {
             Variable::NormalVar(normal_var_data) => {
-                let value_type = value.as_type_specifier();
-                if normal_var_data.type_specifier != value_type {
-                    // TODO: for now we return an error, but in the future we should do automatic type conversion)
-                    return Err(
-                        SemanticError::UndeclaredVariable(
-                            UndeclaredVariableError::init(
-                                var_id_node.sp,
-                                &format!("Variable {} is of type {:?}, but the value is of type {:?}", var_id_node.data.name, normal_var_data.type_specifier, value_type)
-                            )
-                        )
-                    );
-                } else {
-                    // set the value
-                    normal_var_data.set_value(value);
-                }
-                Ok(normal_var_data)
+                // set the value
+                normal_var_data.set_value(value_node)?;
+                Ok(())
             },
             Variable::ArrayVar(_) => Err(
                 SemanticError::UndeclaredVariable(
