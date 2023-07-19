@@ -156,15 +156,15 @@ pub struct GetOrSetValue<'a> {
 
 #[derive(Debug, PartialEq)]
 pub struct BinaryExpression<'a> {
-    pub left: Box<Expression<'a>>,
+    pub left: Box<Node<'a, Expression<'a>>>,
     pub operator: BinaryOperator,
-    pub right: Box<Expression<'a>>,
+    pub right: Box<Node<'a, Expression<'a>>>,
 }
 
 #[derive(Debug, PartialEq)]
 pub struct UnaryExpression<'a> {
     pub operator: UnaryOperator,
-    pub expression: Box<Expression<'a>>,
+    pub expression: Box<Node<'a, Expression<'a>>>,
 }
 
 #[derive(Debug, PartialEq)]
@@ -176,7 +176,7 @@ pub struct FunctionCall<'a> {
 #[derive(Debug, PartialEq)]
 pub struct TypeCast<'a> {
     pub type_specifier: TypeSpecifier,
-    pub expression: Box<Expression<'a>>,
+    pub expression: Box<Node<'a, Expression<'a>>>,
 }
 
 #[derive(Debug, PartialEq, Clone)]

@@ -94,8 +94,8 @@ macro_rules! build_chained_operations {
                 data: Expression::BinaryExpression(
                     BinaryExpression {
                         operator: operator_type,
-                        left: Box::new(left_operation.data),
-                        right: Box::new(right_operation.data),
+                        left: Box::new(left_operation),
+                        right: Box::new(right_operation),
                     }
                 ),
             }
@@ -205,7 +205,7 @@ fn build_factor(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, E
             let res = Expression::UnaryExpression(
                 UnaryExpression {
                     operator: unary_operator,
-                    expression: Box::new(primary.data),
+                    expression: Box::new(primary),
                 }
             );
             return ok_build_node!(pair, res);
@@ -275,7 +275,7 @@ pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expres
         Rule::type_cast => {
             let mut inner = pair.clone().into_inner();
             let type_specifier = unwrap_or_err_panic!(build_type_specifier(inner.next().unwrap())).data;
-            let expression = unwrap_or_err_panic!(build_expression(inner.next().unwrap())).data;
+            let expression = unwrap_or_err_panic!(build_expression(inner.next().unwrap()));
             ok_build_node!(pair, Expression::TypeCast(
                 TypeCast {
                     type_specifier,

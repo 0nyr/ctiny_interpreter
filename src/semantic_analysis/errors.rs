@@ -24,6 +24,14 @@ macro_rules! impl_semantic_error {
             }
         }
 
+        impl From<Error<Rule>> for $error_type {
+            fn from(error: Error<Rule>) -> Self {
+                Self {
+                    error,
+                }
+            }
+        }
+
         impl fmt::Display for $error_type {
             fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
                 write!(f, "{}", self.get_error())

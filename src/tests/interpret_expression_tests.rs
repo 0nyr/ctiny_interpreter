@@ -347,9 +347,7 @@ fn interpret_expression_get_value_array_var_for_testing<'a>(
     assert_eq!(first_pair.as_rule(), rule);
     assert_eq!(first_pair.as_str(), test_str);
 
-    // AST conversion
     let expression_node = {
-        let first_pair_span = first_pair.as_span();
         match build_expression(first_pair) {
             // need to convert the AST Error into a Semantic Error
             Ok(expression_node) => expression_node,
@@ -357,7 +355,7 @@ fn interpret_expression_get_value_array_var_for_testing<'a>(
                 print!("AST ERROR for {}: \n {}\n", test_str, error);
                 return Err(
                     SemanticError::ASTBuilding(
-                        ASTBuildingError::init(first_pair_span, error.to_string().as_str())
+                        ASTBuildingError::from(error)
                     )
                 );
             },

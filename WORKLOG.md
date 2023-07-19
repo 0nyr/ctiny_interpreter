@@ -5,11 +5,6 @@
 * [ ] Correct the .txt grammar with modifications done inside .pest PEG file.
 * [ ] Add a max number of while loop !!
 
-### refactoring ideas
-
-* [ ] Rework the system of errors in the AST and in the semantic part to use the same system as introduced in the semantic part.
-* [ ] Rework Literal. Define a new type Value to replace Literal in the Symbol Table.
-
 ## Logs
 
 ### Wed 19 Jul 2023
@@ -20,6 +15,8 @@ Completed tests for casting system between literals.
 
 * [X] Complete ``get_variable_value``
 * [X] add all necessary tests for valid and invalid type casts
+* [X] ~~Rework the system of errors in the AST and in the semantic part to use the same system as introduced in the semantic part.~~ Added a `From<Error<Rule>>` for easier manipulation.
+* [X] ~~Rework Literal. Define a new type Value to replace Literal in the Symbol Table.~~ Just renamed Literal to Value. This makes sense since a new type would be a perfect clone of the old Literal struct. It also make sense in the context of an interpreter. The literals are not stored in the AST as unchecked literals but as real Rust values.
 
 ### Tue 18 Jul 2023
 
