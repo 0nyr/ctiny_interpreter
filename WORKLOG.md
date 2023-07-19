@@ -17,6 +17,8 @@ Completed tests for casting system between literals.
 * [X] add all necessary tests for valid and invalid type casts
 * [X] ~~Rework the system of errors in the AST and in the semantic part to use the same system as introduced in the semantic part.~~ Added a `From<Error<Rule>>` for easier manipulation.
 * [X] ~~Rework Literal. Define a new type Value to replace Literal in the Symbol Table.~~ Just renamed Literal to Value. This makes sense since a new type would be a perfect clone of the old Literal struct. It also make sense in the context of an interpreter. The literals are not stored in the AST as unchecked literals but as real Rust values.
+* [X] Add testing for explicit type cast interpretation.
+* [ ] Continue expression interpretation with UnaryExpression.
 
 ### Tue 18 Jul 2023
 
