@@ -51,6 +51,7 @@ pub enum SemanticError {
     IntToCharCastOverflow(IntToCharCastOverflowError),
     FloatToCharCastOverflow(FloatToCharCastOverflowError),
     FloatToIntCastOverflow(FloatToIntCastOverflowError),
+    ASTBuilding(ASTBuildingError), // not direct semantic error, but used in semantic analysis
 }
 
 define_and_implement_semantic_error!(UndeclaredVariableError);
@@ -60,6 +61,7 @@ define_and_implement_semantic_error!(UnexpectedLiteralTypeError);
 define_and_implement_semantic_error!(IntToCharCastOverflowError);
 define_and_implement_semantic_error!(FloatToCharCastOverflowError);
 define_and_implement_semantic_error!(FloatToIntCastOverflowError);
+define_and_implement_semantic_error!(ASTBuildingError);
 
 impl fmt::Display for SemanticError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -71,6 +73,7 @@ impl fmt::Display for SemanticError {
             SemanticError::IntToCharCastOverflow(error) => write!(f, "{}", error),
             SemanticError::FloatToCharCastOverflow(error) => write!(f, "{}", error),
             SemanticError::FloatToIntCastOverflow(error) => write!(f, "{}", error),
+            SemanticError::ASTBuilding(error) => write!(f, "{}", error),
         }
     }
 }

@@ -1,12 +1,10 @@
 use std::collections::HashMap;
-use std::ops::IndexMut;
-
 use pest::{Parser, Span};
 
 use crate::pipelines::parse_content_into_ast;
-use crate::semantic_analysis::errors::SemanticError;
+use crate::semantic_analysis::errors::{SemanticError, ASTBuildingError, SemanticErrorTrait};
 use crate::symbol_table::build_static_symbol_table;
-use crate::abstract_syntax_tree::nodes::{Statement, Literal, Identifier, TypeSpecifier, Node};
+use crate::abstract_syntax_tree::nodes::{Statement, Literal, Identifier, TypeSpecifier, Node, Expression};
 use crate::interpretation::interpret_expression::interpret_expression;
 use crate::symbol_table::structs::{NormalVarData, Variable, Scope, SymbolTable, ArrayVarData};
 use crate::abstract_syntax_tree::expressions::build_expression;
@@ -350,11 +348,21 @@ fn interpret_expression_get_value_array_var_for_testing<'a>(
     assert_eq!(first_pair.as_str(), test_str);
 
     // AST conversion
-    let expression_node = build_expression(first_pair)
-        .unwrap_or_else(|error| { 
-            print!("AST ERROR for {}: \n {}\n", test_str, error); 
-            panic!(); 
-        });
+    let expression_node = {
+        let first_pair_span = first_pair.as_span();
+        match build_expression(first_pair) {
+            // need to convert the AST Error into a Semantic Error
+            Ok(expression_node) => expression_node,
+            Err(error) => {
+                print!("AST ERROR for {}: \n {}\n", test_str, error);
+                return Err(
+                    SemanticError::ASTBuilding(
+                        ASTBuildingError::init(first_pair_span, error.to_string().as_str())
+                    )
+                );
+            },
+        }
+    };
     print!("AST for string \"{}\": \n {:#?} \n\n", test_str, expression_node);
 
     // for the need of the test, build a symbol table from scratch with one scope "main"
@@ -366,7 +374,12 @@ fn interpret_expression_get_value_array_var_for_testing<'a>(
 
     // for the need of the test, add a variable x to the main scope
     let mut main_scope_variables = HashMap::new();
-    let x_var_id = Identifier {name: test_str.to_string()};
+    
+    let get_or_set_value_node = match &expression_node.data {
+        Expression::GetOrSetValue(get_or_set_value) => get_or_set_value,
+        expr => panic!("Expected a GetOrSetValue expression. Got instead {:?}", expr),
+    };
+    let x_var_id = get_or_set_value_node.identifier.data.clone();
     let x_var = Variable::ArrayVar(ArrayVarData::new(
         x_var_id.clone(),
         test_value.as_type_specifier(),
@@ -407,8 +420,8 @@ fn interpret_expression_get_value_array_var_for_testing<'a>(
     interpreted_literal
 }
 
-macro_rules! test_get_value_for_array {
-    ($test_name:ident, $literal_type:ident, $test_str:expr, $test_value:expr, $rule:expr) => {
+macro_rules! test_get_value_for_array_var {
+    ($test_name:ident, $literal_type:ident, $test_str:expr, $test_value:expr, $rule:expr, $expect:expr) => {
         #[test]
         fn $test_name() {
             let test_str = $test_str;
@@ -420,22 +433,41 @@ macro_rules! test_get_value_for_array {
                 rule,
                 test_str,
                 Literal::$literal_type(test_value),
-            ).unwrap();
+            );
 
             // check and print
-            match &interpreted_literal.data {
-                Literal::$literal_type(literal_value) => {
-                    assert_eq!(*literal_value, test_value);
-                    print!("Interpreted literal <{}>: {} of type {}\n\n", test_str, *literal_value, stringify!($literal_type));   
-                },
-                _ => panic!("Expected {} literal.", stringify!($literal_type)),
+            if $expect {
+                // positive test
+                match &interpreted_literal.unwrap().data {
+                    Literal::$literal_type(literal_value) => {
+                        assert_eq!(*literal_value, test_value);
+                        print!("Interpreted literal <{}>: {} of type {}\n\n", test_str, *literal_value, stringify!($literal_type));   
+                    },
+                    _ => panic!("Expected {} literal.", stringify!($literal_type)),
+                }
+            } else {
+                // negative test
+                assert!(interpreted_literal.is_err());
+                // print error
+                print!("Expected error: {}\n\n", interpreted_literal.unwrap_err());
             }
         }
     };
+    ($test_name:ident, $literal_type:ident, $test_str:expr, $test_value:expr, $rule:expr) => {
+        // default test is expected to be positive (i.e. doesn't expect any error)
+        test_get_value_for_array_var!(
+            $test_name, 
+            $literal_type, 
+            $test_str, 
+            $test_value, 
+            $rule, 
+            true
+        );
+    };
 }
 
-// TODO: debug this test
-test_get_value_for_array!(
+// positive tests
+test_get_value_for_array_var!(
     test_interpret_expression_get_value_array_int, 
     Int, 
     "x[1]", 
@@ -443,3 +475,36 @@ test_get_value_for_array!(
     Rule::get_or_set_value
 );
 
+test_get_value_for_array_var!(
+    test_interpret_expression_get_value_array_char, 
+    Char, 
+    "x[10]",
+    b'a', 
+    Rule::get_or_set_value
+);
+
+test_get_value_for_array_var!(
+    test_interpret_expression_get_value_array_bool, 
+    Bool, 
+    "x[100]", 
+    true, 
+    Rule::get_or_set_value
+);
+
+test_get_value_for_array_var!(
+    test_interpret_expression_get_value_array_float, 
+    Float, 
+    "x[1000]", 
+    3.14159, 
+    Rule::get_or_set_value
+);
+
+// negative tests
+test_get_value_for_array_var!(
+    test_interpret_expression_get_value_array_int_index_overflow,
+    Int, 
+    "x[32768]", // 32768 is the max value for an i16 + 1
+    1, 
+    Rule::get_or_set_value,
+    false
+);

@@ -225,7 +225,7 @@ pub fn build_get_or_set_value(pair: pest::iterators::Pair<Rule>) -> Result<Node<
     let mut inner = pair.clone().into_inner();
     let identifier = unwrap_or_err_panic!(build_identifier(inner.next().unwrap()));
     let index = match inner.next() {
-        Some(pair) => Some(Box::new(unwrap_or_err_panic!(build_expression(pair)))),
+        Some(pair) => Some(Box::new(build_expression(pair)?)),
         None => None,
     };
     ok_build_node!(pair, GetOrSetValue {

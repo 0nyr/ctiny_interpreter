@@ -5,17 +5,30 @@
 * [ ] Correct the .txt grammar with modifications done inside .pest PEG file.
 * [ ] Add a max number of while loop !!
 
+### refactoring ideas
+
+* [ ] Rework the system of errors in the AST and in the semantic part to use the same system as introduced in the semantic part.
+* [ ] Rework Literal. Define a new type Value to replace Literal in the Symbol Table.
+
+## Logs
+
+### Wed 19 Jul 2023
+
+Adding many tests for expression interpretation, for Literal and GetValue parts.
+
+Completed tests for casting system between literals.
+
+* [X] Complete ``get_variable_value``
+* [X] add all necessary tests for valid and invalid type casts
+
 ### Tue 18 Jul 2023
 
 Started to work on type casts.
-
-* [ ] add all necessary tests for valid and invalid type casts
 
 ### Mon 17 Jul 2023
 
 Started to work on interpretation. I'm starting with expression interpretation.
 
-* [ ] Complete ``get_variable_value``
 * [ ] Complete `interpret_expression`
 * [ ] Test `interpret_expression`
 
