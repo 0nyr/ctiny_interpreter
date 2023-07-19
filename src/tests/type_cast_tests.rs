@@ -1,6 +1,6 @@
 use pest::Span;
 
-use crate::abstract_syntax_tree::nodes::{Node, Literal, TypeSpecifier};
+use crate::abstract_syntax_tree::nodes::{Node, Value, TypeSpecifier};
 use crate::semantic_analysis::type_casts::cast_literal_to_type;
 
 
@@ -29,7 +29,7 @@ macro_rules! cast_literal_test {
 // Trivial Correct Cases
 cast_literal_test!(
     test_cast_literal_to_type_int_to_int,
-    Literal::Int(1),
+    Value::Int(1),
     "1",
     TypeSpecifier::Int,
     true
@@ -37,7 +37,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_char_to_char,
-    Literal::Char(b'a'),
+    Value::Char(b'a'),
     "'a'",
     TypeSpecifier::Char,
     true
@@ -45,7 +45,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_float_to_float,
-    Literal::Float(1.0),
+    Value::Float(1.0),
     "1.0",
     TypeSpecifier::Float,
     true
@@ -53,7 +53,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_bool_to_bool,
-    Literal::Bool(true),
+    Value::Bool(true),
     "true",
     TypeSpecifier::Bool,
     true
@@ -63,7 +63,7 @@ cast_literal_test!(
 // for Int
 cast_literal_test!(
     test_cast_literal_to_type_float_to_int,
-    Literal::Float(1.0),
+    Value::Float(1.0),
     "1.0",
     TypeSpecifier::Int,
     true
@@ -71,7 +71,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_char_to_int,
-    Literal::Char(b'a'),
+    Value::Char(b'a'),
     "'a'",
     TypeSpecifier::Int,
     true
@@ -79,7 +79,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_bool_to_int,
-    Literal::Bool(true),
+    Value::Bool(true),
     "true",
     TypeSpecifier::Int,
     true
@@ -88,7 +88,7 @@ cast_literal_test!(
 // for Char
 cast_literal_test!(
     test_cast_literal_to_type_int_to_char,
-    Literal::Int(97),
+    Value::Int(97),
     "97",
     TypeSpecifier::Char,
     true
@@ -96,7 +96,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_float_to_char,
-    Literal::Float(97.0),
+    Value::Float(97.0),
     "97.0",
     TypeSpecifier::Char,
     true
@@ -104,7 +104,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_bool_to_char,
-    Literal::Bool(true),
+    Value::Bool(true),
     "true",
     TypeSpecifier::Char,
     true
@@ -113,7 +113,7 @@ cast_literal_test!(
 // for Float
 cast_literal_test!(
     test_cast_literal_to_type_int_to_float,
-    Literal::Int(1),
+    Value::Int(1),
     "1",
     TypeSpecifier::Float,
     true
@@ -121,7 +121,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_char_to_float,
-    Literal::Char(b'a'),
+    Value::Char(b'a'),
     "'a'",
     TypeSpecifier::Float,
     true
@@ -129,7 +129,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_bool_to_float,
-    Literal::Bool(true),
+    Value::Bool(true),
     "true",
     TypeSpecifier::Float,
     true
@@ -138,7 +138,7 @@ cast_literal_test!(
 // for Bool
 cast_literal_test!(
     test_cast_literal_to_type_int_to_bool,
-    Literal::Int(1),
+    Value::Int(1),
     "1",
     TypeSpecifier::Bool,
     true
@@ -146,7 +146,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_char_to_bool,
-    Literal::Char(b'a'),
+    Value::Char(b'a'),
     "'a'",
     TypeSpecifier::Bool,
     true
@@ -154,7 +154,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_cast_literal_to_type_float_to_bool,
-    Literal::Float(1.0),
+    Value::Float(1.0),
     "1.0",
     TypeSpecifier::Bool,
     true
@@ -163,7 +163,7 @@ cast_literal_test!(
 // Incorrect Cases
 cast_literal_test!(
     test_overflow_when_casting_large_float_to_int,
-    Literal::Float(std::f32::MAX),
+    Value::Float(std::f32::MAX),
     "3.4028235e+38",
     TypeSpecifier::Int,
     false
@@ -171,7 +171,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_overflow_when_casting_large_int_to_char,
-    Literal::Int(i16::MAX),
+    Value::Int(i16::MAX),
     "32767",
     TypeSpecifier::Char,
     false
@@ -179,7 +179,7 @@ cast_literal_test!(
 
 cast_literal_test!(
     test_overflow_when_casting_large_float_to_char,
-    Literal::Float(std::f32::MAX),
+    Value::Float(std::f32::MAX),
     "3.4028235e+38",
     TypeSpecifier::Char,
     false
@@ -196,7 +196,7 @@ fn test_cast_literal_to_type_int_manual() {
     // Correct Cases
 
     // Case: Casting Int to Int
-    let test_literal = Literal::Int(1);
+    let test_literal = Value::Int(1);
     let input_literal_node = Node {
         sp: Span::new("1", 0, 1).unwrap(),
         data: test_literal.clone(),
@@ -211,7 +211,7 @@ fn test_cast_literal_to_type_int_manual() {
     // Case: Overflow when casting large Float to Int
     let input_literal_node = Node {
         sp: Span::new("3.4028235e+38", 0, 12).unwrap(),
-        data: Literal::Float(std::f32::MAX as f32),
+        data: Value::Float(std::f32::MAX as f32),
     };
     assert!(
         cast_literal_to_type(input_literal_node, TypeSpecifier::Int).is_err()

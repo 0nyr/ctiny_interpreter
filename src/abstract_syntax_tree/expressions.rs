@@ -117,7 +117,7 @@ macro_rules! build_chained_operations {
 fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, Error<Rule>> {
     let literal = pair.clone().into_inner().next().unwrap();
     let res = match literal.as_rule() {
-        Rule::boolean => Expression::Literal(Literal::Bool(literal.as_str().parse().unwrap())),
+        Rule::boolean => Expression::Literal(Value::Bool(literal.as_str().parse().unwrap())),
         Rule::float => {
             // need to check for potential overflow
             let float_value_for_test: f64 = literal.as_str().parse().unwrap();
@@ -137,7 +137,7 @@ fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, 
                 return Err(make_ast_error_from_pair(pair, &message))
             }
             // return correct value as f32
-            Expression::Literal(Literal::Float(literal.as_str().parse().unwrap()))
+            Expression::Literal(Value::Float(literal.as_str().parse().unwrap()))
         },
         Rule::char => {
             // convert &str containing single quotes to char
@@ -145,7 +145,7 @@ fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, 
             let char_trimmed = char_literal.trim_start_matches('\'').trim_end_matches('\'');
             let real_char = char_trimmed.chars().next().unwrap();
             let real_char_ascii = real_char as u8;
-            Expression::Literal(Literal::Char(real_char_ascii))},
+            Expression::Literal(Value::Char(real_char_ascii))},
         Rule::integer => {
             // need to check for potential overflow
             let int_value_for_test: i64 = literal.as_str().parse().unwrap();
@@ -165,7 +165,7 @@ fn build_literal(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expression>, 
                 return Err(make_ast_error_from_pair(pair, &message))
             }
             // return correct value as i32
-            Expression::Literal(Literal::Int(literal.as_str().parse().unwrap()))
+            Expression::Literal(Value::Int(literal.as_str().parse().unwrap()))
         },
         _ => {
             let message = format!("🔴 Unexpected rule in <literal> match tree: {:?}", literal.as_rule());

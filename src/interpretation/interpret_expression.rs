@@ -1,4 +1,4 @@
-use crate::abstract_syntax_tree::nodes::{Node, Literal, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier};
+use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier};
 use crate::errors::make_semantic_error;
 use crate::semantic_analysis::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait};
 use crate::symbol_table::structs::{SymbolTable, Variable, NormalVarData, ArrayVarData};
@@ -7,7 +7,7 @@ fn interpret_potential_index<'a>(
     potential_index: &Option<Box<Node<'a, Expression<'a>>>>,
     symbol_table: &SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
-) -> Option<Node<'a, Literal>> {
+) -> Option<Node<'a, Value>> {
     match potential_index {
         Some(index) => {
             let interpreted_index = interpret_expression(
@@ -28,7 +28,7 @@ fn interpret_get_value<'a>(
     expression_node: &Node<'a, Expression<'a>>, 
     symbol_table: &SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
-) -> Result<Node<'a, Literal>, SemanticError> {
+) -> Result<Node<'a, Value>, SemanticError> {
     let get_or_set_value = {
         match &expression_node.data {
             Expression::GetOrSetValue(get_or_set_value) => {
@@ -63,7 +63,7 @@ pub fn interpret_expression<'a>(
     expression_node: &Node<'a, Expression<'a>>,
     symbol_table: &SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
-) -> Result<Node<'a, Literal>, SemanticError> {
+) -> Result<Node<'a, Value>, SemanticError> {
     match &expression_node.data {
         Expression::Literal(literal) => {
             Ok(Node {

@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Literal, Node}, semantic_analysis::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::{get_index_value_from_literal, cast_literal_to_type}}};
+use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic_analysis::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::{get_index_value_from_literal, cast_literal_to_type}}};
 
 #[derive(Debug)]
 pub enum Variable {
@@ -28,7 +28,7 @@ impl PartialEq for Variable {
 pub struct NormalVarData {
     pub id: Identifier,
     pub type_specifier: TypeSpecifier,
-    value: Option<Literal>,
+    value: Option<Value>,
 }
 
 impl NormalVarData {
@@ -40,7 +40,7 @@ impl NormalVarData {
         }
     }
 
-    pub fn set_value<'a>(&mut self, value_node: Node<'a, Literal>) -> Result<(), SemanticError> {
+    pub fn set_value<'a>(&mut self, value_node: Node<'a, Value>) -> Result<(), SemanticError> {
         // check that the type of the value is the same as the type of the variable
         let value_type = value_node.data.as_type_specifier();
         if self.type_specifier != value_type {
@@ -56,7 +56,7 @@ impl NormalVarData {
         }
     }
 
-    pub fn get_value(&self) -> Option<&Literal> {
+    pub fn get_value(&self) -> Option<&Value> {
         self.value.as_ref()
     }
 }
@@ -66,7 +66,7 @@ pub struct ArrayVarData {
     pub id: Identifier,
     pub type_specifier: TypeSpecifier,
     pub size: usize,
-    values: HashMap<usize, Literal>,
+    values: HashMap<usize, Value>,
 }
 
 impl ArrayVarData {
@@ -81,8 +81,8 @@ impl ArrayVarData {
 
     pub fn set_value<'a>(
         &mut self, 
-        index_node: Node<'a, Literal>,
-        value_node: Node<'a, Literal>, 
+        index_node: Node<'a, Value>,
+        value_node: Node<'a, Value>, 
     ) -> Result<(), SemanticError> {
         let usable_index = get_index_value_from_literal(index_node)?;
         // cast the value to the type of the array
@@ -93,7 +93,7 @@ impl ArrayVarData {
         Ok(())
     }
 
-    pub fn get_value(&self, index: usize) -> Option<&Literal> {
+    pub fn get_value(&self, index: usize) -> Option<&Value> {
         self.values.get(&index)
     }
 }
@@ -216,8 +216,8 @@ impl Scope {
     pub fn get_variable_value<'a>(
         &self, 
         var_id_node: &Node<'a, Identifier>, 
-        potential_index: Option<Node<'a, Literal>>
-    ) -> Result<Node<'a, Literal>, SemanticError> {
+        potential_index: Option<Node<'a, Value>>
+    ) -> Result<Node<'a, Value>, SemanticError> {
         // check if the variable is an array or a normal variable
         // if the index is given, make sure its value is a positive integer
         match potential_index {
@@ -269,7 +269,7 @@ impl Scope {
     pub fn set_normal_variable_value<'a>(
         &mut self, 
         var_id_node: &Node<'a, Identifier>, 
-        value_node: Node<'a, Literal>,
+        value_node: Node<'a, Value>,
     ) -> Result<(), SemanticError> {
         match self.get_mut_variable(var_id_node)? {
             Variable::NormalVar(normal_var_data) => {
@@ -291,8 +291,8 @@ impl Scope {
     pub fn set_array_variable_value<'a>(
         &mut self, 
         var_id_node: &Node<'a, Identifier>,
-        index_node: Node<'a, Literal>,
-        value_node: Node<'a, Literal>,
+        index_node: Node<'a, Value>,
+        value_node: Node<'a, Value>,
     ) -> Result<(), SemanticError> {
         match self.get_mut_variable(var_id_node)? {
             Variable::NormalVar(_) => Err(

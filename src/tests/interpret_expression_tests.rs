@@ -4,7 +4,7 @@ use pest::{Parser, Span};
 use crate::pipelines::parse_content_into_ast;
 use crate::semantic_analysis::errors::{SemanticError, ASTBuildingError, SemanticErrorTrait};
 use crate::symbol_table::build_static_symbol_table;
-use crate::abstract_syntax_tree::nodes::{Statement, Literal, Identifier, TypeSpecifier, Node, Expression};
+use crate::abstract_syntax_tree::nodes::{Statement, Value, Identifier, TypeSpecifier, Node, Expression};
 use crate::interpretation::interpret_expression::interpret_expression;
 use crate::symbol_table::structs::{NormalVarData, Variable, Scope, SymbolTable, ArrayVarData};
 use crate::abstract_syntax_tree::expressions::build_expression;
@@ -49,7 +49,7 @@ macro_rules! create_literal_test {
 
         // Check that the interpreted literal matches the value we expect.
         match &interpreted_literal.data {
-            Literal::$literal_conversion(literal_value) => {
+            Value::$literal_conversion(literal_value) => {
                 assert_eq!(*literal_value, $test_value);
                 print!("Interpreted literal <{}>: {} of type {}\n\n", $test_str, *literal_value, stringify!($literal_conversion));
             },
@@ -93,7 +93,7 @@ fn test_interpret_expression_literal() {
     // Check that the interpreted literal matches the value we expect.
     // In this case, we expect the literal to be 1.
     match &interpreted_literal.data {
-        Literal::Int(literal_value) => {
+        Value::Int(literal_value) => {
             assert_eq!(*literal_value, 1);
             print!("Interpreted literal <1>: {} of type {}\n\n", *literal_value, stringify!(Int));
         },
@@ -154,7 +154,7 @@ fn test_interpret_expression_literal_int() {
     // Check that the interpreted literal matches the value we expect.
     // In this case, we expect the literal to be 1.
     match &interpreted_literal.data {
-        Literal::Int(literal_value) => assert_eq!(*literal_value, test_value),
+        Value::Int(literal_value) => assert_eq!(*literal_value, test_value),
         _ => panic!("Expected an Int literal."),
     }
 }
@@ -193,8 +193,8 @@ fn test_interpret_expression_literal_float() {
 fn interpret_expression_get_value_simple_var_for_testing<'a>(
     rule: Rule, 
     test_str: &'a str,
-    test_value: Literal,
-) -> Result<Node<'a, Literal>, SemanticError> {
+    test_value: Value,
+) -> Result<Node<'a, Value>, SemanticError> {
         // Syntax parsing
     let pairs = CTinyParser::parse(rule, test_str).unwrap();
 
@@ -266,12 +266,12 @@ macro_rules! test_get_value_for_literal {
         let interpreted_literal = interpret_expression_get_value_simple_var_for_testing(
             rule,
             test_str,
-            Literal::$literal_type(test_value),
+            Value::$literal_type(test_value),
         ).unwrap();
 
         // check and print
         match &interpreted_literal.data {
-            Literal::$literal_type(literal_value) => {
+            Value::$literal_type(literal_value) => {
                 assert_eq!(*literal_value, test_value);
                 print!("Interpreted literal <{}>: {} of type {}\n\n", test_str, *literal_value, stringify!($literal_type));   
             },
@@ -323,8 +323,8 @@ fn test_interpret_expression_get_value_normal_float() {
 fn interpret_expression_get_value_array_var_for_testing<'a>(
     rule: Rule, 
     test_str: &'a str,
-    test_value: Literal,
-) -> Result<Node<'a, Literal>, SemanticError> {
+    test_value: Value,
+) -> Result<Node<'a, Value>, SemanticError> {
     // get requested index for the string. It's the only integer in the string.
     let get_index = test_str
         .split(|c: char| !c.is_ascii_digit())
@@ -403,7 +403,7 @@ fn interpret_expression_get_value_array_var_for_testing<'a>(
         },
         Node {
             sp: test_str_span.clone(),
-            data: Literal::Int(get_index as i16),
+            data: Value::Int(get_index as i16),
         },
         Node {
             sp: test_str_span.clone(),
@@ -432,14 +432,14 @@ macro_rules! test_get_value_for_array_var {
             let interpreted_literal = interpret_expression_get_value_array_var_for_testing(
                 rule,
                 test_str,
-                Literal::$literal_type(test_value),
+                Value::$literal_type(test_value),
             );
 
             // check and print
             if $expect {
                 // positive test
                 match &interpreted_literal.unwrap().data {
-                    Literal::$literal_type(literal_value) => {
+                    Value::$literal_type(literal_value) => {
                         assert_eq!(*literal_value, test_value);
                         print!("Interpreted literal <{}>: {} of type {}\n\n", test_str, *literal_value, stringify!($literal_type));   
                     },

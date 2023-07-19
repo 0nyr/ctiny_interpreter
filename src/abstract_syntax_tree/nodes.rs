@@ -135,7 +135,7 @@ pub enum JumpStatement<'a> {
 // Expressions
 #[derive(Debug, PartialEq)]
 pub enum Expression<'a> {
-    Literal(Literal), // direct value
+    Literal(Value), // direct value
     UnaryExpression(UnaryExpression<'a>),
     BinaryExpression(BinaryExpression<'a>),
     FunctionCall(FunctionCall<'a>),
@@ -180,20 +180,20 @@ pub struct TypeCast<'a> {
 }
 
 #[derive(Debug, PartialEq, Clone)]
-pub enum Literal {
+pub enum Value {
     Int(i16),
     Float(f32),
     Char(u8),
     Bool(bool),
 }
 
-impl Literal {
+impl Value {
     pub fn as_type_specifier(&self) -> TypeSpecifier {
         match self {
-            Literal::Int(_) => TypeSpecifier::Int,
-            Literal::Float(_) => TypeSpecifier::Float,
-            Literal::Char(_) => TypeSpecifier::Char,
-            Literal::Bool(_) => TypeSpecifier::Bool,
+            Value::Int(_) => TypeSpecifier::Int,
+            Value::Float(_) => TypeSpecifier::Float,
+            Value::Char(_) => TypeSpecifier::Char,
+            Value::Bool(_) => TypeSpecifier::Bool,
         }
     }
 }
