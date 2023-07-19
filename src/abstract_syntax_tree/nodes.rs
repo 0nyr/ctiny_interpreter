@@ -8,7 +8,7 @@ use pest::Span;
 // }
 
 // Base AST node
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct Node<'a, T> {
     pub sp: Span<'a>,   // contains information about the node's position (position of span) to be matched to string in the source code
     pub data: T,            // contains the data, wrapped into an inner type

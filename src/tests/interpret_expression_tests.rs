@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::ops::IndexMut;
 
 use pest::{Parser, Span};
 
@@ -7,7 +8,7 @@ use crate::semantic_analysis::errors::SemanticError;
 use crate::symbol_table::build_static_symbol_table;
 use crate::abstract_syntax_tree::nodes::{Statement, Literal, Identifier, TypeSpecifier, Node};
 use crate::interpretation::interpret_expression::interpret_expression;
-use crate::symbol_table::structs::{NormalVarData, Variable, Scope, SymbolTable};
+use crate::symbol_table::structs::{NormalVarData, Variable, Scope, SymbolTable, ArrayVarData};
 use crate::abstract_syntax_tree::expressions::build_expression;
 use crate::syntax_parsing::{CTinyParser, Rule};
 
@@ -191,7 +192,7 @@ fn test_interpret_expression_literal_float() {
     );
 }
 
-fn interpret_expression_get_value_for_testing<'a>(
+fn interpret_expression_get_value_simple_var_for_testing<'a>(
     rule: Rule, 
     test_str: &'a str,
     test_value: Literal,
@@ -233,15 +234,16 @@ fn interpret_expression_get_value_for_testing<'a>(
     );
     symbol_table.add_scope(main_scope);
 
-    // for the need of the test, set the value of x to 1
+    // for the need of the test, set the value of the variable to provided literal
+    let test_str_span = Span::new(&test_str, 0, test_str.len()).unwrap();
     let main_scope = symbol_table.get_mut_scope(&main_scope_id_node).unwrap();
     main_scope.set_normal_variable_value(
         &Node {
-            sp: Span::new(&test_str, 0, 1).unwrap(),
+            sp: test_str_span.clone(),
             data: x_var_id.clone(),
         },
         Node {
-            sp: Span::new(&test_str, 0, 1).unwrap(),
+            sp: test_str_span.clone(),
             data: test_value,
         },
     ).unwrap();
@@ -258,18 +260,22 @@ fn interpret_expression_get_value_for_testing<'a>(
 macro_rules! test_get_value_for_literal {
     ($literal_type:ident, $test_str:expr, $test_value:expr, $rule:expr) => {
 
+        let test_str = $test_str;
+        let test_value = $test_value;
+        let rule = $rule;
+
         // interpretation
-        let interpreted_literal = interpret_expression_get_value_for_testing(
-            $rule,
-            $test_str,
-            Literal::$literal_type($test_value),
+        let interpreted_literal = interpret_expression_get_value_simple_var_for_testing(
+            rule,
+            test_str,
+            Literal::$literal_type(test_value),
         ).unwrap();
 
         // check and print
         match &interpreted_literal.data {
             Literal::$literal_type(literal_value) => {
-                assert_eq!(*literal_value, $test_value);
-                print!("Interpreted literal <{}>: {} of type {}\n\n", $test_str, *literal_value, stringify!($literal_type));   
+                assert_eq!(*literal_value, test_value);
+                print!("Interpreted literal <{}>: {} of type {}\n\n", test_str, *literal_value, stringify!($literal_type));   
             },
             _ => panic!("Expected {} literal.", stringify!($literal_type)),
         }
@@ -278,60 +284,162 @@ macro_rules! test_get_value_for_literal {
 
 #[test]
 fn test_interpret_expression_get_value_normal_int() {
-    // this test is a simpler version of the preceding test
-    let test_str = "x";
-    let test_value: i16 = 1;
-    let rule = Rule::get_or_set_value;
-
     test_get_value_for_literal!(
         Int, 
-        test_str, 
-        test_value, 
-        rule
+        "x", 
+        1, 
+        Rule::get_or_set_value
     );
 }
 
 #[test]
 fn test_interpret_expression_get_value_normal_char() {
-    // this test is a simpler version of the preceding test
-    let test_str = "x";
-    let test_value: u8 = b'a';
-    let rule = Rule::get_or_set_value;
-
     test_get_value_for_literal!(
         Char, 
-        test_str, 
-        test_value, 
-        rule
+        "x", 
+        b'a', 
+        Rule::get_or_set_value
     );
 }
 
 #[test]
 fn test_interpret_expression_get_value_normal_bool() {
-    // this test is a simpler version of the preceding test
-    let test_str = "x";
-    let test_value: bool = true;
-    let rule = Rule::get_or_set_value;
-
     test_get_value_for_literal!(
         Bool, 
-        test_str, 
-        test_value, 
-        rule
+        "x", 
+        true, 
+        Rule::get_or_set_value
     );
 }
 
 #[test]
 fn test_interpret_expression_get_value_normal_float() {
-    // this test is a simpler version of the preceding test
-    let test_str = "x";
-    let test_value: f32 = 3.14159;
-    let rule = Rule::get_or_set_value;
-
     test_get_value_for_literal!(
         Float, 
-        test_str, 
-        test_value, 
-        rule
+        "x", 
+        3.14159, 
+        Rule::get_or_set_value
     );
 }
+
+fn interpret_expression_get_value_array_var_for_testing<'a>(
+    rule: Rule, 
+    test_str: &'a str,
+    test_value: Literal,
+) -> Result<Node<'a, Literal>, SemanticError> {
+    // get requested index for the string. It's the only integer in the string.
+    let get_index = test_str
+        .split(|c: char| !c.is_ascii_digit())
+        .filter(|s| !s.is_empty())
+        .next()
+        .unwrap()
+        .parse::<usize>()
+        .unwrap();
+    print!("Get index: {}\n", get_index);
+
+    // since it's a getter string, we need for the purpose of the test 
+    // to have an array size of the size of the index + 1
+    let array_size = get_index + 1;
+    print!("Array size: {}\n", array_size);
+
+    // Syntax parsing
+    let pairs = CTinyParser::parse(rule, test_str).unwrap();
+
+    let first_pair = pairs.into_iter().next().unwrap();
+    assert_eq!(first_pair.as_rule(), rule);
+    assert_eq!(first_pair.as_str(), test_str);
+
+    // AST conversion
+    let expression_node = build_expression(first_pair)
+        .unwrap_or_else(|error| { 
+            print!("AST ERROR for {}: \n {}\n", test_str, error); 
+            panic!(); 
+        });
+    print!("AST for string \"{}\": \n {:#?} \n\n", test_str, expression_node);
+
+    // for the need of the test, build a symbol table from scratch with one scope "main"
+    let mut symbol_table = SymbolTable::new();
+    let main_scope_id_node = Node {
+        sp: Span::new(&test_str, 0, 1).unwrap(),
+        data: Identifier {name: "main".to_string()},
+    };
+
+    // for the need of the test, add a variable x to the main scope
+    let mut main_scope_variables = HashMap::new();
+    let x_var_id = Identifier {name: test_str.to_string()};
+    let x_var = Variable::ArrayVar(ArrayVarData::new(
+        x_var_id.clone(),
+        test_value.as_type_specifier(),
+        array_size,
+    ));
+    main_scope_variables.insert(x_var_id.clone(), x_var);
+
+    let main_scope = Scope::new(
+        main_scope_id_node.data.clone(),
+        main_scope_variables,
+    );
+    symbol_table.add_scope(main_scope);
+
+    // for the need of the test, set the value of the variable to provided literal
+    let test_str_span = Span::new(&test_str, 0, test_str.len()).unwrap();
+    let main_scope = symbol_table.get_mut_scope(&main_scope_id_node).unwrap();
+    main_scope.set_array_variable_value(
+        &Node {
+            sp: test_str_span.clone(),
+            data: x_var_id.clone(),
+        },
+        Node {
+            sp: test_str_span.clone(),
+            data: Literal::Int(get_index as i16),
+        },
+        Node {
+            sp: test_str_span.clone(),
+            data: test_value,
+        },
+    ).unwrap();
+
+    // interpretation
+    let interpreted_literal = interpret_expression(
+        &expression_node,
+        &symbol_table,
+        &main_scope_id_node,
+    );
+    interpreted_literal
+}
+
+macro_rules! test_get_value_for_array {
+    ($test_name:ident, $literal_type:ident, $test_str:expr, $test_value:expr, $rule:expr) => {
+        #[test]
+        fn $test_name() {
+            let test_str = $test_str;
+            let test_value = $test_value;
+            let rule = $rule;
+
+            // interpretation
+            let interpreted_literal = interpret_expression_get_value_array_var_for_testing(
+                rule,
+                test_str,
+                Literal::$literal_type(test_value),
+            ).unwrap();
+
+            // check and print
+            match &interpreted_literal.data {
+                Literal::$literal_type(literal_value) => {
+                    assert_eq!(*literal_value, test_value);
+                    print!("Interpreted literal <{}>: {} of type {}\n\n", test_str, *literal_value, stringify!($literal_type));   
+                },
+                _ => panic!("Expected {} literal.", stringify!($literal_type)),
+            }
+        }
+    };
+}
+
+// TODO: debug this test
+test_get_value_for_array!(
+    test_interpret_expression_get_value_array_int, 
+    Int, 
+    "x[1]", 
+    1, 
+    Rule::get_or_set_value
+);
+

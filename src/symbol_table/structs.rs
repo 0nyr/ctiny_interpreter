@@ -79,8 +79,18 @@ impl ArrayVarData {
         }
     }
 
-    pub fn set_value(&mut self, index: usize, value: Literal) {
-        self.values.insert(index, value);
+    pub fn set_value<'a>(
+        &mut self, 
+        index_node: Node<'a, Literal>,
+        value_node: Node<'a, Literal>, 
+    ) -> Result<(), SemanticError> {
+        let usable_index = get_index_value_from_literal(index_node)?;
+        // cast the value to the type of the array
+        let casted_value_node = cast_literal_to_type(
+            value_node, self.type_specifier
+        )?;
+        self.values.insert(usable_index, casted_value_node.data);
+        Ok(())
     }
 
     pub fn get_value(&self, index: usize) -> Option<&Literal> {
@@ -275,6 +285,29 @@ impl Scope {
                     )
                 )
             ),
+        }
+    }
+
+    pub fn set_array_variable_value<'a>(
+        &mut self, 
+        var_id_node: &Node<'a, Identifier>,
+        index_node: Node<'a, Literal>,
+        value_node: Node<'a, Literal>,
+    ) -> Result<(), SemanticError> {
+        match self.get_mut_variable(var_id_node)? {
+            Variable::NormalVar(_) => Err(
+                SemanticError::UndeclaredVariable(
+                    UndeclaredVariableError::init(
+                        var_id_node.sp,
+                        &format!("Variable {} is a normal variable, not an array", var_id_node.data.name)
+                    )
+                )
+            ),
+            Variable::ArrayVar(array_var_data) => {
+                // set the value
+                array_var_data.set_value(index_node, value_node)?;
+                Ok(())
+            },
         }
     }
 }

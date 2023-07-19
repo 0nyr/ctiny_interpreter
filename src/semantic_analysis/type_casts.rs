@@ -4,7 +4,12 @@ use super::errors::{SemanticError, NegativeArrayIndexError, UnexpectedLiteralTyp
 
 // given a Literal, check that it is a positive integer, and return the value as usize
 pub fn get_index_value_from_literal<'a>(literal_node: Node<'a, Literal>) -> Result<usize, SemanticError> {
-    match literal_node.data {
+    // first, need to cast to int
+    let int_literal = cast_literal_to_type(
+        literal_node.clone(), TypeSpecifier::Int
+    )?.data;
+    // then, check that it is positive
+    match int_literal {
         Literal::Int(integer) => {
             if integer < 0 {
                 Err(
