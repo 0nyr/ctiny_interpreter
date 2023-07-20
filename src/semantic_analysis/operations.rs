@@ -1,9 +1,7 @@
 use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier, UnaryOperator, TypeSpecifier, BinaryOperator};
-use crate::errors::make_semantic_error;
 use crate::merge_spans_no_check;
-use crate::semantic_analysis::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedTypeCastError};
+use crate::semantic_analysis::errors::{SemanticError, SemanticErrorTrait, UnexpectedTypeCastError};
 use crate::semantic_analysis::type_casts::cast_literal_to_type;
-use crate::symbol_table::structs::{SymbolTable, Variable, NormalVarData, ArrayVarData};
 
 use super::overflow_checks::{safe_int_add, safe_float_add};
 
@@ -66,13 +64,13 @@ pub fn perform_plus_operation<'a>(
                     data: Value::Int(result),
                 })
             },
-            _ => {
+            (left, right) => {
                 return Err(SemanticError::UnexpectedTypeCast(
                     UnexpectedTypeCastError::init(
                         common_span,
                         format!(
                             "In perform_binaty_operation, cast to int of {:?} or {:?} failed", 
-                            left_int.data, right_int.data
+                            left, right
                         ).as_str(),
                     )
                 ));
@@ -81,10 +79,10 @@ pub fn perform_plus_operation<'a>(
     }
 }
 
-pub fn perform_binaty_operation<'a>(
+pub fn perform_binary_operation<'a>(
     left_value_node: &Node<'a, Value>,
     right_value_node: &Node<'a, Value>,
-    operator: BinaryOperator,
+    operator: &BinaryOperator,
 ) -> Result<Node<'a, Value>, SemanticError> {
     match operator {
         BinaryOperator::Plus => {

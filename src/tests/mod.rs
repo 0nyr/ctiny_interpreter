@@ -8,6 +8,8 @@ mod semantic_analysis_tests;
 mod symbol_table_tests;
 #[cfg(test)]
 mod type_cast_tests;
+#[cfg(test)]
+mod overflow_checks_tests;
 
 #[cfg(test)]
 mod abstract_syntax_tree;

@@ -2,6 +2,7 @@ use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpressio
 use crate::errors::make_semantic_error;
 use crate::merge_spans_no_check;
 use crate::semantic_analysis::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedTypeCastError};
+use crate::semantic_analysis::operations::perform_binary_operation;
 use crate::semantic_analysis::type_casts::cast_literal_to_type;
 use crate::symbol_table::structs::{SymbolTable, Variable, NormalVarData, ArrayVarData};
 
@@ -215,10 +216,10 @@ fn interpret_binary_expression<'a>(
     let interpreted_right_expression = interpret_expression(
         &binary_expression.right, symbol_table, current_scope_node_id
     )?;
-    perform_binaty_operation(
+    perform_binary_operation(
         &interpreted_left_expression,
         &interpreted_right_expression,
-        binary_expression.operator,
+        &binary_expression.operator,
     )
 }
 
