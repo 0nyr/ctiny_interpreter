@@ -1,6 +1,7 @@
-use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier, UnaryOperator, TypeSpecifier};
+use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier, UnaryOperator, TypeSpecifier, BinaryOperator};
 use crate::errors::make_semantic_error;
-use crate::semantic_analysis::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait};
+use crate::merge_spans_no_check;
+use crate::semantic_analysis::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedTypeCastError};
 use crate::semantic_analysis::type_casts::cast_literal_to_type;
 use crate::symbol_table::structs::{SymbolTable, Variable, NormalVarData, ArrayVarData};
 
@@ -185,6 +186,44 @@ fn interpret_unary_expression<'a>(
     }
 }
 
+fn interpret_binary_expression<'a>(
+    expression_node: &Node<'a, Expression<'a>>,
+    symbol_table: &SymbolTable,
+    current_scope_node_id: &Node<'a, Identifier>,
+) -> Result<Node<'a, Value>, SemanticError> {
+    let binary_expression = {
+        match &expression_node.data {
+            Expression::BinaryExpression(binary_expression) => {
+                binary_expression
+            },
+            _ => {
+                return Err(SemanticError::UnexpectedExpressionParsing(
+                    UnexpectedExpressionParsingError::init(
+                        expression_node.sp,
+                        format!(
+                            "interpret_binary_expression called on a non BinaryExpression expression: {:?}", 
+                            expression_node.data
+                        ).as_str(),
+                    )
+                ));
+            },
+        }
+    };
+    let interpreted_left_expression = interpret_expression(
+        &binary_expression.left, symbol_table, current_scope_node_id
+    )?;
+    let interpreted_right_expression = interpret_expression(
+        &binary_expression.right, symbol_table, current_scope_node_id
+    )?;
+    perform_binaty_operation(
+        &interpreted_left_expression,
+        &interpreted_right_expression,
+        binary_expression.operator,
+    )
+}
+
+
+
 
 /// interpret an expression and return a value
 pub fn interpret_expression<'a>(
@@ -202,9 +241,9 @@ pub fn interpret_expression<'a>(
         Expression::UnaryExpression(_) => {
             interpret_unary_expression(expression_node, symbol_table, current_scope_node_id)
         }
-        // Expression::BinaryExpression(binary_expression) => {
-        //     interpret_binary_expression(binary_expression, symbol_table)
-        // }
+        Expression::BinaryExpression(binary_expression) => {
+            interpret_binary_expression(expression_node, symbol_table, current_scope_node_id)
+        }
         // Expression::FunctionCall(function_call) => {
         //     interpret_function_call(function_call, symbol_table)
         // }

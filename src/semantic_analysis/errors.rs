@@ -56,10 +56,19 @@ pub enum SemanticError {
     UnexpectedExpressionParsing(UnexpectedExpressionParsingError),
     NegativeArrayIndex(NegativeArrayIndexError),
     UnexpectedLiteralType(UnexpectedLiteralTypeError),
+    ASTBuilding(ASTBuildingError), // not direct semantic error, but used in semantic analysis
+    UnexpectedTypeCast(UnexpectedTypeCastError),
+
+    // cast overflow 
     IntToCharCastOverflow(IntToCharCastOverflowError),
     FloatToCharCastOverflow(FloatToCharCastOverflowError),
     FloatToIntCastOverflow(FloatToIntCastOverflowError),
-    ASTBuilding(ASTBuildingError), // not direct semantic error, but used in semantic analysis
+
+    // operation overflow 
+    IntOverflow(IntOverflowError),
+    FloatOverflow(FloatOverflowError),
+    CharOverflow(CharOverflowError),
+    BoolOverflow(BoolOverflowError),
 }
 
 define_and_implement_semantic_error!(UndeclaredVariableError);
@@ -70,6 +79,11 @@ define_and_implement_semantic_error!(IntToCharCastOverflowError);
 define_and_implement_semantic_error!(FloatToCharCastOverflowError);
 define_and_implement_semantic_error!(FloatToIntCastOverflowError);
 define_and_implement_semantic_error!(ASTBuildingError);
+define_and_implement_semantic_error!(UnexpectedTypeCastError);
+define_and_implement_semantic_error!(IntOverflowError);
+define_and_implement_semantic_error!(FloatOverflowError);
+define_and_implement_semantic_error!(CharOverflowError);
+define_and_implement_semantic_error!(BoolOverflowError);
 
 impl fmt::Display for SemanticError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -82,6 +96,11 @@ impl fmt::Display for SemanticError {
             SemanticError::FloatToCharCastOverflow(error) => write!(f, "{}", error),
             SemanticError::FloatToIntCastOverflow(error) => write!(f, "{}", error),
             SemanticError::ASTBuilding(error) => write!(f, "{}", error),
+            SemanticError::UnexpectedTypeCast(error) => write!(f, "{}", error),
+            SemanticError::IntOverflow(error) => write!(f, "{}", error),
+            SemanticError::FloatOverflow(error) => write!(f, "{}", error),
+            SemanticError::CharOverflow(error) => write!(f, "{}", error),
+            SemanticError::BoolOverflow(error) => write!(f, "{}", error),
         }
     }
 }
