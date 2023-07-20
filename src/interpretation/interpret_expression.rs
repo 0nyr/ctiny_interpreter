@@ -242,7 +242,7 @@ pub fn interpret_expression<'a>(
         Expression::UnaryExpression(_) => {
             interpret_unary_expression(expression_node, symbol_table, current_scope_node_id)
         }
-        Expression::BinaryExpression(binary_expression) => {
+        Expression::BinaryExpression(_) => {
             interpret_binary_expression(expression_node, symbol_table, current_scope_node_id)
         }
         // Expression::FunctionCall(function_call) => {

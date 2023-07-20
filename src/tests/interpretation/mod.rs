@@ -8,3 +8,5 @@ mod interpret_expression_get_array_value;
 mod interpret_expression_literal;
 #[cfg(test)]
 mod interpret_expression_unary;
+#[cfg(test)]
+mod operations;

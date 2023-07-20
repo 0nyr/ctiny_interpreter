@@ -9,6 +9,11 @@
 
 ### Thu 20 Jul 2023
 
+Heavy work on operation overflow checking and basic binary operations. 
+
+* [X] Add testing for explicit type cast interpretation.
+* [X] Continue expression interpretation with UnaryExpression.
+* [ ] Continue BinaryExpression interpretation.
 
 ### Wed 19 Jul 2023
 
