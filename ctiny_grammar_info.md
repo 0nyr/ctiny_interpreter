@@ -41,9 +41,9 @@ Dependencies and libraries
 
 ### My Ctiny design choices
 
-* empty blocks are supported
+* empty function blocks are supported
 * any block has its declarations before any statements.
-* since we don't have any `void` type, any `return` must have an `<expression>`
+* since we don't have any `void` type, any `return` must have an `<expression>` and any function must have at least one return statement.
 * since ctiny is a simple language (and for security/overflow reasons), we don't support pointers. So functions with array argments must specify their size (writing `int functionA (int a[])` is not allowed by the grammar).
 * since Ctiny should stay simple, it doesn't not allow any other assignment operator that `=`
 * full `if-else` and `while` statements with `break` and `continue` support.
@@ -51,6 +51,7 @@ Dependencies and libraries
 * in any program, the `main` function must be the last function defined.
 * empty statements like `;;;` are not allowed.
 * array sizes must be positive
+* chars for identifiers are only ASCII letters and digits. Not special characters like '\0' handled by the grammar parser. But since our chars internal representation are 1 byte long, they can contain special characters after a cast for instance. To be closer to C chars, I have choosen not to consider the conversion results as overflow (as long at the char u8 is positive and doesn't overflow).
 
 ### Note about my EBNF notation
 

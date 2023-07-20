@@ -1,4 +1,4 @@
-use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier};
+use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier, UnaryOperator, TypeSpecifier};
 use crate::errors::make_semantic_error;
 use crate::semantic_analysis::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait};
 use crate::semantic_analysis::type_casts::cast_literal_to_type;
@@ -91,6 +91,100 @@ fn interpret_type_cast<'a>(
     )
 }
 
+fn interpret_unary_expression<'a>(
+    expression_node: &Node<'a, Expression<'a>>,
+    symbol_table: &SymbolTable,
+    current_scope_node_id: &Node<'a, Identifier>,
+) -> Result<Node<'a, Value>, SemanticError> {
+    let unary_expression = {
+        match &expression_node.data {
+            Expression::UnaryExpression(unary_expression) => {
+                unary_expression
+            },
+            _ => {
+                return Err(SemanticError::UnexpectedExpressionParsing(
+                    UnexpectedExpressionParsingError::init(
+                        expression_node.sp,
+                        format!(
+                            "interpret_unary_expression called on a non UnaryExpression expression: {:?}", 
+                            expression_node.data
+                        ).as_str(),
+                    )
+                ));
+            },
+        }
+    };
+    let interpreted_expression = interpret_expression(
+        &unary_expression.expression, symbol_table, current_scope_node_id
+    )?;
+    match unary_expression.operator {
+        UnaryOperator::Negation => {
+            match interpreted_expression.data {
+                Value::Int(int) => {
+                    Ok(Node {
+                        sp: expression_node.sp,
+                        data: Value::Int(-int),
+                    })
+                },
+                Value::Float(float) => {
+                    Ok(Node {
+                        sp: expression_node.sp,
+                        data: Value::Float(-float),
+                    })
+                },
+                // negation of a char is just ignored
+                Value::Char(_) => {
+                    Ok(Node {
+                        sp: expression_node.sp,
+                        data: interpreted_expression.data,
+                    })
+                },
+                // negation of a bool is just ignored
+                Value::Bool(_) => {
+                    Ok(Node {
+                        sp: expression_node.sp,
+                        data: interpreted_expression.data,
+                    })
+                },
+            }
+        },
+        UnaryOperator::Not => {
+            match interpreted_expression.data {
+                Value::Bool(bool) => {
+                    Ok(Node {
+                        sp: expression_node.sp,
+                        data: Value::Bool(!bool),
+                    })
+                },
+                // if Value is not a bool, convert to bool and then negate
+                not_bool_value => {
+                    let casted_bool_value = cast_literal_to_type(
+                        Node {
+                            sp: expression_node.sp,
+                            data: not_bool_value,
+                        },
+                        TypeSpecifier::Bool,
+                    )?;
+                    match casted_bool_value.data {
+                        Value::Bool(bool) => {
+                            Ok(Node {
+                                sp: expression_node.sp,
+                                data: Value::Bool(!bool),
+                            })
+                        },
+                        unexpected_non_bool_value => {
+                            panic!(
+                                "In interpret_unary_expression, cast to bool of {:?} failed in ", 
+                                unexpected_non_bool_value
+                            );
+                        },
+                    }
+                }
+            }
+        },
+    }
+}
+
 
 /// interpret an expression and return a value
 pub fn interpret_expression<'a>(
@@ -105,9 +199,9 @@ pub fn interpret_expression<'a>(
                 data: literal.clone(),
             })
         },
-        // Expression::UnaryExpression(unary_expression) => {
-        //     interpret_unary_expression(unary_expression, symbol_table)
-        // }
+        Expression::UnaryExpression(_) => {
+            interpret_unary_expression(expression_node, symbol_table, current_scope_node_id)
+        }
         // Expression::BinaryExpression(binary_expression) => {
         //     interpret_binary_expression(binary_expression, symbol_table)
         // }

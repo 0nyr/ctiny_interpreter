@@ -8,7 +8,7 @@ use crate::symbol_table::structs::{Scope, SymbolTable};
 use crate::abstract_syntax_tree::expressions::build_expression;
 use crate::syntax_parsing::{CTinyParser, Rule};
 
-fn interpret_expression_to_value_for_testing<'a>(
+pub fn interpret_expression_to_value_for_testing<'a>(
     test_str: &'a str,
 ) -> Result<Node<'a, Value>, SemanticError> {
     let rule = Rule::expression;
@@ -57,6 +57,7 @@ fn interpret_expression_to_value_for_testing<'a>(
     )
 }
 
+#[macro_export]
 macro_rules! build_interpret_expression_to_value_test {
     ($test_name:ident, $test_str:expr, $test_value:expr, $literal_type:ident, $expect:expr) => {
         #[test]

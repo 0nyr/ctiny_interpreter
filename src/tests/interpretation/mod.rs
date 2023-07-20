@@ -6,3 +6,5 @@ mod interpret_expression_get_normal_value;
 mod interpret_expression_get_array_value;
 #[cfg(test)]
 mod interpret_expression_literal;
+#[cfg(test)]
+mod interpret_expression_unary;
