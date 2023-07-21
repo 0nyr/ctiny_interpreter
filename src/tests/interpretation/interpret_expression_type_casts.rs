@@ -59,7 +59,8 @@ pub fn interpret_expression_to_value_for_testing<'a>(
 
 #[macro_export]
 macro_rules! build_interpret_expression_to_value_test {
-    ($test_name:ident, $test_str:expr, $test_value:expr, $literal_type:ident, $expect:expr) => {
+    ($test_name:ident, $test_str:expr, $test_value:expr, $literal_type:ident) => {
+        // positive test
         #[test]
         fn $test_name() {
             let test_str = $test_str;
@@ -71,32 +72,45 @@ macro_rules! build_interpret_expression_to_value_test {
             );
 
             // check and print
-            if $expect {
-                // positive test
-                match &interpreted_literal.unwrap().data {
-                    Value::$literal_type(literal_value) => {
-                        assert_eq!(*literal_value, test_value);
-                        print!("Interpreted literal <{}>: {} of type {}\n\n", test_str, *literal_value, stringify!($literal_type));   
-                    },
-                    _ => panic!("Expected {} literal.", stringify!($literal_type)),
-                }
-            } else {
-                // negative test
-                assert!(interpreted_literal.is_err());
-                // print error
-                print!("Expected error: {}\n\n", interpreted_literal.unwrap_err());
+            match &interpreted_literal.unwrap().data {
+                Value::$literal_type(literal_value) => {
+                    assert_eq!(*literal_value, test_value);
+                    print!("Interpreted literal <{}>: {} of type {}\n\n", test_str, *literal_value, stringify!($literal_type));   
+                },
+                _ => panic!("Expected {} literal.", stringify!($literal_type)),
             }
         }
     };
-    ($test_name:ident, $test_str:expr, $test_value:expr, $literal_type:ident) => {
-        // default test is expected to be positive (i.e. doesn't expect any error)
-        build_interpret_expression_to_value_test!(
-            $test_name,
-            $test_str,
-            $test_value,
-            $literal_type, 
-            true
-        );
+    ($test_name:ident, $test_str:expr) => {
+        // negative test
+        #[test]
+        fn $test_name() {
+            let test_str = $test_str;
+
+            // interpretation
+            let interpreted_literal = interpret_expression_to_value_for_testing(
+                test_str,
+            );
+
+            // check and print
+            match interpreted_literal {
+                Ok(interpreted_literal) => {
+                    panic!(
+                        "Expected error, but got interpreted literal <{}>: {:?} of type {}", 
+                        test_str, 
+                        interpreted_literal.data, 
+                        stringify!(interpreted_literal.data.as_type_specifier())
+                    );
+                },
+                Err(error) => {
+                    print!(
+                        "Expected error occured while interpreting literal <{}>: {}\n\n", 
+                        test_str, 
+                        error
+                    );
+                },
+            }
+        }
     };
 }
 
