@@ -7,7 +7,7 @@ mod errors;
 mod data_loading;
 mod syntax_parsing;
 mod abstract_syntax_tree;
-mod semantic_analysis;
+mod semantic;
 mod pipelines;
 mod symbol_table;
 mod interpretation;

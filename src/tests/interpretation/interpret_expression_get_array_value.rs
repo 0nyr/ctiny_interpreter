@@ -1,7 +1,7 @@
 use std::collections::HashMap;
 use pest::{Parser, Span};
 
-use crate::semantic_analysis::errors::{SemanticError, ASTBuildingError};
+use crate::semantic::errors::{SemanticError, ASTBuildingError};
 use crate::abstract_syntax_tree::nodes::{Value, Identifier, Node, Expression};
 use crate::interpretation::interpret_expression::interpret_expression;
 use crate::symbol_table::structs::{Variable, Scope, SymbolTable, ArrayVarData};

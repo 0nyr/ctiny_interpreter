@@ -1,7 +1,7 @@
 use pest::Span;
 
 use crate::abstract_syntax_tree::nodes::{Node, Value, TypeSpecifier};
-use crate::semantic_analysis::type_casts::cast_literal_to_type;
+use crate::semantic::type_casts::cast_literal_to_type;
 
 
 macro_rules! cast_literal_test {

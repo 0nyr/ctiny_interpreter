@@ -1,4 +1,4 @@
-use crate::semantic_analysis::semantic_analysis;
+use crate::semantic::semantic_analysis;
 use crate::pipelines::parse_content_into_ast;
 
 macro_rules! build_semantic_test {

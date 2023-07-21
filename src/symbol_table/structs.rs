@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic_analysis::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::{get_index_value_from_literal, cast_literal_to_type}}};
+use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::{get_index_value_from_literal, cast_literal_to_type}}};
 
 #[derive(Debug)]
 pub enum Variable {

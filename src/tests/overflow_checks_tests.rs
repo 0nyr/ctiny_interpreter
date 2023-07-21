@@ -1,4 +1,4 @@
-use crate::semantic_analysis::overflow_checks::*;
+use crate::semantic::overflow_checks::*;
 
 macro_rules! build_safe_operation_test {
     ($test_name:ident, $function:ident, $left:expr, $right:expr, $debug_expr:expr) => {

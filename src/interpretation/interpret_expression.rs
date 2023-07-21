@@ -1,9 +1,9 @@
 use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier, UnaryOperator, TypeSpecifier, BinaryOperator};
 use crate::errors::make_semantic_error;
 use crate::merge_spans_no_check;
-use crate::semantic_analysis::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedTypeCastError};
-use crate::semantic_analysis::operations::perform_binary_operation;
-use crate::semantic_analysis::type_casts::cast_literal_to_type;
+use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedTypeCastError};
+use crate::semantic::operations::perform_binary_operation;
+use crate::semantic::type_casts::cast_literal_to_type;
 use crate::symbol_table::structs::{SymbolTable, Variable, NormalVarData, ArrayVarData};
 
 fn interpret_potential_index<'a>(
