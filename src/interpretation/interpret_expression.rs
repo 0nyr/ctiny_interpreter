@@ -245,6 +245,7 @@ pub fn interpret_expression<'a>(
         Expression::BinaryExpression(_) => {
             interpret_binary_expression(expression_node, symbol_table, current_scope_node_id)
         }
+        // TODO: implement function calls after interperting function is implemented
         // Expression::FunctionCall(function_call) => {
         //     interpret_function_call(function_call, symbol_table)
         // }

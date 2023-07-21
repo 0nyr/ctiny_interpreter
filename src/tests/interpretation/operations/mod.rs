@@ -4,3 +4,5 @@ mod interpret_expression_basic_binary;
 mod interpret_expression_modulo;
 #[cfg(test)]
 mod interpret_expression_comparison;
+#[cfg(test)]
+mod interpret_expression_logic;

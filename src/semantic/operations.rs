@@ -216,6 +216,41 @@ pub fn perform_modulo_operation<'a>(
     })
 }
 
+macro_rules! logical_operation {
+    ($operator_str:expr, $logical_operator:tt, $left_value_node:expr, $right_value_node:expr) => {{
+        let common_span = merge_spans_no_check!(
+            $left_value_node.sp, $right_value_node.sp
+        ).unwrap();
+
+        let left_bool = cast_literal_to_type(
+            $left_value_node.clone(), TypeSpecifier::Bool
+        )?;
+        let right_bool = cast_literal_to_type(
+            $right_value_node.clone(), TypeSpecifier::Bool
+        )?;
+        match (left_bool.data, right_bool.data) {
+            (Value::Bool(left_bool), Value::Bool(right_bool)) => {
+                let result = left_bool $logical_operator right_bool;
+                Ok(Node {
+                    sp: common_span,
+                    data: Value::Bool(result),
+                })
+            },
+            (left, right) => {
+                return Err(SemanticError::UnexpectedTypeCast(
+                    UnexpectedTypeCastError::init(
+                        common_span,
+                        format!(
+                            "In perform_binary_operation ({}), cast to bool of {:?} or {:?} failed", 
+                            $operator_str, left, right
+                        ).as_str(),
+                    )
+                ));
+            },
+        }
+    }}
+}
+
 pub fn perform_binary_operation<'a>(
     left_value_node: &Node<'a, Value>,
     right_value_node: &Node<'a, Value>,
@@ -316,7 +351,21 @@ pub fn perform_binary_operation<'a>(
             )
         },
         // logical binary operations
-        BinaryOperator::LogicalAnd => todo!(),
-        BinaryOperator::LogicalOr => todo!(),
+        BinaryOperator::LogicalAnd => {
+            logical_operation!(
+                "&&",
+                &&,
+                left_value_node,
+                right_value_node
+            )
+        },
+        BinaryOperator::LogicalOr => {
+            logical_operation!(
+                "||",
+                ||,
+                left_value_node,
+                right_value_node
+            )
+        },
     }
 }
