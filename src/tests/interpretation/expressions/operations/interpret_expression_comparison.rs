@@ -1,5 +1,5 @@
 use crate::abstract_syntax_tree::nodes::Value;
-use crate::tests::interpretation::interpret_expression_type_casts::interpret_expression_to_value_for_testing;
+use super::super::interpret_expression_type_casts::interpret_expression_to_value_for_testing;
 use crate::build_interpret_expression_to_value_test;
 
 // tests for < operator (Less than)

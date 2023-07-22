@@ -74,11 +74,11 @@ fn interpret_expression_get_value_simple_var_for_testing<'a>(
 }
 
 macro_rules! test_get_value_for_literal {
-    ($literal_type:ident, $test_str:expr, $test_value:expr, $rule:expr) => {
+    ($literal_type:ident, $test_str:expr, $test_value:expr) => {
 
         let test_str = $test_str;
         let test_value = $test_value;
-        let rule = $rule;
+        let rule = Rule::get_or_set_value;
 
         // interpretation
         let interpreted_literal = interpret_expression_get_value_simple_var_for_testing(
@@ -103,8 +103,7 @@ fn test_interpret_expression_get_value_normal_int() {
     test_get_value_for_literal!(
         Int, 
         "x", 
-        1, 
-        Rule::get_or_set_value
+        1
     );
 }
 
@@ -113,8 +112,7 @@ fn test_interpret_expression_get_value_normal_char() {
     test_get_value_for_literal!(
         Char, 
         "x", 
-        b'a', 
-        Rule::get_or_set_value
+        b'a'
     );
 }
 
@@ -123,8 +121,7 @@ fn test_interpret_expression_get_value_normal_bool() {
     test_get_value_for_literal!(
         Bool, 
         "x", 
-        true, 
-        Rule::get_or_set_value
+        true
     );
 }
 
@@ -133,7 +130,6 @@ fn test_interpret_expression_get_value_normal_float() {
     test_get_value_for_literal!(
         Float, 
         "x", 
-        3.14159, 
-        Rule::get_or_set_value
+        3.14159
     );
 }

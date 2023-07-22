@@ -54,6 +54,7 @@ macro_rules! define_and_implement_semantic_error {
 pub enum SemanticError {
     UndeclaredVariable(UndeclaredVariableError),
     UnexpectedExpressionParsing(UnexpectedExpressionParsingError),
+    UnexpectedStatementParsing(UnexpectedStatementParsingError),
     NegativeArrayIndex(NegativeArrayIndexError),
     UnexpectedLiteralType(UnexpectedLiteralTypeError),
     ASTBuilding(ASTBuildingError), // not direct semantic error, but used in semantic analysis
@@ -86,6 +87,7 @@ define_and_implement_semantic_error!(FloatOverflowError);
 define_and_implement_semantic_error!(CharOverflowError);
 define_and_implement_semantic_error!(BoolOverflowError);
 define_and_implement_semantic_error!(DivisionByZeroError);
+define_and_implement_semantic_error!(UnexpectedStatementParsingError);
 
 impl fmt::Display for SemanticError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -104,6 +106,7 @@ impl fmt::Display for SemanticError {
             SemanticError::CharOverflow(error) => write!(f, "{}", error),
             SemanticError::BoolOverflow(error) => write!(f, "{}", error),
             SemanticError::DivisionByZero(error) => write!(f, "{}", error),
+            SemanticError::UnexpectedStatementParsing(error) => write!(f, "{}", error),
         }
     }
 }
