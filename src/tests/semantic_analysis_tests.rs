@@ -52,24 +52,6 @@ fn test_semantic_undeclared_function() {
 }
 
 #[test]
-fn test_semantic_missing_function_return() {
-    build_semantic_test!(
-        "int main () {
-            int x;
-            // missing return statement
-        }",
-        "int foo() {
-            int x;
-            // missing return statement
-        }
-        int main () {
-            int x;
-            return x;
-        }"
-    );
-}
-
-#[test]
 fn test_semantic_unassigned_variable() {
     build_semantic_test!(
         "int main () {

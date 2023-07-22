@@ -43,10 +43,10 @@ Dependencies and libraries
 
 * empty function blocks are supported
 * any block has its declarations before any statements.
-* since we don't have any `void` type, any `return` must have an `<expression>` and any function must have at least one return statement.
+* since we don't have any `void` type, any `return` must have an `<expression>` and any function must have a unique final return statement.
 * since ctiny is a simple language (and for security/overflow reasons), we don't support pointers. So functions with array argments must specify their size (writing `int functionA (int a[])` is not allowed by the grammar).
 * since Ctiny should stay simple, it doesn't not allow any other assignment operator that `=`
-* full `if-else` and `while` statements with `break` and `continue` support.
+* since Ctiny should be simple, not `break`, `return` or `continue` keywords inside While loops.
 * programs without a `main` function are not allowed.
 * in any program, the `main` function must be the last function defined.
 * empty statements like `;;;` are not allowed.

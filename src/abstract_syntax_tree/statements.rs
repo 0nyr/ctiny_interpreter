@@ -95,24 +95,6 @@ pub fn build_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<Stateme
         Rule::assignment_statement => build_assignment_statement(pair),
         Rule::if_else_statement => build_if_else_statement(pair),
         Rule::while_statement => build_while_statement(pair),
-        Rule::jump_statement => build_statement(pair.into_inner().next().unwrap()),
-        Rule::return_statement => {
-            let first_pair = pair.clone().into_inner().next().unwrap();
-            let expression_node = build_expression(first_pair)?;
-            ok_build_node!(pair, Statement::Jump(
-                JumpStatement::Return(expression_node.data)
-            ))
-        },
-        Rule::break_statement => {
-            ok_build_node!(pair, Statement::Jump(
-                JumpStatement::Break()
-            ))
-        },
-        Rule::continue_statement => {
-            ok_build_node!(pair, Statement::Jump(
-                JumpStatement::Continue
-            ))
-        },
         _ => Err(make_ast_error_from_pair(
             pair.clone(), 
             format!("🔴 Unexpected rule inside <statement>: {:?}", pair.clone().as_rule()).as_str()

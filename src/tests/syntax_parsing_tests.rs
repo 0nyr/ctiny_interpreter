@@ -25,10 +25,32 @@ pub fn syntax_parsing_test(input_str: &str, rule: Rule) {
 
 macro_rules! build_syntax_parsing_test {
     ($test_name:ident, $input_str:expr, $rule:expr) => {
+        // positive test
         #[test]
         fn $test_name() {
             let input_str = $input_str;
             syntax_parsing_test(input_str, $rule)
+        }
+    };
+    ($test_name:ident, $input_str:expr, $rule:expr, false) => {
+        // negative test
+        #[test]
+        #[should_panic]
+        fn $test_name() {
+            let input_str = $input_str;
+            // parse the input string
+            let result = CTinyParser::parse($rule, input_str);
+
+            // we expect an error
+            match result {
+                Ok(pairs) => {
+                    print!("Expected a syntax error! But got pairs instead. [see below]");
+                    print_tokens(pairs);
+                },
+                Err(error) => {
+                    panic!("Expected syntax error: {}\n", error);
+                }
+            }
         }
     };
 }
@@ -42,14 +64,22 @@ build_syntax_parsing_test!(
 
 build_syntax_parsing_test!(
     test_block_statement,
-    "{ char c; c = 'a'; }",
+    "{ char c; c = 'a'; return c; }",
     Rule::block
+);
+
+build_syntax_parsing_test!(
+    test_missing_block_return,
+    "{ char c; c = 'a'; }",
+    Rule::block,
+    false
 );
 
 build_syntax_parsing_test!(
     test_empty_block_statement,
     "{}",
-    Rule::block
+    Rule::block,
+    false
 );
 
 build_syntax_parsing_test!(
@@ -92,6 +122,13 @@ build_syntax_parsing_test!(
     test_function_definition,
     "int test_function(int a, int b) { return a + b; }",
     Rule::function_definition
+);
+
+build_syntax_parsing_test!(
+    test_function_definition_missing_return,
+    "int test_function(int a, int b) { int c; c = a + b; }",
+    Rule::function_definition,
+    false
 );
 
 build_syntax_parsing_test!(

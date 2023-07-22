@@ -89,6 +89,7 @@ impl Declaration<'_> {
 pub struct Block<'a> {
     pub declarations: Vec<Node<'a, Declaration<'a>>>,
     pub statements: Vec<Node<'a, Statement<'a>>>,
+    pub function_return: Node<'a, Expression<'a>>,
 }
 
 // WARN: in Ctiny, statements cannot contain declarations
@@ -98,7 +99,6 @@ pub enum Statement<'a> {
     Assignment(AssignmentStatement<'a>),
     If(IfStatement<'a>),
     While(WhileStatement<'a>),
-    Jump(JumpStatement<'a>),
 }
 
 #[derive(Debug, PartialEq)]
@@ -118,13 +118,6 @@ pub struct IfStatement<'a> {
 pub struct WhileStatement<'a> {
     pub condition: Node<'a, Expression<'a>>,
     pub body: Vec<Node<'a, Statement<'a>>>,
-}
-
-#[derive(Debug, PartialEq)]
-pub enum JumpStatement<'a> {
-    Return(Expression<'a>),
-    Break(),
-    Continue,
 }
 
 

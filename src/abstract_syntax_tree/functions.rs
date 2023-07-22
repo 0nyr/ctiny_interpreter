@@ -1,8 +1,9 @@
 use pest::error::Error;
 use pest::iterators::Pair;
 
+use crate::abstract_syntax_tree::expressions::build_expression;
+use crate::errors::make_ast_error;
 use crate::syntax_parsing::Rule;
-
 use super::declarations::build_parameter_list;
 use super::declarations::build_multi_declaration;
 use super::declarations::get_type_from_pair;
@@ -14,7 +15,6 @@ use super::nodes::*;
 use crate::unwrap_or_err_panic;
 use crate::ok_build_node;
 
-
 pub fn build_block(pair: Pair<Rule>) -> Result<Node<Block>, Error<Rule>> {
     let mut declarations = Vec::new();
     let mut statements = Vec::new();
@@ -25,20 +25,44 @@ pub fn build_block(pair: Pair<Rule>) -> Result<Node<Block>, Error<Rule>> {
                 declarations.extend(
                     unwrap_or_err_panic!(build_multi_declaration(inner_pair))
                 );
-            }
+            },
             Rule::multi_statement => {
                 statements.extend(
                     unwrap_or_err_panic!(build_multi_statement(inner_pair))
                 );
+            },
+            Rule::function_return => {
+                // return must be the last pseudo-statement in a block
+                let return_expr_pair = match inner_pair.into_inner().next() {
+                    Some(pair) => pair,
+                    None => {
+                        return Err(
+                            make_ast_error(
+                                pair.clone().as_span(),
+                                "Return is missing an expression.",
+                            )
+                        );
+                    },
+                };
+                let function_return = unwrap_or_err_panic!(build_expression(return_expr_pair));
+                return ok_build_node!(pair, Block {
+                    declarations,
+                    statements,
+                    function_return,
+                });
             }
             _ => unreachable!(),
         }
     }
 
-    ok_build_node!(pair, Block {
-        declarations,
-        statements,
-    })
+    // should only reach this point if there is no function return
+    return Err(
+        make_ast_error(
+            pair.clone().as_span(),
+            "Return is missing.",
+        )
+    );
+    
 }
 
 pub fn build_function_definition(pair: Pair<Rule>) -> Result<Node<Function>, Error<Rule>> {
