@@ -2,6 +2,7 @@ use crate::abstract_syntax_tree::nodes::{Value, Node, TypeSpecifier};
 
 use super::errors::{SemanticError, NegativeArrayIndexError, UnexpectedLiteralTypeError, SemanticErrorTrait, IntToCharCastOverflowError, FloatToCharCastOverflowError, FloatToIntCastOverflowError};
 
+// TODO: rename this function
 // given a Literal, check that it is a positive integer, and return the value as usize
 pub fn get_index_value_from_literal<'a>(literal_node: Node<'a, Value>) -> Result<usize, SemanticError> {
     // first, need to cast to int

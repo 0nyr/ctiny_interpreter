@@ -10,6 +10,8 @@ use crate::syntax_parsing::{CTinyParser, Rule};
 
 #[cfg(test)]
 mod interpret_statement_assignment_normal_value;
+#[cfg(test)]
+mod interpret_statement_assignment_array_value;
 
 pub fn interpret_statement_to_value_for_testing<'a>(
     test_str: &'a str,

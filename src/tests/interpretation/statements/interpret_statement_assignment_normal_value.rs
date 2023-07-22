@@ -85,7 +85,6 @@ pub fn interpret_statement_assignment_normal_var<'a>(
     Ok(value_of_var.clone())
 }
 
-
 macro_rules! build_test_assignment_to_normal_value {
     ($test_name:ident, $literal_type:ident, $test_str:expr, $test_value:expr, $var_type:ident) => {
         // positive test
