@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::{get_index_value_from_literal, cast_literal_to_type}}};
+use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::{get_index_value_from_value_node, cast_to_type}}};
 
 #[derive(Debug)]
 pub enum Variable {
@@ -44,8 +44,7 @@ impl NormalVarData {
         // check that the type of the value is the same as the type of the variable
         let value_type = value_node.data.as_type_specifier();
         if self.type_specifier != value_type {
-            // TODO: at this point, we need to do an auto-cast
-            let casted_value_node = cast_literal_to_type(
+            let casted_value_node = cast_to_type(
                 value_node, self.type_specifier
             )?;
             self.value = Some(casted_value_node.data);
@@ -84,9 +83,9 @@ impl ArrayVarData {
         index_node: Node<'a, Value>,
         value_node: Node<'a, Value>, 
     ) -> Result<(), SemanticError> {
-        let usable_index = get_index_value_from_literal(index_node)?;
+        let usable_index = get_index_value_from_value_node(index_node)?;
         // cast the value to the type of the array
-        let casted_value_node = cast_literal_to_type(
+        let casted_value_node = cast_to_type(
             value_node, self.type_specifier
         )?;
         self.values.insert(usable_index, casted_value_node.data);
@@ -224,7 +223,7 @@ impl Scope {
             Some(index) => {
                 // case: array
                 let index_span = index.sp;
-                let index_value = get_index_value_from_literal(index)?;
+                let index_value = get_index_value_from_value_node(index)?;
                 let array_var_data = self.get_array_variable(var_id_node)?;
                 match array_var_data.get_value(index_value) {
                     Some(value) => Ok(

@@ -103,8 +103,8 @@ pub enum Statement<'a> {
 
 #[derive(Debug, PartialEq)]
 pub struct AssignmentStatement<'a> {
-    pub set_value: Node<'a, GetOrSetValue<'a>>, // TODO: rename to left_var
-    pub expression: Node<'a, Expression<'a>>, // TODO: rename to right_expr
+    pub left_var: Node<'a, GetOrSetValue<'a>>,
+    pub right_expr: Node<'a, Expression<'a>>,
 }
 
 #[derive(Debug, PartialEq)]

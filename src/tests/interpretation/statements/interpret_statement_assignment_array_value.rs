@@ -6,7 +6,7 @@ use crate::interpretation::interpret_expression::interpret_expression;
 use crate::interpretation::interpret_statement::interpret_statement;
 use crate::semantic::errors::{SemanticError, ASTBuildingError};
 use crate::abstract_syntax_tree::nodes::{Identifier, Node, Statement, TypeSpecifier, Value};
-use crate::semantic::type_casts::get_index_value_from_literal;
+use crate::semantic::type_casts::get_index_value_from_value_node;
 use crate::symbol_table::structs::{Scope, SymbolTable, Variable, ArrayVarData};
 use crate::syntax_parsing::{CTinyParser, Rule};
 
@@ -54,10 +54,10 @@ pub fn interpret_statement_assignment_array_var<'a>(
         Statement::Assignment(assignment_node) => assignment_node,
         _ => panic!("Expected assignment statement, got {:?}", statement_node.data),
     };
-    let array_var_id = assignement.set_value.data.identifier.clone();
+    let array_var_id = assignement.left_var.data.identifier.clone();
     
     let real_index = {
-        let potential_index_node = &assignement.set_value.data.index;
+        let potential_index_node = &assignement.left_var.data.index;
         match potential_index_node {
             Some(index_node) => {
                 let interpreted_index = interpret_expression(
@@ -65,7 +65,7 @@ pub fn interpret_statement_assignment_array_var<'a>(
                     &mut symbol_table,
                     &main_scope_id_node,
                 )?;
-                let index_value = get_index_value_from_literal(
+                let index_value = get_index_value_from_value_node(
                     interpreted_index
                 )?;
                 print!("Index value: {}\n", index_value);

@@ -21,8 +21,8 @@ fn build_assignment_statement(pair: pest::iterators::Pair<Rule>) -> Result<Node<
 
     ok_build_node!(pair, Statement::Assignment(
         AssignmentStatement {
-            set_value: set_value_node,
-            expression: expression_node,
+            left_var: set_value_node,
+            right_expr: expression_node,
         }
     ))
 }

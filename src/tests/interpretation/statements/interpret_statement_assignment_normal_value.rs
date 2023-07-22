@@ -52,7 +52,7 @@ pub fn interpret_statement_assignment_normal_var<'a>(
         Statement::Assignment(assignment_node) => assignment_node,
         _ => panic!("Expected assignment statement, got {:?}", statement_node.data),
     };
-    let normal_var_id = assignement.set_value.data.identifier.clone();
+    let normal_var_id = assignement.left_var.data.identifier.clone();
     let normal_var = Variable::NormalVar(
         NormalVarData::new(
             normal_var_id.data.clone(),

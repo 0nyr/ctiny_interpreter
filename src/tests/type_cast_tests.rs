@@ -1,7 +1,7 @@
 use pest::Span;
 
 use crate::abstract_syntax_tree::nodes::{Node, Value, TypeSpecifier};
-use crate::semantic::type_casts::cast_literal_to_type;
+use crate::semantic::type_casts::cast_to_type;
 
 
 macro_rules! cast_literal_test {
@@ -16,11 +16,11 @@ macro_rules! cast_literal_test {
             if $expect {
                 assert_eq!(
                     $type_spec,
-                    cast_literal_to_type(input_literal_node, $type_spec)
+                    cast_to_type(input_literal_node, $type_spec)
                         .unwrap().data.as_type_specifier()
                 );
             } else {
-                assert!(cast_literal_to_type(input_literal_node, $type_spec).is_err());
+                assert!(cast_to_type(input_literal_node, $type_spec).is_err());
             }
         }
     };
@@ -202,7 +202,7 @@ fn test_cast_literal_to_type_int_manual() {
         data: test_literal.clone(),
     };
     assert_eq!(
-        cast_literal_to_type(input_literal_node, TypeSpecifier::Int).unwrap().data,
+        cast_to_type(input_literal_node, TypeSpecifier::Int).unwrap().data,
         test_literal
     );
 
@@ -214,6 +214,6 @@ fn test_cast_literal_to_type_int_manual() {
         data: Value::Float(std::f32::MAX as f32),
     };
     assert!(
-        cast_literal_to_type(input_literal_node, TypeSpecifier::Int).is_err()
+        cast_to_type(input_literal_node, TypeSpecifier::Int).is_err()
     );
 }

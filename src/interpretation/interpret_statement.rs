@@ -1,7 +1,7 @@
 use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, UnaryOperator, TypeSpecifier, Statement, AssignmentStatement};
 use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedStatementParsingError};
 use crate::semantic::operations::perform_binary_operation;
-use crate::semantic::type_casts::cast_literal_to_type;
+use crate::semantic::type_casts::cast_to_type;
 use crate::symbol_table::structs::SymbolTable;
 
 use super::interpret_expression::interpret_expression;
@@ -30,13 +30,13 @@ fn interpret_assignment_statement<'a>(
 
     // Interpret the expression on the right side of the assignment.
     let assignment_value_node = interpret_expression(
-        &assignment_statement.expression, 
+        &assignment_statement.right_expr, 
         symbol_table, 
         current_scope_node_id
     )?;
 
-    let var_id_node = assignment_statement.set_value.data.identifier.clone();
-    let potential_index_node = &assignment_statement.set_value.data.index;
+    let var_id_node = assignment_statement.left_var.data.identifier.clone();
+    let potential_index_node = &assignment_statement.left_var.data.index;
 
     // We need to know if the assignment operation is on a normal variable or an array.
     if let Some(index_expr_node) = potential_index_node {

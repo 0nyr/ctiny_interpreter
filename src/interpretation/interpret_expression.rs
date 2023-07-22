@@ -1,7 +1,7 @@
 use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, UnaryOperator, TypeSpecifier};
 use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait};
 use crate::semantic::operations::perform_binary_operation;
-use crate::semantic::type_casts::cast_literal_to_type;
+use crate::semantic::type_casts::cast_to_type;
 use crate::symbol_table::structs::SymbolTable;
 
 fn interpret_potential_index<'a>(
@@ -86,7 +86,7 @@ fn interpret_type_cast<'a>(
         &type_cast.expression, symbol_table, current_scope_node_id
     )?;
 
-    cast_literal_to_type(
+    cast_to_type(
         interpreted_expression, target_type
     )
 }
@@ -158,7 +158,7 @@ fn interpret_unary_expression<'a>(
                 },
                 // if Value is not a bool, convert to bool and then negate
                 not_bool_value => {
-                    let casted_bool_value = cast_literal_to_type(
+                    let casted_bool_value = cast_to_type(
                         Node {
                             sp: expression_node.sp,
                             data: not_bool_value,
@@ -243,7 +243,7 @@ pub fn interpret_expression<'a>(
         Expression::BinaryExpression(_) => {
             interpret_binary_expression(expression_node, symbol_table, current_scope_node_id)
         }
-        // TODO: implement function calls after interperting function is implemented
+        // TODO: implement function calls after interpreting function is implemented
         // Expression::FunctionCall(function_call) => {
         //     interpret_function_call(function_call, symbol_table)
         // }

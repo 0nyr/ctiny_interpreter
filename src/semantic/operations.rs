@@ -3,7 +3,7 @@ use pest::Span;
 use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier, UnaryOperator, TypeSpecifier, BinaryOperator};
 use crate::merge_spans_no_check;
 use crate::semantic::errors::{SemanticError, SemanticErrorTrait, UnexpectedTypeCastError};
-use crate::semantic::type_casts::cast_literal_to_type;
+use crate::semantic::type_casts::cast_to_type;
 
 use super::errors::DivisionByZeroError;
 use super::overflow_checks::*;
@@ -17,10 +17,10 @@ macro_rules! basic_binary_operation {
         ).unwrap();
 
         if left_type == TypeSpecifier::Float || right_type == TypeSpecifier::Float {
-            let left_float = cast_literal_to_type(
+            let left_float = cast_to_type(
                 $left_value_node.clone(), TypeSpecifier::Float
             )?;
-            let right_float = cast_literal_to_type(
+            let right_float = cast_to_type(
                 $right_value_node.clone(), TypeSpecifier::Float
             )?;
             match (left_float.data.clone(), right_float.data.clone()) {
@@ -48,10 +48,10 @@ macro_rules! basic_binary_operation {
                 },
             }
         } else {
-            let left_int = cast_literal_to_type(
+            let left_int = cast_to_type(
                 $left_value_node.clone(), TypeSpecifier::Int
             )?;
-            let right_int = cast_literal_to_type(
+            let right_int = cast_to_type(
                 $right_value_node.clone(), TypeSpecifier::Int
             )?;
             match (left_int.data, right_int.data) {
@@ -93,10 +93,10 @@ macro_rules! comparison_operation {
 
         // We choose to perform comparisons as floats if any of the operands are floats.
         if left_type == TypeSpecifier::Float || right_type == TypeSpecifier::Float {
-            let left_float = cast_literal_to_type(
+            let left_float = cast_to_type(
                 $left_value_node.clone(), TypeSpecifier::Float
             )?;
-            let right_float = cast_literal_to_type(
+            let right_float = cast_to_type(
                 $right_value_node.clone(), TypeSpecifier::Float
             )?;
             match (left_float.data.clone(), right_float.data.clone()) {
@@ -120,10 +120,10 @@ macro_rules! comparison_operation {
                 },
             }
         } else {
-            let left_int = cast_literal_to_type(
+            let left_int = cast_to_type(
                 $left_value_node.clone(), TypeSpecifier::Int
             )?;
-            let right_int = cast_literal_to_type(
+            let right_int = cast_to_type(
                 $right_value_node.clone(), TypeSpecifier::Int
             )?;
             match (left_int.data, right_int.data) {
@@ -158,7 +158,7 @@ pub fn perform_modulo_operation<'a>(
     right_value_node: &Node<'a, Value>,
 ) -> Result<Node<'a, Value>, SemanticError> {
     // cast left operand to int
-    let left_casted = cast_literal_to_type(
+    let left_casted = cast_to_type(
         left_value_node.clone(), TypeSpecifier::Int
     )?.data;
     let left_int = match left_casted {
@@ -177,7 +177,7 @@ pub fn perform_modulo_operation<'a>(
     };
 
     // cast right operand to int
-    let right_casted = cast_literal_to_type(
+    let right_casted = cast_to_type(
         right_value_node.clone(), TypeSpecifier::Int
     )?.data;
     let right_int = match right_casted {
@@ -222,10 +222,10 @@ macro_rules! logical_operation {
             $left_value_node.sp, $right_value_node.sp
         ).unwrap();
 
-        let left_bool = cast_literal_to_type(
+        let left_bool = cast_to_type(
             $left_value_node.clone(), TypeSpecifier::Bool
         )?;
-        let right_bool = cast_literal_to_type(
+        let right_bool = cast_to_type(
             $right_value_node.clone(), TypeSpecifier::Bool
         )?;
         match (left_bool.data, right_bool.data) {

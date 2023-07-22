@@ -2,12 +2,11 @@ use crate::abstract_syntax_tree::nodes::{Value, Node, TypeSpecifier};
 
 use super::errors::{SemanticError, NegativeArrayIndexError, UnexpectedLiteralTypeError, SemanticErrorTrait, IntToCharCastOverflowError, FloatToCharCastOverflowError, FloatToIntCastOverflowError};
 
-// TODO: rename this function
 // given a Literal, check that it is a positive integer, and return the value as usize
-pub fn get_index_value_from_literal<'a>(literal_node: Node<'a, Value>) -> Result<usize, SemanticError> {
+pub fn get_index_value_from_value_node<'a>(input_node: Node<'a, Value>) -> Result<usize, SemanticError> {
     // first, need to cast to int
-    let int_literal = cast_literal_to_type(
-        literal_node.clone(), TypeSpecifier::Int
+    let int_literal = cast_to_type(
+        input_node.clone(), TypeSpecifier::Int
     )?.data;
     // then, check that it is positive
     match int_literal {
@@ -16,7 +15,7 @@ pub fn get_index_value_from_literal<'a>(literal_node: Node<'a, Value>) -> Result
                 Err(
                     SemanticError::NegativeArrayIndex(
                         NegativeArrayIndexError::init(
-                            literal_node.sp,
+                            input_node.sp,
                             &format!("Negative array index: {}", integer)
                         )
                     )
@@ -28,7 +27,7 @@ pub fn get_index_value_from_literal<'a>(literal_node: Node<'a, Value>) -> Result
         literal => Err(
             SemanticError::UnexpectedLiteralType(
                 UnexpectedLiteralTypeError::init(
-                    literal_node.sp,
+                    input_node.sp,
                     &format!("Expected integer literal, got: {:?}", literal)
                 )
             )
@@ -36,76 +35,76 @@ pub fn get_index_value_from_literal<'a>(literal_node: Node<'a, Value>) -> Result
     }
 }
 
-macro_rules! ok_literal_node {
-    ($literal_type:ident, $span:expr, $bool:expr) => {
+macro_rules! ok_value_node {
+    ($value_type:ident, $span:expr, $bool:expr) => {
         Ok(
             Node {
                 sp: $span,
-                data: Value::$literal_type($bool),
+                data: Value::$value_type($bool),
             }
         )
     };
 }
 
-fn cast_literal_to_bool<'a>(
-    literal_node: Node<'a, Value>
+fn cast_to_bool<'a>(
+    input_node: Node<'a, Value>
 ) -> Result<Node<'a, Value>, SemanticError> {
-    match literal_node.data {
-        Value::Bool(_) => Ok(literal_node),
+    match input_node.data {
+        Value::Bool(_) => Ok(input_node),
         Value::Int(integer) => {
             if integer == 0 {
-                ok_literal_node!(Bool, literal_node.sp, false)
+                ok_value_node!(Bool, input_node.sp, false)
             } else {
-                ok_literal_node!(Bool, literal_node.sp, true)
+                ok_value_node!(Bool, input_node.sp, true)
             }
         },
         Value::Float(float) => {
             if float == 0.0 {
-                ok_literal_node!(Bool, literal_node.sp, false)
+                ok_value_node!(Bool, input_node.sp, false)
             } else {
-                ok_literal_node!(Bool, literal_node.sp, true)
+                ok_value_node!(Bool, input_node.sp, true)
             }
         },
         Value::Char(character) => {
             if character == b'\0' {
-                ok_literal_node!(Bool, literal_node.sp, false)
+                ok_value_node!(Bool, input_node.sp, false)
             } else {
-                ok_literal_node!(Bool, literal_node.sp, true)
+                ok_value_node!(Bool, input_node.sp, true)
             }
         },
     }
 }
 
-fn cast_literal_to_float<'a>(
-    literal_node: Node<'a, Value>
+fn cast_to_float<'a>(
+    input_node: Node<'a, Value>
 ) -> Result<Node<'a, Value>, SemanticError> {
-    match literal_node.data {
+    match input_node.data {
         Value::Bool(boolean) => {
             if boolean {
-                ok_literal_node!(Float, literal_node.sp, 1.0)
+                ok_value_node!(Float, input_node.sp, 1.0)
             } else {
-                ok_literal_node!(Float, literal_node.sp, 0.0)
+                ok_value_node!(Float, input_node.sp, 0.0)
             }
         },
         Value::Int(integer) => {
-            ok_literal_node!(Float, literal_node.sp, integer as f32)
+            ok_value_node!(Float, input_node.sp, integer as f32)
         },
-        Value::Float(_) => Ok(literal_node),
+        Value::Float(_) => Ok(input_node),
         Value::Char(character) => {
-            ok_literal_node!(Float, literal_node.sp, character as f32)
+            ok_value_node!(Float, input_node.sp, character as f32)
         },
     }
 }
 
-fn cast_literal_to_char<'a>(
-    literal_node: Node<'a, Value>
+fn cast_to_char<'a>(
+    input_node: Node<'a, Value>
 ) -> Result<Node<'a, Value>, SemanticError> {
-    match literal_node.data {
+    match input_node.data {
         Value::Bool(boolean) => {
             if boolean {
-                ok_literal_node!(Char, literal_node.sp, 1)
+                ok_value_node!(Char, input_node.sp, 1)
             } else {
-                ok_literal_node!(Char, literal_node.sp, b'\0')
+                ok_value_node!(Char, input_node.sp, b'\0')
             }
         },
         Value::Int(integer) => {
@@ -113,13 +112,13 @@ fn cast_literal_to_char<'a>(
                 Err(
                     SemanticError::IntToCharCastOverflow(
                         IntToCharCastOverflowError::init(
-                            literal_node.sp,
+                            input_node.sp,
                             &format!("Int literal out of range for char: {}", integer)
                         )
                     )
                 )
             } else {
-                ok_literal_node!(Char, literal_node.sp, integer as u8)
+                ok_value_node!(Char, input_node.sp, integer as u8)
             }
         },
         Value::Float(float) => {
@@ -127,47 +126,47 @@ fn cast_literal_to_char<'a>(
                 Err(
                     SemanticError::FloatToCharCastOverflow(
                         FloatToCharCastOverflowError::init(
-                            literal_node.sp,
+                            input_node.sp,
                             &format!("Float literal out of range for char: {}", float)
                         )
                     )
                 )
             } else {
-                ok_literal_node!(Char, literal_node.sp, float as u8)
+                ok_value_node!(Char, input_node.sp, float as u8)
             }
         },
-        Value::Char(_) => Ok(literal_node),
+        Value::Char(_) => Ok(input_node),
     }
 }
 
-fn cast_literal_to_int<'a>(
-    literal_node: Node<'a, Value>
+fn cast_to_int<'a>(
+    input_node: Node<'a, Value>
 ) -> Result<Node<'a, Value>, SemanticError> {
-    match literal_node.data {
+    match input_node.data {
         Value::Bool(boolean) => {
             if boolean {
-                ok_literal_node!(Int, literal_node.sp, 1)
+                ok_value_node!(Int, input_node.sp, 1)
             } else {
-                ok_literal_node!(Int, literal_node.sp, 0)
+                ok_value_node!(Int, input_node.sp, 0)
             }
         },
-        Value::Int(_) => Ok(literal_node),
+        Value::Int(_) => Ok(input_node),
         Value::Float(float) => {
             if float > i16::MAX as f32 || float < i16::MIN as f32 {
                 Err(
                     SemanticError::FloatToIntCastOverflow(
                         FloatToIntCastOverflowError::init(
-                            literal_node.sp,
+                            input_node.sp,
                             &format!("Float literal out of range for int: {}", float)
                         )
                     )
                 )
             } else {
-                ok_literal_node!(Int, literal_node.sp, float as i16)
+                ok_value_node!(Int, input_node.sp, float as i16)
             }
         },
         Value::Char(character) => {
-            ok_literal_node!(Int, literal_node.sp, character as i16)
+            ok_value_node!(Int, input_node.sp, character as i16)
         },
     }
 }
@@ -175,22 +174,22 @@ fn cast_literal_to_int<'a>(
 /// this function is used to cast a literal to a given type
 /// 
 /// It checks overflows and underflows, as well as invalid values
-pub fn cast_literal_to_type<'a>(
-    input_literal_node: Node<'a, Value>,
+pub fn cast_to_type<'a>(
+    input_node: Node<'a, Value>,
     target_type: TypeSpecifier,
 ) -> Result<Node<'a, Value>, SemanticError> {
     match target_type {
         TypeSpecifier::Bool => {
-            cast_literal_to_bool(input_literal_node)
+            cast_to_bool(input_node)
         },
         TypeSpecifier::Float => {
-            cast_literal_to_float(input_literal_node)
+            cast_to_float(input_node)
         },
         TypeSpecifier::Char => {
-            cast_literal_to_char(input_literal_node)
+            cast_to_char(input_node)
         },
         TypeSpecifier::Int => {
-            cast_literal_to_int(input_literal_node)
+            cast_to_int(input_node)
         },
     }
 }

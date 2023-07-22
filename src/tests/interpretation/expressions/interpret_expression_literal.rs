@@ -77,7 +77,7 @@ fn test_interpret_expression_literal() {
     let literal_1_statement = &literal_1_statement_node.data;
 
     let literal_1_expression = match literal_1_statement {
-        Statement::Assignment(assign_statement) => &assign_statement.expression,
+        Statement::Assignment(assign_statement) => &assign_statement.right_expr,
         other => panic!("Expected an assignment statement. Got instead {:?}", other)
     };
 
