@@ -71,6 +71,9 @@ pub enum SemanticError {
     CharOverflow(CharOverflowError),
     BoolOverflow(BoolOverflowError),
 
+    // loop
+    MaxLoopIteration(MaxLoopIterationError),
+
     // inherited from previous errors
     ASTBuilding(ASTBuildingError), // not direct semantic error, but used in semantic analysis
     SyntaxParsing(SyntaxParsingError),
@@ -92,6 +95,7 @@ define_and_implement_semantic_error!(BoolOverflowError);
 define_and_implement_semantic_error!(DivisionByZeroError);
 define_and_implement_semantic_error!(UnexpectedStatementParsingError);
 define_and_implement_semantic_error!(SyntaxParsingError);
+define_and_implement_semantic_error!(MaxLoopIterationError);
 
 impl fmt::Display for SemanticError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -112,6 +116,7 @@ impl fmt::Display for SemanticError {
             SemanticError::DivisionByZero(error) => write!(f, "{}", error),
             SemanticError::UnexpectedStatementParsing(error) => write!(f, "{}", error),
             SemanticError::SyntaxParsing(error) => write!(f, "{}", error),
+            SemanticError::MaxLoopIteration(error) => write!(f, "{}", error),
         }
     }
 }

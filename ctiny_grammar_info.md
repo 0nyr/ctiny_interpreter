@@ -52,6 +52,7 @@ Dependencies and libraries
 * empty statements like `;;;` are not allowed.
 * array sizes must be positive
 * chars for identifiers are only ASCII letters and digits. Not special characters like '\0' handled by the grammar parser. But since our chars internal representation are 1 byte long, they can contain special characters after a cast for instance. To be closer to C chars, I have choosen not to consider the conversion results as overflow (as long at the char u8 is positive and doesn't overflow).
+* In order to detect infinite loop, and considering that the language is simple, with no definitions or return possible inside a While loop, there is a maximum for the number of iteration of a given while. This maximum can be set manually.
 
 ### Note about my EBNF notation
 

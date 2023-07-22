@@ -7,12 +7,18 @@
 
 ## Logs
 
+### Sat 22 Jul 2023
+
+* Added Assignment statement interpretation and testing
+* Added If-else statement interpretation and testing
+* Added while-loop statement interpretation and testing
+
 ### Fri 21 Jul 2023
 
 * Added modulo operation and testing
 * Added comparison operations and testing
 
-* [ ] Continue BinaryExpression interpretation.
+* [X] Continue BinaryExpression interpretation.
 
 ### Thu 20 Jul 2023
 

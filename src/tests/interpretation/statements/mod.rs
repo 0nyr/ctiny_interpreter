@@ -14,6 +14,8 @@ mod interpret_statement_assignment_normal_value;
 mod interpret_statement_assignment_array_value;
 #[cfg(test)]
 mod interpret_statement_if_else;
+#[cfg(test)]
+mod interpret_statement_while_loop;
 
 pub fn interpret_statement_to_value_for_testing<'a>(
     test_str: &'a str,

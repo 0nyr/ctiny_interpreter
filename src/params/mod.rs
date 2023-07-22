@@ -69,13 +69,33 @@ lazy_static! {
     pub static ref ARGV: argv::Argv = argv::get_program_args();
 
     // config
-    static ref LOGGER_MODE: String = {
+    pub static ref LOGGER_MODE: String = {
         let logger_mode = std::env::var("LOGGER_MODE");
         match logger_mode {
             Ok(mode) => mode,
             Err(_) => {
                 println!("LOGGER_MODE environment variable not set. Defaulting to 'info'.");
                 return "info".to_string();
+            },
+        }
+    };
+
+    // constants
+    pub static ref MAX_NB_OF_LOOP_ITERATIONS: u32 = {
+        let max_nb_of_loop_iterations = std::env::var("MAX_NB_OF_LOOP_ITERATIONS");
+        match max_nb_of_loop_iterations {
+            Ok(max_nb_of_loop_iterations) => {
+                match max_nb_of_loop_iterations.parse::<u32>() {
+                    Ok(max_nb_of_loop_iterations) => max_nb_of_loop_iterations,
+                    Err(_) => {
+                        println!("MAX_NB_OF_LOOP_ITERATIONS environment variable is not a valid u32. Defaulting to 1000.");
+                        return 1000;
+                    },
+                }
+            },
+            Err(_) => {
+                println!("MAX_NB_OF_LOOP_ITERATIONS environment variable not set. Defaulting to 1000.");
+                return 1000;
             },
         }
     };

@@ -1,5 +1,6 @@
 use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, UnaryOperator, TypeSpecifier, Statement, AssignmentStatement};
-use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedStatementParsingError, UnexpectedTypeCastError};
+use crate::params::MAX_NB_OF_LOOP_ITERATIONS;
+use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedStatementParsingError, UnexpectedTypeCastError, MaxLoopIterationError};
 use crate::semantic::operations::perform_binary_operation;
 use crate::semantic::type_casts::cast_to_type;
 use crate::symbol_table::structs::SymbolTable;
@@ -63,6 +64,38 @@ fn interpret_assignment_statement<'a>(
     }
 }
 
+fn get_bool_from_condition_interpretation<'a>(
+    condition_node: &Node<'a, Expression<'a>>,
+    symbol_table: &mut SymbolTable,
+    current_scope_node_id: &Node<'a, Identifier>,
+) -> Result<bool, SemanticError> {
+    let condition_value_node = interpret_expression(
+        &condition_node, 
+        symbol_table,
+        current_scope_node_id
+    )?;
+    let real_condition_value = cast_to_type(
+        condition_value_node,
+        TypeSpecifier::Bool
+    )?;
+    let real_condition = match real_condition_value.data {
+        Value::Bool(bool_value) => bool_value,
+        _ => {
+            return Err(SemanticError::UnexpectedTypeCast(
+                UnexpectedTypeCastError::init(
+                real_condition_value.sp,
+                format!(
+                        "condition interpretation error: expected bool, got {:?}",
+                        real_condition_value.data
+                    ).as_str(),
+                )
+            ));
+        },
+    };
+
+    Ok(real_condition)
+}
+
 fn interpret_if_statement<'a>(
     if_statement: &Node<'a, Statement<'a>>,
     symbol_table: &mut SymbolTable,
@@ -86,29 +119,11 @@ fn interpret_if_statement<'a>(
     };
 
     // first, interpret the condition
-    let condition_value_node = interpret_expression(
+    let real_condition = get_bool_from_condition_interpretation(
         &if_statement.condition, 
-        symbol_table,
+        symbol_table, 
         current_scope_node_id
     )?;
-    let real_condition_value = cast_to_type(
-        condition_value_node,
-        TypeSpecifier::Bool
-    )?;
-    let real_condition = match real_condition_value.data {
-        Value::Bool(bool_value) => bool_value,
-        _ => {
-            return Err(SemanticError::UnexpectedTypeCast(
-                UnexpectedTypeCastError::init(
-                real_condition_value.sp,
-                format!(
-                        "interpret_if_statement: expected bool, got {:?}",
-                        real_condition_value.data
-                    ).as_str(),
-                )
-            ));
-        },
-    };
 
     // then, interpret what should be done according to the condition
     if real_condition {
@@ -139,6 +154,74 @@ fn interpret_if_statement<'a>(
     Ok(())
 }
 
+fn interpret_while_statement<'a>(
+    while_statement_node: &Node<'a, Statement<'a>>,
+    symbol_table: &mut SymbolTable,
+    current_scope_node_id: &Node<'a, Identifier>,
+) -> Result<(), SemanticError> {
+    let while_statement = match &while_statement_node.data {
+        Statement::While(while_statement) => {
+            while_statement
+        },
+        _ => {
+            return Err(SemanticError::UnexpectedStatementParsing(
+                UnexpectedStatementParsingError::init(
+                    while_statement_node.sp,
+                    format!(
+                        "interpret_while_statement called on a non WhileStatement expression: {:?}", 
+                        while_statement_node.data
+                    ).as_str(),
+                )
+            ));
+        },
+    };
+
+    // first, interpret the condition for the first time
+    let mut real_condition = get_bool_from_condition_interpretation(
+        &while_statement.condition, 
+        symbol_table, 
+        current_scope_node_id
+    )?;
+
+    // then, interpret what should be done according to the condition
+    let mut loop_number: u32 = 0;
+    while real_condition {
+        // check if the iteration limit has been reached
+        if loop_number >= *MAX_NB_OF_LOOP_ITERATIONS {
+            return Err(SemanticError::MaxLoopIteration(
+                MaxLoopIterationError::init(
+                    while_statement_node.sp,
+                    format!(
+                        "Maximum number of loop iteration reached (max: {}).",
+                        *MAX_NB_OF_LOOP_ITERATIONS
+                    ).as_str(),
+                )
+            ));
+        }
+
+        // interpret the while block
+        let while_body = &while_statement.body;
+        for statement_node in while_body {
+            interpret_statement(
+                statement_node, 
+                symbol_table, 
+                current_scope_node_id
+            )?;
+        }
+
+        // re-evaluate the condition
+        real_condition = get_bool_from_condition_interpretation(
+            &while_statement.condition, 
+            symbol_table, 
+            current_scope_node_id
+        )?;
+        loop_number += 1;
+    }
+
+    // once all the statements of all loops have been interpreted, we can return
+    Ok(())
+}
+
 /// Interpret a statement and returns a value as result.
 pub fn interpret_statement<'a>(
     statement_node: &Node<'a, Statement<'a>>,
@@ -156,9 +239,8 @@ pub fn interpret_statement<'a>(
         Statement::If(_) => {
             interpret_if_statement(statement_node, symbol_table, current_scope_node_id)
         }
-        // Statement::While(while_statement) => {
-        //     interpret_while_statement(while_statement, symbol_table, current_scope_node_id)
-        // }
-        _ => {panic!("TODO: interpret_statement: {:?}", statement_node.data)}
+        Statement::While(_) => {
+            interpret_while_statement(statement_node, symbol_table, current_scope_node_id)
+        }
     }
 }
