@@ -70,6 +70,48 @@ fn test_ast_if_else() {
 }
 
 #[test]
+fn test_ast_nested_if_else() {
+    let test_string = "if (a < 10) { if (a % 2 == 0) {} } else { if (a % 2 == 0) {} else {} }";
+    let pairs = match CTinyParser::parse(Rule::if_else_statement, test_string) {
+        Ok(pairs) => pairs,
+        Err(error) => {
+            print!("Syntax parsing error for {}: \n {}\n", test_string, error);
+            panic!();
+        },
+    };
+    
+    let first_pair = pairs.clone().next().unwrap();
+    assert_eq!(first_pair.as_rule(), Rule::if_else_statement);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    print!("nb pairs: {}\n", pairs.clone().count());
+    for pair in pairs.clone() {
+        println!("Rule: {:?}, Text: {}", pair.as_rule(), pair.as_str());
+    }
+}
+
+#[test]
+fn test_ast_nested_if_while() {
+    let test_string = "if (a < 10) { if (a % 2 == 0) { a = a + 1; } } else { while (a % 2 == 0) { a = a + 1; } }";
+    let pairs = match CTinyParser::parse(Rule::if_else_statement, test_string) {
+        Ok(pairs) => pairs,
+        Err(error) => {
+            print!("Syntax parsing error for {}: \n {}\n", test_string, error);
+            panic!();
+        },
+    };
+    
+    let first_pair = pairs.clone().next().unwrap();
+    assert_eq!(first_pair.as_rule(), Rule::if_else_statement);
+    assert_eq!(first_pair.as_str(), test_string);
+
+    print!("nb pairs: {}\n", pairs.clone().count());
+    for pair in pairs.clone() {
+        println!("Rule: {:?}, Text: {}", pair.as_rule(), pair.as_str());
+    }
+}
+
+#[test]
 fn test_while_statement() {
     build_test_statement!(Rule::while_statement,
         "while (true) { }",
@@ -104,29 +146,3 @@ fn test_ast_statement() {
         "while (a < 10) { if (a % 2 == 0) { a = a + 1; } else { a = a + 2; } }"
     );
 }
-
-
-// #[test]
-// fn test_ast_relation_comp_or_eq() {
-//         let test_string = "(1 <= 2)";
-
-//         // pair parsing
-//         let pairs = CTinyParser::parse(Rule::expression, test_string)
-//             .unwrap();
-
-//         // print all pairs
-//         let nb_pairs = pairs.clone().count();
-//         print!("nb pairs: {}\n", nb_pairs);
-//         for pair in pairs.clone().into_iter() {
-//             print!("pair {:?}: {}\n", pair.as_rule(), pair.as_str());
-//         }
-
-//         let first_pair = pairs.into_iter().next().unwrap();
-//         assert_eq!(first_pair.as_rule(), Rule::relation);
-//         assert_eq!(first_pair.as_str(), test_string);
-
-//         // AST conversion
-//         let ast = build_statement(first_pair)
-//         .unwrap_or_else(|error| { print!("{}\n", error); panic!(); });
-//         print!("{:#?}", ast);
-// }

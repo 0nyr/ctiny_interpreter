@@ -3,7 +3,7 @@ use pest::{Parser, Span};
 
 use crate::abstract_syntax_tree::statements::build_statement;
 use crate::interpretation::interpret_statement::interpret_statement;
-use crate::semantic::errors::{SemanticError, ASTBuildingError};
+use crate::semantic::errors::{SemanticError, ASTBuildingError, SyntaxParsingError};
 use crate::abstract_syntax_tree::nodes::{Identifier, Node};
 use crate::symbol_table::structs::{Scope, SymbolTable};
 use crate::syntax_parsing::{CTinyParser, Rule};
@@ -12,6 +12,8 @@ use crate::syntax_parsing::{CTinyParser, Rule};
 mod interpret_statement_assignment_normal_value;
 #[cfg(test)]
 mod interpret_statement_assignment_array_value;
+#[cfg(test)]
+mod interpret_statement_if_else;
 
 pub fn interpret_statement_to_value_for_testing<'a>(
     test_str: &'a str,
@@ -19,7 +21,17 @@ pub fn interpret_statement_to_value_for_testing<'a>(
     let rule = Rule::statement;
 
     // Syntax parsing
-    let pairs = CTinyParser::parse(rule, test_str).unwrap();
+    let pairs = match CTinyParser::parse(rule, test_str) {
+        Ok(pairs) => pairs,
+        Err(error) => {
+            print!("Syntax parsing error for {}: \n {}\n", test_str, error);
+            return Err(
+                SemanticError::SyntaxParsing(
+                    SyntaxParsingError::from(error)
+                )
+            );
+        },
+    };
 
     let first_pair = pairs.into_iter().next().unwrap();
     assert_eq!(first_pair.as_rule(), rule);
@@ -64,7 +76,7 @@ pub fn interpret_statement_to_value_for_testing<'a>(
 
 #[macro_export]
 macro_rules! build_interpret_statement_to_value_test {
-    ($test_name:ident, $test_str:expr, ) => {
+    ($test_name:ident, $test_str:expr) => {
         // positive test
         #[test]
         fn $test_name() {
@@ -76,7 +88,7 @@ macro_rules! build_interpret_statement_to_value_test {
             );
 
             // check and print
-            match &interpreted_literal.unwrap().data {
+            match &interpreted_literal {
                 Ok(_) => {
                     print!("Successfully interpreted statement <{}>.\n\n", test_str); 
                 },
@@ -93,6 +105,7 @@ macro_rules! build_interpret_statement_to_value_test {
     ($test_name:ident, $test_str:expr, false) => {
         // negative test
         #[test]
+        #[should_panic]
         fn $test_name() {
             let test_str = $test_str;
 
@@ -104,13 +117,13 @@ macro_rules! build_interpret_statement_to_value_test {
             // check and print
             match interpreted_literal {
                 Ok(interpreted_literal) => {
-                    panic!(
+                    print!(
                         "Expected error, but got Ok stament instead, for statement <{}>.", 
                         test_str,
                     );
                 },
                 Err(error) => {
-                    print!(
+                    panic!(
                         "Expected error occured while interpreting statement <{}>: {}\n\n", 
                         test_str, 
                         error
