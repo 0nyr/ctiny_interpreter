@@ -34,6 +34,16 @@ fn build_scope<'a>(scope_id: Identifier, scope_function: &'a Function<'a>) -> Sc
         }
     }
 
+    // keep argument identifiers in a separate vector
+    let mut scope_args: Option<Vec<Identifier>> = None;
+    if let Some(function_params) = &scope_function.params {
+        scope_args = Some(Vec::new());
+        for param in function_params {
+            let current_declaration = &param.data;
+            scope_args.as_mut().unwrap().push(current_declaration.identifier.data.clone());
+        }
+    }
+
     // add function variables to the variables of the current scope
     let block = &scope_function.body.data;
     for declaration in &block.declarations {
@@ -42,7 +52,7 @@ fn build_scope<'a>(scope_id: Identifier, scope_function: &'a Function<'a>) -> Sc
         scope_vars.insert(current_declaration.identifier.data.clone(), current_var);
     }
 
-    Scope::new(scope_id, scope_vars)
+    Scope::new(scope_id, scope_vars, scope_args)
 }
 
 pub fn build_static_symbol_table<'a>(ast: &AST<'a>) -> SymbolTable {

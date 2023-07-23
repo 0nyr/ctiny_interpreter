@@ -17,6 +17,24 @@ mod interpret_statement_if_else;
 #[cfg(test)]
 mod interpret_statement_while_loop;
 
+
+pub fn create_symbol_table_and_empty_main_scope(
+    test_str: &str
+) -> (SymbolTable, Node<Identifier>) {
+    let mut symbol_table = SymbolTable::new();
+    let main_scope_id_node = Node {
+        sp: Span::new(&test_str, 0, test_str.len()).unwrap(),
+        data: Identifier {name: "main".to_string()},
+    };
+    let main_scope = Scope::new(
+        main_scope_id_node.data.clone(),
+        HashMap::new(),
+        None,
+    );
+    symbol_table.add_scope(main_scope);
+    return (symbol_table, main_scope_id_node);
+}
+
 pub fn interpret_statement_to_value_for_testing<'a>(
     test_str: &'a str,
 ) -> Result<(), SemanticError> {
@@ -57,16 +75,9 @@ pub fn interpret_statement_to_value_for_testing<'a>(
     print!("AST for string \"{}\": \n {:#?} \n\n", test_str, statement_node);
 
     // for the need of the test, build a symbol table from scratch with one scope "main"
-    let mut symbol_table = SymbolTable::new();
-    let main_scope_id_node = Node {
-        sp: Span::new(&test_str, 0, test_str.len()).unwrap(),
-        data: Identifier {name: "main".to_string()},
-    };
-    let main_scope = Scope::new(
-        main_scope_id_node.data.clone(),
-        HashMap::new(),
+    let (mut symbol_table, main_scope_id_node) = create_symbol_table_and_empty_main_scope(
+        test_str,
     );
-    symbol_table.add_scope(main_scope);
 
     // interpretation
     interpret_statement(

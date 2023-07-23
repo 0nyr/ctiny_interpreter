@@ -9,6 +9,7 @@
 
 ### Sun 23 Jul 2023
 
+* Added declaration interpretation and testing.
 
 ### Sat 22 Jul 2023
 

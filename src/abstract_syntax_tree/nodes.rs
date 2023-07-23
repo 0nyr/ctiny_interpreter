@@ -163,7 +163,7 @@ pub struct UnaryExpression<'a> {
 #[derive(Debug, PartialEq)]
 pub struct FunctionCall<'a> {
     pub name: Node<'a, Identifier>,
-    pub arguments: Vec<Expression<'a>>,
+    pub arguments: Vec<Node<'a, Expression<'a>>>,
 }
 
 #[derive(Debug, PartialEq)]

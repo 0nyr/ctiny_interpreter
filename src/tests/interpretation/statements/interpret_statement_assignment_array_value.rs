@@ -89,6 +89,7 @@ pub fn interpret_statement_assignment_array_var<'a>(
     let main_scope = Scope::new(
         main_scope_id_node.data.clone(),
         main_scope_variables,
+        None,
     );
     symbol_table.add_scope(main_scope);
 

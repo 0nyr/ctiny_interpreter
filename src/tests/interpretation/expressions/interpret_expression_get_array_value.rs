@@ -77,6 +77,7 @@ fn interpret_expression_get_value_array_var_for_testing<'a>(
     let main_scope = Scope::new(
         main_scope_id_node.data.clone(),
         main_scope_variables,
+        None,
     );
     symbol_table.add_scope(main_scope);
 

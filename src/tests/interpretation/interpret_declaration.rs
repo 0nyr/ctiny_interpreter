@@ -7,6 +7,7 @@ use crate::abstract_syntax_tree::nodes::{Identifier, Node};
 use crate::symbol_table::structs::{Scope, SymbolTable};
 use crate::syntax_parsing::{CTinyParser, Rule};
 use crate::interpretation::interpret_declaration::interpret_declaration;
+use crate::tests::interpretation::statements::create_symbol_table_and_empty_main_scope;
 
 pub fn interpret_statement_to_value_for_testing<'a>(
     test_str: &'a str,
@@ -48,16 +49,9 @@ pub fn interpret_statement_to_value_for_testing<'a>(
     print!("AST for string \"{}\": \n {:#?} \n\n", test_str, declaration_nodes);
 
     // for the need of the test, build a symbol table from scratch with one scope "main"
-    let mut symbol_table = SymbolTable::new();
-    let main_scope_id_node = Node {
-        sp: Span::new(&test_str, 0, test_str.len()).unwrap(),
-        data: Identifier {name: "main".to_string()},
-    };
-    let main_scope = Scope::new(
-        main_scope_id_node.data.clone(),
-        HashMap::new(),
+    let (mut symbol_table, main_scope_id_node) = create_symbol_table_and_empty_main_scope(
+        test_str,
     );
-    symbol_table.add_scope(main_scope);
 
     // interpretation
     for declaration in declaration_nodes {

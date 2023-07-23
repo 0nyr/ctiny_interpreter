@@ -1,13 +1,13 @@
-use std::collections::HashMap;
-use pest::{Parser, Span};
+use pest::Parser;
 
 use crate::pipelines::parse_content_into_ast;
 use crate::symbol_table::build_static_symbol_table;
-use crate::abstract_syntax_tree::nodes::{Statement, Value, Identifier, TypeSpecifier, Node};
+use crate::abstract_syntax_tree::nodes::{Statement, Value, Identifier, TypeSpecifier};
 use crate::interpretation::interpret_expression::interpret_expression;
-use crate::symbol_table::structs::{NormalVarData, Variable, Scope, SymbolTable};
+use crate::symbol_table::structs::{NormalVarData, Variable, Scope};
 use crate::abstract_syntax_tree::expressions::build_expression;
 use crate::syntax_parsing::{CTinyParser, Rule};
+use crate::tests::interpretation::statements::create_symbol_table_and_empty_main_scope;
 
 macro_rules! create_literal_test {
     ($test_str:expr, $test_value:expr, $rule:expr, $literal_conversion:ident) => {
@@ -27,16 +27,9 @@ macro_rules! create_literal_test {
         print!("AST for string \"{}\": \n {:#?} \n\n", $test_str, expression_node);
 
         // for the need of the test, build a symbol table from scratch with one scope "main"
-        let mut symbol_table = SymbolTable::new();
-        let main_scope_id_node = Node {
-            sp: Span::new(&$test_str, 0, 1).unwrap(),
-            data: Identifier {name: "main".to_string()},
-        };
-        let main_scope = Scope::new(
-            main_scope_id_node.data.clone(),
-            HashMap::new(),
+        let (mut symbol_table, main_scope_id_node) = create_symbol_table_and_empty_main_scope(
+            $test_str,
         );
-        symbol_table.add_scope(main_scope);
 
         // interpretation
         let interpreted_literal = interpret_expression(
@@ -131,16 +124,9 @@ fn test_interpret_expression_literal_int() {
     print!("AST for string \"{}\": \n {:#?} \n\n", test_str, expression_node);
 
     // for the need of the test, build a symbol table from scratch with one scope "main"
-    let mut symbol_table = SymbolTable::new();
-    let main_scope_id_node = Node {
-        sp: Span::new(&test_str, 0, 1).unwrap(),
-        data: Identifier {name: "main".to_string()},
-    };
-    let main_scope = Scope::new(
-        main_scope_id_node.data.clone(),
-        HashMap::new(),
+    let (mut symbol_table, main_scope_id_node) = create_symbol_table_and_empty_main_scope(
+        test_str,
     );
-    symbol_table.add_scope(main_scope);
 
     // interpretation
     let interpreted_literal = interpret_expression(

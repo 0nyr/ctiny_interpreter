@@ -53,6 +53,8 @@ macro_rules! define_and_implement_semantic_error {
 #[derive(Debug)]
 pub enum SemanticError {
     UndeclaredVariable(UndeclaredVariableError),
+    UndeclaredFunction(UndeclaredFunctionError),
+    ArgumentNumberMismatch(ArgumentNumberMismatchError),
     UnexpectedExpressionParsing(UnexpectedExpressionParsingError),
     UnexpectedStatementParsing(UnexpectedStatementParsingError),
     NegativeArrayIndex(NegativeArrayIndexError),
@@ -83,6 +85,8 @@ pub enum SemanticError {
 }
 
 define_and_implement_semantic_error!(UndeclaredVariableError);
+define_and_implement_semantic_error!(UndeclaredFunctionError);
+define_and_implement_semantic_error!(ArgumentNumberMismatchError);
 define_and_implement_semantic_error!(UnexpectedExpressionParsingError);
 define_and_implement_semantic_error!(NegativeArrayIndexError);
 define_and_implement_semantic_error!(UnexpectedLiteralTypeError);
@@ -105,6 +109,8 @@ impl fmt::Display for SemanticError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             SemanticError::UndeclaredVariable(error) => write!(f, "{}", error),
+            SemanticError::UndeclaredFunction(error) => write!(f, "{}", error),
+            SemanticError::ArgumentNumberMismatch(error) => write!(f, "{}", error),
             SemanticError::UnexpectedExpressionParsing(error) => write!(f, "{}", error),
             SemanticError::NegativeArrayIndex(error) => write!(f, "{}", error),
             SemanticError::UnexpectedLiteralType(error) => write!(f, "{}", error),

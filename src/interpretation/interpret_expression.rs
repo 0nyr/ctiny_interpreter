@@ -1,8 +1,10 @@
 use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, UnaryOperator, TypeSpecifier};
-use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait};
+use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, ArgumentNumberMismatchError};
 use crate::semantic::operations::perform_binary_operation;
 use crate::semantic::type_casts::cast_to_type;
 use crate::symbol_table::structs::SymbolTable;
+
+use super::interpret_function::interpret_function;
 
 fn interpret_potential_index<'a>(
     potential_index: &Option<Box<Node<'a, Expression<'a>>>>,
@@ -221,6 +223,76 @@ fn interpret_binary_expression<'a>(
     )
 }
 
+// fn interpret_function_call<'a>(
+//     function_call_node: &Node<'a, Expression<'a>>,
+//     symbol_table: &mut SymbolTable,
+//     current_scope_node_id: &Node<'a, Identifier>,
+// ) -> Result<Node<'a, Value>, SemanticError> {
+//     let function_call = {
+//         match &function_call_node.data {
+//             Expression::FunctionCall(function_call) => {
+//                 function_call
+//             },
+//             _ => {
+//                 return Err(SemanticError::UnexpectedExpressionParsing(
+//                     UnexpectedExpressionParsingError::init(
+//                         function_call_node.sp,
+//                         format!(
+//                             "interpret_function_call called on a non FunctionCall expression: {:?}", 
+//                             function_call_node.data
+//                         ).as_str(),
+//                     )
+//                 ));
+//             },
+//         }
+//     };
+
+//     // check if function scope exists
+//     let function_id_node = &function_call.name;
+//     symbol_table.check_function_exists(function_id_node)?;
+//     let function_scope = symbol_table.get_scope(function_id_node).unwrap();
+
+//     // check that the number or arguments is correct
+//     let expected_number_of_arguments = function_scope.get_number_of_arguments();
+//     let actual_number_of_arguments = function_call.arguments.len();
+//     if expected_number_of_arguments != actual_number_of_arguments {
+//         return Err(SemanticError::ArgumentNumberMismatch(
+//             ArgumentNumberMismatchError::init(
+//                 function_call_node.sp,
+//                 format!(
+//                     "Expected {} arguments, got {} for function {}",
+//                     expected_number_of_arguments,
+//                     actual_number_of_arguments,
+//                     function_id_node.data.name,
+//                 ).as_str()
+//             ),  
+//         ));
+//     }
+
+//     // interpret arguments and set them in the function scope
+//     for i in [0..expected_number_of_arguments] {
+//         let current_expression = &function_call.arguments[i];
+//         let interpreted_expression = interpret_expression(
+//             current_expression, symbol_table, current_scope_node_id
+//         )?;
+//         // NOTE: functions can only have normal variables as arguments
+//         let current_argument_id = function_scope.get_argument_id(i);
+//         let current_argument_id_node = Node {
+//             sp: interpreted_expression.sp,
+//             data: current_argument_id,
+//         };
+//         function_scope.set_normal_variable_value(
+//             &current_argument_id_node,
+//             interpreted_expression,
+//         )?;
+//     }
+
+//     // interpret function
+//     interpret_function(
+//         &function_scope.get_function_node(),
+//         symbol_table,
+//     )
+// }
 
 
 
@@ -243,9 +315,8 @@ pub fn interpret_expression<'a>(
         Expression::BinaryExpression(_) => {
             interpret_binary_expression(expression_node, symbol_table, current_scope_node_id)
         }
-        // TODO: implement function calls after interpreting function is implemented
         // Expression::FunctionCall(function_call) => {
-        //     interpret_function_call(function_call, symbol_table)
+        //     interpret_function_call(function_call, symbol_table, current_scope_node_id)
         // }
         Expression::TypeCast(_) => {
             interpret_type_cast(expression_node, symbol_table, current_scope_node_id)

@@ -262,7 +262,7 @@ pub fn build_expression(pair: pest::iterators::Pair<Rule>) -> Result<Node<Expres
             let arguments = {
                 let mut arguments = Vec::new();
                 for argument in inner {
-                    arguments.push(unwrap_or_err_panic!(build_expression(argument)).data);
+                    arguments.push(unwrap_or_err_panic!(build_expression(argument)));
                 }
                 arguments
             };

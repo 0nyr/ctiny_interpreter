@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait, RedeclarationError}, type_casts::{get_index_value_from_value_node, cast_to_type}}};
+use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait, RedeclarationError, UndeclaredFunctionError}, type_casts::{get_index_value_from_value_node, cast_to_type}}};
 
 #[derive(Debug)]
 pub enum Variable {
@@ -97,12 +97,6 @@ impl ArrayVarData {
     }
 }
 
-// in Ctiny, a scope is equivalent to a block of a function
-pub struct Scope {
-    pub id: Identifier,
-    variables: HashMap<Identifier, Variable>,
-}
-
 pub struct SymbolTable {
     scopes: HashMap<Identifier, Scope>,
 }
@@ -119,6 +113,25 @@ impl SymbolTable {
         self.scopes.get(&scope_id.data)
     }
 
+    pub fn check_function_exists<'a>(
+        &self, 
+        function_id: &Node<'a, Identifier>
+    ) -> Result<(), SemanticError> {
+        let is_function_in_table = self.scopes.contains_key(&function_id.data);
+        if is_function_in_table {
+            Ok(())
+        } else {
+            Err(
+                SemanticError::UndeclaredFunction(
+                    UndeclaredFunctionError::init(
+                        function_id.sp,
+                        &format!("Undeclared function: {}", function_id.data.name)
+                    )
+                )
+            )
+        }
+    }
+
     pub fn get_mut_scope(&mut self, scope_id: &Node<Identifier>) -> Option<&mut Scope> {
         self.scopes.get_mut(&scope_id.data)
     }
@@ -128,11 +141,23 @@ impl SymbolTable {
     }
 }
 
+// in Ctiny, a scope is equivalent to a block of a function
+pub struct Scope {
+    pub id: Identifier,
+    variables: HashMap<Identifier, Variable>,
+    arguments: Option<Vec<Identifier>>,
+}
+
 impl Scope {
-    pub fn new(id: Identifier, variables: HashMap<Identifier, Variable>) -> Self {
+    pub fn new(
+        id: Identifier, 
+        variables: HashMap<Identifier, Variable>,
+        arguments: Option<Vec<Identifier>>,
+    ) -> Self {
         Self {
             id,
             variables,
+            arguments,
         }
     }
 
@@ -332,6 +357,14 @@ impl Scope {
                 Ok(())
             },
         }
+    }
+
+    pub fn get_number_of_arguments(&self) -> usize {
+        self.arguments.as_ref().unwrap().len()
+    }
+
+    pub fn get_argument_id<'a>(&self, index: usize) -> Identifier {
+        self.arguments.as_ref().unwrap()[index].clone()
     }
 }
 
