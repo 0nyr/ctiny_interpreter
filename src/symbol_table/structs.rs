@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait}, type_casts::{get_index_value_from_value_node, cast_to_type}}};
+use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait, RedeclarationError}, type_casts::{get_index_value_from_value_node, cast_to_type}}};
 
 #[derive(Debug)]
 pub enum Variable {
@@ -305,6 +305,30 @@ impl Scope {
             Variable::ArrayVar(array_var_data) => {
                 // set the value
                 array_var_data.set_value(index_node, value_node)?;
+                Ok(())
+            },
+        }
+    }
+
+    // this function adds a new variable to the scope
+    // It checks that the variable is not already declared in the scope
+    pub fn add_variable<'a>(&mut self, variable_node: Node<'a, Variable>) -> Result<(), SemanticError> {
+        let var_id = match &variable_node.data {
+            Variable::NormalVar(normal_var_data) => normal_var_data.id.clone(),
+            Variable::ArrayVar(array_var_data) => array_var_data.id.clone(),
+        };
+        match self.variables.get(&var_id) {
+            Some(_) => Err(
+                SemanticError::Redeclaration(
+                    RedeclarationError::init(
+                        variable_node.sp,
+                        &format!("Variable {} is already declared in this scope", var_id.name)
+                    )
+                )
+            ),
+            None => {
+                // add the variable to the scope
+                self.variables.insert(var_id, variable_node.data);
                 Ok(())
             },
         }

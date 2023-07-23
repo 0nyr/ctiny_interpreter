@@ -7,11 +7,14 @@
 
 ## Logs
 
+### Sun 23 Jul 2023
+
+
 ### Sat 22 Jul 2023
 
 * Added Assignment statement interpretation and testing
 * Added If-else statement interpretation and testing
-* Added while-loop statement interpretation and testing
+* Added While statement interpretation and testing
 
 ### Fri 21 Jul 2023
 

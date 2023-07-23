@@ -77,6 +77,9 @@ pub enum SemanticError {
     // inherited from previous errors
     ASTBuilding(ASTBuildingError), // not direct semantic error, but used in semantic analysis
     SyntaxParsing(SyntaxParsingError),
+
+    // declaration
+    Redeclaration(RedeclarationError),
 }
 
 define_and_implement_semantic_error!(UndeclaredVariableError);
@@ -96,6 +99,7 @@ define_and_implement_semantic_error!(DivisionByZeroError);
 define_and_implement_semantic_error!(UnexpectedStatementParsingError);
 define_and_implement_semantic_error!(SyntaxParsingError);
 define_and_implement_semantic_error!(MaxLoopIterationError);
+define_and_implement_semantic_error!(RedeclarationError);
 
 impl fmt::Display for SemanticError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -117,6 +121,7 @@ impl fmt::Display for SemanticError {
             SemanticError::UnexpectedStatementParsing(error) => write!(f, "{}", error),
             SemanticError::SyntaxParsing(error) => write!(f, "{}", error),
             SemanticError::MaxLoopIteration(error) => write!(f, "{}", error),
+            SemanticError::Redeclaration(error) => write!(f, "{}", error),
         }
     }
 }
