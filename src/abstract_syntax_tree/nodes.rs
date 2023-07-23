@@ -1,11 +1,7 @@
 
 use pest::Span;
 
-// #[derive(Debug, PartialEq, Clone, Copy)]
-// pub struct SpanPosition {
-//     pub start: usize,
-//     pub end: usize,
-// }
+use crate::semantic::errors::{SemanticError, SemanticErrorTrait, UndeclaredFunctionError};
 
 // Base AST node
 #[derive(Debug, PartialEq, Clone)]
@@ -33,6 +29,37 @@ pub type AST<'a> = Node<'a, TranslationUnit<'a>>;
 pub struct TranslationUnit<'a> {
     pub functions: Option<Vec<Node<'a, Function<'a>>>>,
     pub main_function: Node<'a, Function<'a>>,
+}
+
+impl<'a> TranslationUnit<'a> {
+    pub fn get_function_node(
+        &self, function_identifier: Node<'a, Identifier>
+    ) -> Result<&Node<'a, Function<'a>>, SemanticError> {
+        // check if the function is the main function
+        if self.main_function.data.name == function_identifier {
+            return Ok(&self.main_function);
+        } else {
+            // check if the function is in the list of functions
+            if let Some(functions) = &self.functions {
+                for function in functions {
+                    if function.data.name == function_identifier {
+                        return Ok(&function);
+                    }
+                }
+            }
+
+            // the function is not in the list of functions
+            return Err(SemanticError::UndeclaredFunction(
+                UndeclaredFunctionError::init(
+                    function_identifier.sp,
+                    format!(
+                        "Function {:?} is not in the list of functions of this program.", 
+                        function_identifier.data.name
+                    ).as_str(),
+                )
+            ));
+        }
+    }
 }
 
 #[derive(Debug, PartialEq)]

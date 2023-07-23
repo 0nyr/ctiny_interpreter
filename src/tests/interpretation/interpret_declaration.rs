@@ -7,7 +7,7 @@ use crate::abstract_syntax_tree::nodes::{Identifier, Node};
 use crate::symbol_table::structs::{Scope, SymbolTable};
 use crate::syntax_parsing::{CTinyParser, Rule};
 use crate::interpretation::interpret_declaration::interpret_declaration;
-use crate::tests::interpretation::statements::create_symbol_table_and_empty_main_scope;
+use crate::tests::interpretation::create_symbol_table_and_empty_main_scope;
 
 pub fn interpret_statement_to_value_for_testing<'a>(
     test_str: &'a str,

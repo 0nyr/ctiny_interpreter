@@ -1,4 +1,4 @@
-use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, UnaryOperator, TypeSpecifier};
+use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, UnaryOperator, TypeSpecifier, TranslationUnit};
 use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, ArgumentNumberMismatchError};
 use crate::semantic::operations::perform_binary_operation;
 use crate::semantic::type_casts::cast_to_type;
@@ -8,13 +8,14 @@ use super::interpret_function::interpret_function;
 
 fn interpret_potential_index<'a>(
     potential_index: &Option<Box<Node<'a, Expression<'a>>>>,
-    symbol_table: &SymbolTable,
+    symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Option<Node<'a, Value>> {
     match potential_index {
         Some(index) => {
             let interpreted_index = interpret_expression(
-                &index, symbol_table, current_scope_node_id
+                &index, symbol_table, current_scope_node_id, translation_unit
             );
             match interpreted_index {
                 Ok(interpreted_index) => Some(interpreted_index),
@@ -29,8 +30,9 @@ fn interpret_potential_index<'a>(
 
 fn interpret_get_value<'a>(
     expression_node: &Node<'a, Expression<'a>>, 
-    symbol_table: &SymbolTable,
+    symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<Node<'a, Value>, SemanticError> {
     let get_or_set_value = {
         match &expression_node.data {
@@ -53,7 +55,7 @@ fn interpret_get_value<'a>(
     let identifier = &get_or_set_value.identifier;
     let potential_index = &get_or_set_value.index;
     let potential_index_value = interpret_potential_index(
-        potential_index, symbol_table, current_scope_node_id
+        potential_index, symbol_table, current_scope_node_id, translation_unit
     );
 
     let current_scope = symbol_table.get_scope(current_scope_node_id).unwrap();
@@ -62,8 +64,9 @@ fn interpret_get_value<'a>(
 
 fn interpret_type_cast<'a>(
     expression_node: &Node<'a, Expression<'a>>,
-    symbol_table: &SymbolTable,
+    symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<Node<'a, Value>, SemanticError> {
     let type_cast = {
         match &expression_node.data {
@@ -85,7 +88,7 @@ fn interpret_type_cast<'a>(
     };
     let target_type = type_cast.type_specifier;
     let interpreted_expression = interpret_expression(
-        &type_cast.expression, symbol_table, current_scope_node_id
+        &type_cast.expression, symbol_table, current_scope_node_id, translation_unit
     )?;
 
     cast_to_type(
@@ -95,8 +98,9 @@ fn interpret_type_cast<'a>(
 
 fn interpret_unary_expression<'a>(
     expression_node: &Node<'a, Expression<'a>>,
-    symbol_table: &SymbolTable,
+    symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<Node<'a, Value>, SemanticError> {
     let unary_expression = {
         match &expression_node.data {
@@ -117,7 +121,7 @@ fn interpret_unary_expression<'a>(
         }
     };
     let interpreted_expression = interpret_expression(
-        &unary_expression.expression, symbol_table, current_scope_node_id
+        &unary_expression.expression, symbol_table, current_scope_node_id, translation_unit
     )?;
     match unary_expression.operator {
         UnaryOperator::Negation => {
@@ -189,8 +193,9 @@ fn interpret_unary_expression<'a>(
 
 fn interpret_binary_expression<'a>(
     expression_node: &Node<'a, Expression<'a>>,
-    symbol_table: &SymbolTable,
+    symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<Node<'a, Value>, SemanticError> {
     let binary_expression = {
         match &expression_node.data {
@@ -211,10 +216,10 @@ fn interpret_binary_expression<'a>(
         }
     };
     let interpreted_left_expression = interpret_expression(
-        &binary_expression.left, symbol_table, current_scope_node_id
+        &binary_expression.left, symbol_table, current_scope_node_id, translation_unit 
     )?;
     let interpreted_right_expression = interpret_expression(
-        &binary_expression.right, symbol_table, current_scope_node_id
+        &binary_expression.right, symbol_table, current_scope_node_id, translation_unit
     )?;
     perform_binary_operation(
         &interpreted_left_expression,
@@ -223,84 +228,89 @@ fn interpret_binary_expression<'a>(
     )
 }
 
-// fn interpret_function_call<'a>(
-//     function_call_node: &Node<'a, Expression<'a>>,
-//     symbol_table: &mut SymbolTable,
-//     current_scope_node_id: &Node<'a, Identifier>,
-// ) -> Result<Node<'a, Value>, SemanticError> {
-//     let function_call = {
-//         match &function_call_node.data {
-//             Expression::FunctionCall(function_call) => {
-//                 function_call
-//             },
-//             _ => {
-//                 return Err(SemanticError::UnexpectedExpressionParsing(
-//                     UnexpectedExpressionParsingError::init(
-//                         function_call_node.sp,
-//                         format!(
-//                             "interpret_function_call called on a non FunctionCall expression: {:?}", 
-//                             function_call_node.data
-//                         ).as_str(),
-//                     )
-//                 ));
-//             },
-//         }
-//     };
+fn interpret_function_call<'a>(
+    function_call_node: &Node<'a, Expression<'a>>,
+    symbol_table: &mut SymbolTable,
+    current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
+) -> Result<Node<'a, Value>, SemanticError> {
+    let function_call = {
+        match &function_call_node.data {
+            Expression::FunctionCall(function_call) => {
+                function_call
+            },
+            _ => {
+                return Err(SemanticError::UnexpectedExpressionParsing(
+                    UnexpectedExpressionParsingError::init(
+                        function_call_node.sp,
+                        format!(
+                            "interpret_function_call called on a non FunctionCall expression: {:?}", 
+                            function_call_node.data
+                        ).as_str(),
+                    )
+                ));
+            },
+        }
+    };
 
-//     // check if function scope exists
-//     let function_id_node = &function_call.name;
-//     symbol_table.check_function_exists(function_id_node)?;
-//     let function_scope = symbol_table.get_scope(function_id_node).unwrap();
+    // check if function scope exists
+    let function_id_node = function_call.name.clone();
+    symbol_table.check_function_exists(&function_id_node)?;
+    let function_scope = symbol_table.get_scope(&function_id_node).unwrap();
 
-//     // check that the number or arguments is correct
-//     let expected_number_of_arguments = function_scope.get_number_of_arguments();
-//     let actual_number_of_arguments = function_call.arguments.len();
-//     if expected_number_of_arguments != actual_number_of_arguments {
-//         return Err(SemanticError::ArgumentNumberMismatch(
-//             ArgumentNumberMismatchError::init(
-//                 function_call_node.sp,
-//                 format!(
-//                     "Expected {} arguments, got {} for function {}",
-//                     expected_number_of_arguments,
-//                     actual_number_of_arguments,
-//                     function_id_node.data.name,
-//                 ).as_str()
-//             ),  
-//         ));
-//     }
+    // check that the number or arguments is correct
+    let expected_number_of_arguments = function_scope.get_number_of_arguments();
+    let actual_number_of_arguments = function_call.arguments.len();
+    if expected_number_of_arguments != actual_number_of_arguments {
+        return Err(SemanticError::ArgumentNumberMismatch(
+            ArgumentNumberMismatchError::init(
+                function_call_node.sp,
+                format!(
+                    "Expected {} arguments, got {} for function {}",
+                    expected_number_of_arguments,
+                    actual_number_of_arguments,
+                    function_id_node.data.name,
+                ).as_str()
+            ),  
+        ));
+    }
 
-//     // interpret arguments and set them in the function scope
-//     for i in [0..expected_number_of_arguments] {
-//         let current_expression = &function_call.arguments[i];
-//         let interpreted_expression = interpret_expression(
-//             current_expression, symbol_table, current_scope_node_id
-//         )?;
-//         // NOTE: functions can only have normal variables as arguments
-//         let current_argument_id = function_scope.get_argument_id(i);
-//         let current_argument_id_node = Node {
-//             sp: interpreted_expression.sp,
-//             data: current_argument_id,
-//         };
-//         function_scope.set_normal_variable_value(
-//             &current_argument_id_node,
-//             interpreted_expression,
-//         )?;
-//     }
+    // interpret arguments and set them in the function scope
+    for i in 0..expected_number_of_arguments {
+        let current_expression = &function_call.arguments[i];
+        let interpreted_expression = interpret_expression(
+            current_expression, symbol_table, current_scope_node_id, translation_unit
+        )?;
+        // NOTE: functions can only have normal variables as arguments
+        // This is because we don't have any pointers or references in our language.
+        let function_scope_mut = symbol_table.get_mut_scope(&function_id_node).unwrap();
+        let current_argument_id = function_scope_mut.get_argument_id(i);
+        let current_argument_id_node = Node {
+            sp: interpreted_expression.sp,
+            data: current_argument_id,
+        };
+        function_scope_mut.set_normal_variable_value(
+            &current_argument_id_node,
+            interpreted_expression,
+        )?;
+    }
 
-//     // interpret function
-//     interpret_function(
-//         &function_scope.get_function_node(),
-//         symbol_table,
-//     )
-// }
+    // interpret function
+    interpret_function(
+        translation_unit.get_function_node(function_id_node)?,
+        symbol_table,
+        translation_unit,
+    )
+}
 
 
 
 /// interpret an expression and return a value
 pub fn interpret_expression<'a>(
     expression_node: &Node<'a, Expression<'a>>,
-    symbol_table: &SymbolTable,
+    symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>, // for function calls
 ) -> Result<Node<'a, Value>, SemanticError> {
     match &expression_node.data {
         Expression::Literal(literal) => {
@@ -310,21 +320,45 @@ pub fn interpret_expression<'a>(
             })
         },
         Expression::UnaryExpression(_) => {
-            interpret_unary_expression(expression_node, symbol_table, current_scope_node_id)
+            interpret_unary_expression(
+                expression_node, 
+                symbol_table, 
+                current_scope_node_id, 
+                translation_unit
+            )
         }
         Expression::BinaryExpression(_) => {
-            interpret_binary_expression(expression_node, symbol_table, current_scope_node_id)
+            interpret_binary_expression(
+                expression_node, 
+                symbol_table, 
+                current_scope_node_id, 
+                translation_unit
+            )
         }
-        // Expression::FunctionCall(function_call) => {
-        //     interpret_function_call(function_call, symbol_table, current_scope_node_id)
-        // }
+        Expression::FunctionCall(_) => {
+            interpret_function_call(
+                expression_node, 
+                symbol_table, 
+                current_scope_node_id, 
+                translation_unit
+            )
+        }
         Expression::TypeCast(_) => {
-            interpret_type_cast(expression_node, symbol_table, current_scope_node_id)
+            interpret_type_cast(
+                expression_node, 
+                symbol_table, 
+                current_scope_node_id, 
+                translation_unit
+            )
         }
         Expression::GetOrSetValue(_) => {
             // a GetOrSetValue evaluated as an expression is a GetValue operation
-            interpret_get_value(expression_node, symbol_table, current_scope_node_id)
+            interpret_get_value(
+                expression_node, 
+                symbol_table, 
+                current_scope_node_id,
+                translation_unit
+            )
         }
-        _ => {panic!("TODO: interpret_expression: {:?}", expression_node.data)}
     }
 }

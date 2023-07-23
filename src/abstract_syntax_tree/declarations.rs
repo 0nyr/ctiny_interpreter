@@ -16,6 +16,9 @@ pub fn build_parameter_list(pair: pest::iterators::Pair<Rule>) -> Result<Vec<Nod
 
     for inner_pair in pair.into_inner() {
         let parameter_node = unwrap_or_err_panic!(build_declaration(inner_pair));
+        
+        // TODO: check that the parameter is not an array
+        
         parameters.push(parameter_node);
     }
     Ok(parameters)

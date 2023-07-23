@@ -7,7 +7,7 @@ use crate::interpretation::interpret_expression::interpret_expression;
 use crate::symbol_table::structs::{Scope, SymbolTable};
 use crate::abstract_syntax_tree::expressions::build_expression;
 use crate::syntax_parsing::{CTinyParser, Rule};
-use crate::tests::interpretation::statements::create_symbol_table_and_empty_main_scope;
+use crate::tests::interpretation::{create_symbol_table_and_empty_main_scope, create_pseudo_translation_unit};
 
 pub fn interpret_expression_to_value_for_testing<'a>(
     test_str: &'a str,
@@ -42,12 +42,15 @@ pub fn interpret_expression_to_value_for_testing<'a>(
     let (mut symbol_table, main_scope_id_node) = create_symbol_table_and_empty_main_scope(
         test_str,
     );
-
+    
     // interpretation
+    let pseudo_translation_unit = create_pseudo_translation_unit();
     interpret_expression(
         &expression_node,
-        &symbol_table,
+        &mut symbol_table,
         &main_scope_id_node,
+        &pseudo_translation_unit,
+        
     )
 }
 

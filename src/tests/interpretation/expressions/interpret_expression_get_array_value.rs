@@ -7,6 +7,7 @@ use crate::interpretation::interpret_expression::interpret_expression;
 use crate::symbol_table::structs::{Variable, Scope, SymbolTable, ArrayVarData};
 use crate::abstract_syntax_tree::expressions::build_expression;
 use crate::syntax_parsing::{CTinyParser, Rule};
+use crate::tests::interpretation::create_pseudo_translation_unit;
 
 fn interpret_expression_get_value_array_var_for_testing<'a>(
     rule: Rule, 
@@ -100,10 +101,13 @@ fn interpret_expression_get_value_array_var_for_testing<'a>(
     ).unwrap();
 
     // interpretation
+    let pseudo_translation_unit = create_pseudo_translation_unit();
+
     let interpreted_literal = interpret_expression(
         &expression_node,
-        &symbol_table,
+        &mut symbol_table,&
         &main_scope_id_node,
+        &pseudo_translation_unit,
     );
     interpreted_literal
 }

@@ -1,4 +1,4 @@
-use crate::abstract_syntax_tree::nodes::{Node, Declaration, Value, Expression, Identifier, UnaryOperator, TypeSpecifier, Function};
+use crate::abstract_syntax_tree::nodes::{Node, Declaration, Value, Expression, Identifier, UnaryOperator, TypeSpecifier, Function, TranslationUnit};
 use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UndeclaredFunctionError};
 use crate::semantic::operations::perform_binary_operation;
 use crate::semantic::type_casts::cast_to_type;
@@ -14,6 +14,7 @@ use super::interpret_statement::interpret_statement;
 pub fn interpret_function<'a>(
     function_node: &Node<'a, Function<'a>>,
     symbol_table: &mut SymbolTable,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<Node<'a, Value>, SemanticError> {
 
     // get function scope
@@ -32,7 +33,8 @@ pub fn interpret_function<'a>(
         interpret_statement(
             &statement, 
             symbol_table, 
-            function_scope_id_node
+            function_scope_id_node,
+            translation_unit,
         )?;
     }
 
@@ -40,12 +42,27 @@ pub fn interpret_function<'a>(
     let return_value_node = interpret_expression(
         &function_body.data.function_return, 
         symbol_table, 
-        function_scope_id_node
+        function_scope_id_node,
+        translation_unit
     )?;
     let return_of_function_type: Node<'a, Value> = cast_to_type(
         return_value_node, 
         function_node.data.return_type
     )?;
     Ok(return_of_function_type)
+}
+
+/// This function interprets a program and return the value returned by the main function.
+pub fn interpret_translation_unit<'a>(
+    translation_unit: &Node<'a, TranslationUnit<'a>>,
+    symbol_table: &mut SymbolTable,
+) -> Result<Node<'a, Value>, SemanticError> {
+    // interpret main function
+    let main_function_node = &translation_unit.data.main_function;
+    interpret_function(
+        &main_function_node, 
+        symbol_table,
+        &translation_unit.data,
+    )
 }
     

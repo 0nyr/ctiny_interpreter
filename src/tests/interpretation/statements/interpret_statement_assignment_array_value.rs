@@ -9,6 +9,7 @@ use crate::abstract_syntax_tree::nodes::{Identifier, Node, Statement, TypeSpecif
 use crate::semantic::type_casts::get_index_value_from_value_node;
 use crate::symbol_table::structs::{Scope, SymbolTable, Variable, ArrayVarData};
 use crate::syntax_parsing::{CTinyParser, Rule};
+use crate::tests::interpretation::statements::create_pseudo_translation_unit;
 
 pub fn interpret_statement_assignment_array_var<'a>(
     test_str: &'a str,
@@ -47,6 +48,8 @@ pub fn interpret_statement_assignment_array_var<'a>(
         data: Identifier {name: "main".to_string()},
     };
 
+    let pseudo_translation_unit = create_pseudo_translation_unit();
+
     // add array variable to scope main
     let mut main_scope_variables = HashMap::new();
     
@@ -64,6 +67,7 @@ pub fn interpret_statement_assignment_array_var<'a>(
                     &index_node,
                     &mut symbol_table,
                     &main_scope_id_node,
+                    &pseudo_translation_unit,
                 )?;
                 let index_value = get_index_value_from_value_node(
                     interpreted_index
@@ -98,6 +102,7 @@ pub fn interpret_statement_assignment_array_var<'a>(
         &statement_node,
         &mut symbol_table,
         &main_scope_id_node,
+        &pseudo_translation_unit,
     )?;
 
     // return the value of the variable at the index

@@ -1,4 +1,4 @@
-use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, UnaryOperator, TypeSpecifier, Statement, AssignmentStatement};
+use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, UnaryOperator, TypeSpecifier, Statement, AssignmentStatement, TranslationUnit};
 use crate::params::MAX_NB_OF_LOOP_ITERATIONS;
 use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedStatementParsingError, UnexpectedTypeCastError, MaxLoopIterationError};
 use crate::semantic::operations::perform_binary_operation;
@@ -11,6 +11,7 @@ fn interpret_assignment_statement<'a>(
     statement_node: &Node<'a, Statement<'a>>,
     symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<(), SemanticError> {
     let assignment_statement = match &statement_node.data {
         Statement::Assignment(assignment_statement) => {
@@ -33,7 +34,8 @@ fn interpret_assignment_statement<'a>(
     let assignment_value_node = interpret_expression(
         &assignment_statement.right_expr, 
         symbol_table, 
-        current_scope_node_id
+        current_scope_node_id,
+        translation_unit,
     )?;
 
     let var_id_node = assignment_statement.left_var.data.identifier.clone();
@@ -43,7 +45,7 @@ fn interpret_assignment_statement<'a>(
     if let Some(index_expr_node) = potential_index_node {
         // We want to assign a value into an array. We need to interpret the index-expression to get a usable index.
         let index_value_node = interpret_expression(
-            &index_expr_node, symbol_table, current_scope_node_id
+            &index_expr_node, symbol_table, current_scope_node_id, translation_unit
         )?;
 
         // try to set the value of the array
@@ -68,11 +70,13 @@ fn get_bool_from_condition_interpretation<'a>(
     condition_node: &Node<'a, Expression<'a>>,
     symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<bool, SemanticError> {
     let condition_value_node = interpret_expression(
         &condition_node, 
         symbol_table,
-        current_scope_node_id
+        current_scope_node_id,
+        translation_unit,
     )?;
     let real_condition_value = cast_to_type(
         condition_value_node,
@@ -100,6 +104,7 @@ fn interpret_if_statement<'a>(
     if_statement: &Node<'a, Statement<'a>>,
     symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<(), SemanticError> {
     let if_statement = match &if_statement.data {
         Statement::If(if_statement) => {
@@ -122,7 +127,8 @@ fn interpret_if_statement<'a>(
     let real_condition = get_bool_from_condition_interpretation(
         &if_statement.condition, 
         symbol_table, 
-        current_scope_node_id
+        current_scope_node_id,
+        translation_unit,
     )?;
 
     // then, interpret what should be done according to the condition
@@ -133,7 +139,8 @@ fn interpret_if_statement<'a>(
             interpret_statement(
                 statement_node, 
                 symbol_table, 
-                current_scope_node_id
+                current_scope_node_id,
+                translation_unit,
             )?;
         }
     } else {
@@ -144,7 +151,8 @@ fn interpret_if_statement<'a>(
                 interpret_statement(
                     statement_node, 
                     symbol_table, 
-                    current_scope_node_id
+                    current_scope_node_id,
+                    translation_unit,
                 )?;
             }
         }
@@ -158,6 +166,7 @@ fn interpret_while_statement<'a>(
     while_statement_node: &Node<'a, Statement<'a>>,
     symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<(), SemanticError> {
     let while_statement = match &while_statement_node.data {
         Statement::While(while_statement) => {
@@ -180,7 +189,8 @@ fn interpret_while_statement<'a>(
     let mut real_condition = get_bool_from_condition_interpretation(
         &while_statement.condition, 
         symbol_table, 
-        current_scope_node_id
+        current_scope_node_id,
+        translation_unit,
     )?;
 
     // then, interpret what should be done according to the condition
@@ -205,7 +215,8 @@ fn interpret_while_statement<'a>(
             interpret_statement(
                 statement_node, 
                 symbol_table, 
-                current_scope_node_id
+                current_scope_node_id,
+                translation_unit,
             )?;
         }
 
@@ -213,7 +224,8 @@ fn interpret_while_statement<'a>(
         real_condition = get_bool_from_condition_interpretation(
             &while_statement.condition, 
             symbol_table, 
-            current_scope_node_id
+            current_scope_node_id,
+            translation_unit,
         )?;
         loop_number += 1;
     }
@@ -227,20 +239,32 @@ pub fn interpret_statement<'a>(
     statement_node: &Node<'a, Statement<'a>>,
     symbol_table: &mut SymbolTable,
     current_scope_node_id: &Node<'a, Identifier>,
+    translation_unit: &TranslationUnit<'a>,
 ) -> Result<(), SemanticError> {
     match &statement_node.data {
         Statement::Assignment(_) => {
             interpret_assignment_statement(
                 statement_node, 
                 symbol_table, 
-                current_scope_node_id
+                current_scope_node_id,
+                translation_unit,
             )
         }
         Statement::If(_) => {
-            interpret_if_statement(statement_node, symbol_table, current_scope_node_id)
+            interpret_if_statement(
+                statement_node, 
+                symbol_table, 
+                current_scope_node_id,
+                translation_unit,
+            )
         }
         Statement::While(_) => {
-            interpret_while_statement(statement_node, symbol_table, current_scope_node_id)
+            interpret_while_statement(
+                statement_node, 
+                symbol_table, 
+                current_scope_node_id,
+                translation_unit,
+            )
         }
     }
 }

@@ -1,21 +1,31 @@
 # WORKLOG
 
-* [ ] Add symbol table to be able to recognize if an identifier is defined or not ! This sould ensure `cargo run -- -p syntax-parsing -f res/invalid/invalid_program_c.ctiny` detects the unknown identifier `a` at line 6.
-* [ ] Add type system with overflow checking
 * [ ] Correct the .txt grammar with modifications done inside .pest PEG file.
-* [ ] Add a max number of while loop !!
+
+### Refactoring ideas
+
+* [ ] Unify error system between AST an Semantic parts. Actually, the custom complex error system is probably unecessary and could be removed to favor the pest::CustomError instead.
+* [ ] Refactor the test macros and function for more unification and DRYness
+* [ ] Experiment with reference counting on Function and Scope. Rust offers references, which are similar to pointers but with additional guarantees and restrictions for safety, and `Rc` or `Arc` types for shared ownership of data.
 
 ## Logs
 
 ### Sun 23 Jul 2023
 
 * Added declaration interpretation and testing.
+* Added function, function call and translation_unit interpretation.
+
+* [ ] debug translation_unit interpretation
+* [ ] Add more complex tests for translation_unit interpretation.
+* [ ] Integrate syntax checking and interpretation checking into pipelines.
 
 ### Sat 22 Jul 2023
 
 * Added Assignment statement interpretation and testing
 * Added If-else statement interpretation and testing
 * Added While statement interpretation and testing
+
+* [X] Add a max number of while loop !!
 
 ### Fri 21 Jul 2023
 

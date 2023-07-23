@@ -7,7 +7,7 @@ use crate::interpretation::interpret_expression::interpret_expression;
 use crate::symbol_table::structs::{NormalVarData, Variable, Scope};
 use crate::abstract_syntax_tree::expressions::build_expression;
 use crate::syntax_parsing::{CTinyParser, Rule};
-use crate::tests::interpretation::statements::create_symbol_table_and_empty_main_scope;
+use crate::tests::interpretation::{create_symbol_table_and_empty_main_scope, create_pseudo_translation_unit};
 
 macro_rules! create_literal_test {
     ($test_str:expr, $test_value:expr, $rule:expr, $literal_conversion:ident) => {
@@ -30,12 +30,14 @@ macro_rules! create_literal_test {
         let (mut symbol_table, main_scope_id_node) = create_symbol_table_and_empty_main_scope(
             $test_str,
         );
-
+        
         // interpretation
+        let pseudo_translation_unit = create_pseudo_translation_unit();
         let interpreted_literal = interpret_expression(
             &expression_node,
-            &symbol_table,
+            &mut symbol_table,
             &main_scope_id_node,
+            &pseudo_translation_unit,
         )
         .unwrap();
 
@@ -53,7 +55,7 @@ macro_rules! create_literal_test {
 
 #[test]
 fn test_interpret_expression_literal() {
-    let input = "
+    let test_str = "
     int main () {
         int x;
         x = 1;
@@ -62,10 +64,10 @@ fn test_interpret_expression_literal() {
     ";
 
     // syntax parsing
-    let ast = parse_content_into_ast(input, None);
+    let ast = parse_content_into_ast(test_str, None);
     let main_id_node = &ast.data.main_function.data.name;
 
-    let symbol_table = build_static_symbol_table(&ast);
+    let mut symbol_table = build_static_symbol_table(&ast);
     let literal_1_statement_node = &ast.data.main_function.data.body.data.statements[0];
     let literal_1_statement = &literal_1_statement_node.data;
 
@@ -75,10 +77,12 @@ fn test_interpret_expression_literal() {
     };
 
     // interpret the expression
+    let pseudo_translation_unit = create_pseudo_translation_unit();
     let interpreted_literal = interpret_expression(
         literal_1_expression,
-        &symbol_table,
+        &mut symbol_table,
         &main_id_node,
+        &pseudo_translation_unit,
     )
     .unwrap();
 
@@ -129,10 +133,12 @@ fn test_interpret_expression_literal_int() {
     );
 
     // interpretation
+    let pseudo_translation_unit = create_pseudo_translation_unit();
     let interpreted_literal = interpret_expression(
         &expression_node,
-        &symbol_table,
+        &mut symbol_table,
         &main_scope_id_node,
+        &pseudo_translation_unit,
     )
     .unwrap();
 

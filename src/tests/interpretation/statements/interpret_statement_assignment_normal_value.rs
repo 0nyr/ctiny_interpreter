@@ -7,6 +7,7 @@ use crate::semantic::errors::{SemanticError, ASTBuildingError};
 use crate::abstract_syntax_tree::nodes::{Identifier, Node, Statement, TypeSpecifier, Value};
 use crate::symbol_table::structs::{Scope, SymbolTable, NormalVarData, Variable};
 use crate::syntax_parsing::{CTinyParser, Rule};
+use crate::tests::interpretation::statements::create_pseudo_translation_unit;
 
 pub fn interpret_statement_assignment_normal_var<'a>(
     test_str: &'a str,
@@ -68,11 +69,14 @@ pub fn interpret_statement_assignment_normal_var<'a>(
     );
     symbol_table.add_scope(main_scope);
 
+    let pseudo_translation_unit = create_pseudo_translation_unit();
+
     // interpretation
     interpret_statement(
         &statement_node,
         &mut symbol_table,
         &main_scope_id_node,
+        &pseudo_translation_unit,
     )?;
 
     // get value of the variable

@@ -1,12 +1,10 @@
-use std::collections::HashMap;
-use pest::{Parser, Span};
+use pest::Parser;
 
 use crate::abstract_syntax_tree::statements::build_statement;
 use crate::interpretation::interpret_statement::interpret_statement;
 use crate::semantic::errors::{SemanticError, ASTBuildingError, SyntaxParsingError};
-use crate::abstract_syntax_tree::nodes::{Identifier, Node};
-use crate::symbol_table::structs::{Scope, SymbolTable};
 use crate::syntax_parsing::{CTinyParser, Rule};
+use crate::tests::interpretation::{create_symbol_table_and_empty_main_scope, create_pseudo_translation_unit};
 
 #[cfg(test)]
 mod interpret_statement_assignment_normal_value;
@@ -16,24 +14,6 @@ mod interpret_statement_assignment_array_value;
 mod interpret_statement_if_else;
 #[cfg(test)]
 mod interpret_statement_while_loop;
-
-
-pub fn create_symbol_table_and_empty_main_scope(
-    test_str: &str
-) -> (SymbolTable, Node<Identifier>) {
-    let mut symbol_table = SymbolTable::new();
-    let main_scope_id_node = Node {
-        sp: Span::new(&test_str, 0, test_str.len()).unwrap(),
-        data: Identifier {name: "main".to_string()},
-    };
-    let main_scope = Scope::new(
-        main_scope_id_node.data.clone(),
-        HashMap::new(),
-        None,
-    );
-    symbol_table.add_scope(main_scope);
-    return (symbol_table, main_scope_id_node);
-}
 
 pub fn interpret_statement_to_value_for_testing<'a>(
     test_str: &'a str,
@@ -78,12 +58,14 @@ pub fn interpret_statement_to_value_for_testing<'a>(
     let (mut symbol_table, main_scope_id_node) = create_symbol_table_and_empty_main_scope(
         test_str,
     );
+    let pseudo_translation_unit = create_pseudo_translation_unit();
 
     // interpretation
     interpret_statement(
         &statement_node,
         &mut symbol_table,
         &main_scope_id_node,
+        &pseudo_translation_unit,
     )
 }
 
