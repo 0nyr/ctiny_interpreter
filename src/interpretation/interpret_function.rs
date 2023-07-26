@@ -22,13 +22,14 @@ pub fn interpret_function<'a>(
 
     // interpret function body
     let function_body = &function_node.data.body;
-    for declaration in &function_body.data.declarations {
-        interpret_declaration(
-            &declaration, 
-            symbol_table, 
-            function_scope_id_node
-        )?;
-    }
+    // WARN: No need to interpret declarations here, this has been done by the symbol table creation.
+    // for declaration in &function_body.data.declarations {
+    //     interpret_declaration(
+    //         &declaration, 
+    //         symbol_table, 
+    //         function_scope_id_node
+    //     )?;
+    // }
     for statement in &function_body.data.statements {
         interpret_statement(
             &statement, 
@@ -49,6 +50,11 @@ pub fn interpret_function<'a>(
         return_value_node, 
         function_node.data.return_type
     )?;
+
+    // before returning, check that all variables have been assigned a value
+    let function_scope = symbol_table.get_scope(function_scope_id_node).unwrap();
+    function_scope.check_all_variables_have_been_assigned()?;
+
     Ok(return_of_function_type)
 }
 

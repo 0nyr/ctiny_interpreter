@@ -35,14 +35,16 @@ impl<'a> TranslationUnit<'a> {
     pub fn get_function_node(
         &self, function_identifier: Node<'a, Identifier>
     ) -> Result<&Node<'a, Function<'a>>, SemanticError> {
+        let function_name = function_identifier.data.name.clone();
+
         // check if the function is the main function
-        if self.main_function.data.name == function_identifier {
+        if self.main_function.data.name.data.name == function_name {
             return Ok(&self.main_function);
         } else {
             // check if the function is in the list of functions
             if let Some(functions) = &self.functions {
                 for function in functions {
-                    if function.data.name == function_identifier {
+                    if function.data.name.data.name == function_name {
                         return Ok(&function);
                     }
                 }
@@ -54,7 +56,7 @@ impl<'a> TranslationUnit<'a> {
                     function_identifier.sp,
                     format!(
                         "Function {:?} is not in the list of functions of this program.", 
-                        function_identifier.data.name
+                        function_name
                     ).as_str(),
                 )
             ));

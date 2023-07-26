@@ -1,6 +1,7 @@
 # WORKLOG
 
 * [ ] Correct the .txt grammar with modifications done inside .pest PEG file.
+* [ ] Add static identifier check: cast error if an identifier is equal to a keywork... And remove the KEYWORD rule from the pest grammar.
 
 ### Refactoring ideas
 
@@ -10,14 +11,21 @@
 
 ## Logs
 
+### Wed 26 Jul 2023
+
+* Adding more complete program tests
+* Corrected bug with function getter of translation_unit
+* Remove declaration interpretation from function interpretation since this is already done in the symbol table construction process.
+
+* [X] debug translation_unit interpretation
+
+* [X] Add more complex tests for translation_unit interpretation.
+* [ ] Integrate syntax checking and interpretation checking into pipelines.
+
 ### Sun 23 Jul 2023
 
 * Added declaration interpretation and testing.
 * Added function, function call and translation_unit interpretation.
-
-* [ ] debug translation_unit interpretation
-* [ ] Add more complex tests for translation_unit interpretation.
-* [ ] Integrate syntax checking and interpretation checking into pipelines.
 
 ### Sat 22 Jul 2023
 
@@ -52,7 +60,6 @@ Completed tests for casting system between literals.
 * [X] ~~Rework the system of errors in the AST and in the semantic part to use the same system as introduced in the semantic part.~~ Added a `From<Error<Rule>>` for easier manipulation.
 * [X] ~~Rework Literal. Define a new type Value to replace Literal in the Symbol Table.~~ Just renamed Literal to Value. This makes sense since a new type would be a perfect clone of the old Literal struct. It also make sense in the context of an interpreter. The literals are not stored in the AST as unchecked literals but as real Rust values.
 * [X] Add testing for explicit type cast interpretation.
-* [ ] Continue expression interpretation with UnaryExpression.
 
 ### Tue 18 Jul 2023
 

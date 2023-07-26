@@ -53,6 +53,7 @@ macro_rules! define_and_implement_semantic_error {
 #[derive(Debug)]
 pub enum SemanticError {
     UndeclaredVariable(UndeclaredVariableError),
+    UnassignedVariable(UnassignedVariableError),
     UndeclaredFunction(UndeclaredFunctionError),
     ArgumentNumberMismatch(ArgumentNumberMismatchError),
     UnexpectedExpressionParsing(UnexpectedExpressionParsingError),
@@ -104,6 +105,7 @@ define_and_implement_semantic_error!(UnexpectedStatementParsingError);
 define_and_implement_semantic_error!(SyntaxParsingError);
 define_and_implement_semantic_error!(MaxLoopIterationError);
 define_and_implement_semantic_error!(RedeclarationError);
+define_and_implement_semantic_error!(UnassignedVariableError);
 
 impl fmt::Display for SemanticError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -128,6 +130,7 @@ impl fmt::Display for SemanticError {
             SemanticError::SyntaxParsing(error) => write!(f, "{}", error),
             SemanticError::MaxLoopIteration(error) => write!(f, "{}", error),
             SemanticError::Redeclaration(error) => write!(f, "{}", error),
+            SemanticError::UnassignedVariable(error) => write!(f, "{}", error),
         }
     }
 }

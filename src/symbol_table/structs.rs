@@ -1,6 +1,8 @@
 use std::collections::HashMap;
 
-use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait, RedeclarationError, UndeclaredFunctionError}, type_casts::{get_index_value_from_value_node, cast_to_type}}};
+use pest::Span;
+
+use crate::{abstract_syntax_tree::nodes::{Identifier, TypeSpecifier, Value, Node}, semantic::{errors::{SemanticError, UndeclaredVariableError, SemanticErrorTrait, RedeclarationError, UndeclaredFunctionError, UnassignedVariableError}, type_casts::{get_index_value_from_value_node, cast_to_type}}};
 
 #[derive(Debug)]
 pub enum Variable {
@@ -365,6 +367,41 @@ impl Scope {
 
     pub fn get_argument_id<'a>(&self, index: usize) -> Identifier {
         self.arguments.as_ref().unwrap()[index].clone()
+    }
+
+    pub fn check_all_variables_have_been_assigned(&self) -> Result<(), SemanticError> {
+        for (var_id, var) in &self.variables {
+            match var {
+                Variable::NormalVar(normal_var_data) => {
+                    if normal_var_data.get_value().is_none() {
+                        return Err(
+                            SemanticError::UnassignedVariable(
+                                UnassignedVariableError::init(
+                                    Span::new(&var_id.name, 0, var_id.name.len()).unwrap(),
+                                    &format!("Variable {} has not been assigned a value.", var_id.name)
+                                )
+                            )
+                        )
+                    }
+                },
+                Variable::ArrayVar(array_var_data) => {
+                    // knowing the size of the array, check that all values have been assigned from index 0 to size - 1
+                    for index in 0..array_var_data.size {
+                        if array_var_data.get_value(index).is_none() {
+                            return Err(
+                                SemanticError::UnassignedVariable(
+                                    UnassignedVariableError::init(
+                                        Span::new(&var_id.name, 0, var_id.name.len()).unwrap(),
+                                        &format!("Array {} has not been assigned a value at index {}.", var_id.name, index)
+                                    )
+                                )
+                            )
+                        }
+                    }
+                },
+            }
+        }
+        Ok(())
     }
 }
 

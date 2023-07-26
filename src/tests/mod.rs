@@ -3,8 +3,6 @@ mod macros;
 #[cfg(test)]
 mod syntax_parsing_tests;
 #[cfg(test)]
-mod semantic_analysis_tests;
-#[cfg(test)]
 mod symbol_table_tests;
 #[cfg(test)]
 mod type_cast_tests;

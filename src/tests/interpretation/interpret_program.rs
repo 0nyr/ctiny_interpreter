@@ -85,7 +85,7 @@ macro_rules! build_translation_unit_test {
             }
         }
     };
-    ($test_name:ident, $test_str:expr, false) => {
+    ($test_name:ident, $test_str:expr) => {
         // negative test
         #[test]
         #[should_panic]
@@ -101,7 +101,7 @@ macro_rules! build_translation_unit_test {
             match interpreted_literal {
                 Ok(interpreted_literal) => {
                     print!(
-                        "Expected error, but for program <{}>, got program return value <{}> instead.", 
+                        "Expected error, but for program <{}>, got program return value <{:?}> instead.", 
                         test_str,
                         interpreted_literal
                     );
@@ -130,61 +130,193 @@ build_translation_unit_test!(
     Value::Int(42)
 );
 
-// build_translation_unit_test!(
-//     interpret_basic_program_with_declaration_and_assignment,
-//     "int main() { int a; a = 42; return a; }",
-//     Value::Int(42)
-// );
+build_translation_unit_test!(
+    interpret_basic_program_with_declaration_and_assignment,
+    "int main() { int a; a = 42; return a; }",
+    Value::Int(42)
+);
 
-// TODO: fix this test
-#[test]
-fn test_interpret_basic_program_with_declaration_and_assignment() {
-    let test_str = "int main() { int a; a = 42; return a; }";
-    let rule = Rule::translation_unit;
+build_translation_unit_test!(
+    interpret_basic_program_with_declaration_assignment_if,
+    "int main() { int a; a = 42; if (a + 100 > 'a') { a = 'a'; } return a; }",
+    Value::Int(97)
+);
 
-    // Syntax parsing
-    let pairs = match CTinyParser::parse(rule, test_str) {
-        Ok(pairs) => pairs,
-        Err(error) => {
-            panic!("Syntax parsing error for {}: \n {}\n", test_str, error);
-        },
-    };
+build_translation_unit_test!(
+    interpret_basic_program_with_declaration_assignment_while,
+    "int main() { int a; a = 42; while (a > 0) { a = a - 1; } return a; }",
+    Value::Int(0)
+);
 
-    let first_pair = pairs.into_iter().next().unwrap();
-    assert_eq!(first_pair.as_rule(), rule);
-    assert_eq!(first_pair.as_str(), test_str);
+build_translation_unit_test!(
+    interpret_basic_program_with_declaration_assignment_if_while,
+    "int main() { int a; int y; a = 0; y = 10; while (y > 0) { if (a < 100) { a = a + y; } y = y - 1; } return a; }",
+    Value::Int(55)
+);
 
-    // AST conversion
-    let ast = {
-        match build_translation_unit(first_pair) {
-            // need to convert the AST Error into a Semantic Error
-            Ok(translation_unit) => translation_unit,
-            Err(error) => {
-                panic!("AST ERROR for {}: \n {}\n", test_str, error);
-            },
-        }
-    };
-    print!("AST for string \"{}\": \n {:#?} \n\n", test_str, ast);
-
-    // build symbol table
-    let mut symbol_table = build_static_symbol_table(&ast);
-
-    // interpretation
-    let interpreted_value = interpret_translation_unit(
-        &ast,
-        &mut symbol_table,
-    );
-    match interpreted_value {
-        Ok(interpreted_value_node) => {
-            assert_eq!(interpreted_value_node.data, Value::Int(42));
-            print!("Successfully interpreted program <{}>.\n\n", test_str); 
-        },
-        Err(error) => {
-            panic!(
-                "Error interpreting program <{}>: {}\n\n", 
-                test_str, 
-                error
-            );
-        },
+build_translation_unit_test!(
+    interpret_multi_function_program,
+    "
+    int foo(int a) { 
+        a = a + 1;
+        return a; 
     }
-}
+    int main() { 
+        int a;
+        a = 42;
+        a = foo(a);
+        return a; 
+    }",
+    Value::Int(43)
+);
+
+build_translation_unit_test!(
+    interpret_basic_program_with_declaration_assignment_if_while_nested,
+    "
+    int foo(int a) { 
+        while (a > 0) { 
+            a = a - 1; 
+        } 
+        return a; 
+    }
+    int main() { 
+        int a;
+        int y;
+        a = foo(42);
+        y = 10; while (y > 0) { 
+            if (a < 100) { a = a + y; } 
+            y = y - 1; 
+        } 
+        return a; 
+    }",
+    Value::Int(55)
+);
+
+// tests that expect a panic
+build_translation_unit_test!(
+    interpret_basic_program_with_declaration_after_assignment,
+    "int main() { 
+        int a; 
+        int y; // not allowed after assignments
+        return a;
+    }"
+);
+
+build_translation_unit_test!(
+    interpret_basic_program_with_declaration_assignment_if_without_return,
+    "int main() { 
+        int a; a = 42; 
+        if (a + 100 > 'a') { a = 'a'; } 
+        // missing return
+    }"
+);
+
+build_translation_unit_test!(
+    interpret_basic_program_unused_variable,
+    "int main() { 
+        int a; // a is unused
+        return 0; 
+    }"
+);
+
+build_translation_unit_test!(
+    test_semantic_undeclared_function,
+    "int main () {
+        int x;
+        x = foo(); // foo is not declared
+    }"
+);
+
+build_translation_unit_test!(
+    test_semantic_undeclared_variable_in_function,
+    "int foo () {
+        int x;
+        x = y; // y is not declared
+        return x;
+    }
+    int main () {
+        int x;
+        x = foo();
+        return x;
+    }"
+);
+
+build_translation_unit_test!(
+    test_semantic_missing_function_argument,
+    "int foo (int x) {
+        return x;
+    }
+    int main () {
+        int x;
+        x = foo(); // foo is missing argument
+        return x;
+    }"
+);
+
+build_translation_unit_test!(
+    test_semantic_incorrect_function_argument_provided,
+    "int foo (int x) {
+        x = x + 1;
+        return x;
+    }
+    int main () {
+        int x;
+        x = 10;
+        x = foo(); // foo is missing argument
+        return x;
+    }"
+);
+
+
+
+// #[test]
+// fn test_interpret_basic_program_with_declaration_and_assignment() {
+//     let test_str = "int main() { int a; a = 42; return a; }";
+//     let rule = Rule::translation_unit;
+
+//     // Syntax parsing
+//     let pairs = match CTinyParser::parse(rule, test_str) {
+//         Ok(pairs) => pairs,
+//         Err(error) => {
+//             panic!("Syntax parsing error for {}: \n {}\n", test_str, error);
+//         },
+//     };
+
+//     let first_pair = pairs.into_iter().next().unwrap();
+//     assert_eq!(first_pair.as_rule(), rule);
+//     assert_eq!(first_pair.as_str(), test_str);
+
+//     // AST conversion
+//     let ast = {
+//         match build_translation_unit(first_pair) {
+//             // need to convert the AST Error into a Semantic Error
+//             Ok(translation_unit) => translation_unit,
+//             Err(error) => {
+//                 panic!("AST ERROR for {}: \n {}\n", test_str, error);
+//             },
+//         }
+//     };
+//     print!("AST for string \"{}\": \n {:#?} \n\n", test_str, ast);
+
+//     // build symbol table
+//     let mut symbol_table = build_static_symbol_table(&ast);
+
+//     // interpretation
+//     let interpreted_value = interpret_translation_unit(
+//         &ast,
+//         &mut symbol_table,
+//     );
+//     match interpreted_value {
+//         Ok(interpreted_value_node) => {
+//             assert_eq!(interpreted_value_node.data, Value::Int(42));
+//             print!("Successfully interpreted program <{}>.\n\n", test_str); 
+//         },
+//         Err(error) => {
+//             panic!(
+//                 "Error interpreting program <{}>: {}\n\n", 
+//                 test_str, 
+//                 error
+//             );
+//         },
+//     }
+// }
