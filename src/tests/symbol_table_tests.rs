@@ -12,7 +12,10 @@ fn test_build_static_symbol_table() {
         return 0;
     }
     ";
-    let ast = parse_content_into_ast(test_string, None);
+    let ast = parse_content_into_ast(test_string, None)
+        .unwrap_or_else(|error| {
+            panic!("AST ERROR for {}: \n {}\n", test_string, error);
+        });
     let main_id_node = &ast.data.main_function.data.name;
 
     let symbol_table = build_static_symbol_table(&ast);
@@ -36,7 +39,11 @@ fn test_build_static_symbol_table_multi_functions() {
         return 0;
     }
     ";
-    let ast = parse_content_into_ast(test_string, None);
+    let ast = parse_content_into_ast(test_string, None).unwrap_or_else(
+        |error| {
+            panic!("AST ERROR for {}: \n {}\n", test_string, error);
+        }
+    );
     let main_id_node = &ast.data.main_function.data.name;
     let foo_id_node = &ast.data.functions.as_ref().unwrap()[0].data.name;
 
@@ -72,7 +79,10 @@ fn test_build_static_symbol_table_array() {
         return 0;
     }
     ";
-    let ast = parse_content_into_ast(test_string, None);
+    let ast = parse_content_into_ast(test_string, None)
+        .unwrap_or_else(|error| {
+            panic!("AST ERROR for {}: \n {}\n", test_string, error);
+        });
     let main_id_node = &ast.data.main_function.data.name;
     let foo_id_node = &ast.data.functions.as_ref().unwrap()[0].data.name;
 

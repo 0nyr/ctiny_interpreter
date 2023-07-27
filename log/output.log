@@ -3168,3 +3168,2414 @@ int main () {
         },
     },
 }
+[2023-07-27T13:12:38 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T13:12:38 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-27T13:12:38 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file example_1.ctiny!
+[2023-07-27T13:12:38 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: Span {
+        str: "// a Ctiny example with a function call\n\nint sum(int a, int b) {\n    int a;\n    a = 10;\n    return c;\n}\n    \nint main () {    \n    return 0;\n}",
+        start: 0,
+        end: 142,
+    },
+    data: TranslationUnit {
+        functions: Some(
+            [
+                Node {
+                    sp: Span {
+                        str: "int sum(int a, int b) {\n    int a;\n    a = 10;\n    return c;\n}",
+                        start: 41,
+                        end: 103,
+                    },
+                    data: Function {
+                        name: Node {
+                            sp: Span {
+                                str: "sum",
+                                start: 45,
+                                end: 48,
+                            },
+                            data: Identifier {
+                                name: "sum",
+                            },
+                        },
+                        return_type: Int,
+                        params: Some(
+                            [
+                                Node {
+                                    sp: Span {
+                                        str: "int a",
+                                        start: 49,
+                                        end: 54,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Node {
+                                            sp: Span {
+                                                str: "a",
+                                                start: 53,
+                                                end: 54,
+                                            },
+                                            data: Identifier {
+                                                name: "a",
+                                            },
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                                Node {
+                                    sp: Span {
+                                        str: "int b",
+                                        start: 56,
+                                        end: 61,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Node {
+                                            sp: Span {
+                                                str: "b",
+                                                start: 60,
+                                                end: 61,
+                                            },
+                                            data: Identifier {
+                                                name: "b",
+                                            },
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                            ],
+                        ),
+                        body: Node {
+                            sp: Span {
+                                str: "{\n    int a;\n    a = 10;\n    return c;\n}",
+                                start: 63,
+                                end: 103,
+                            },
+                            data: Block {
+                                declarations: [
+                                    Node {
+                                        sp: Span {
+                                            str: "int a",
+                                            start: 69,
+                                            end: 74,
+                                        },
+                                        data: Declaration {
+                                            type_specifier: Int,
+                                            identifier: Node {
+                                                sp: Span {
+                                                    str: "a",
+                                                    start: 73,
+                                                    end: 74,
+                                                },
+                                                data: Identifier {
+                                                    name: "a",
+                                                },
+                                            },
+                                            array_size: None,
+                                        },
+                                    },
+                                ],
+                                statements: [
+                                    Node {
+                                        sp: Span {
+                                            str: "a = 10;",
+                                            start: 80,
+                                            end: 87,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                left_var: Node {
+                                                    sp: Span {
+                                                        str: "a ",
+                                                        start: 80,
+                                                        end: 82,
+                                                    },
+                                                    data: GetOrSetValue {
+                                                        identifier: Node {
+                                                            sp: Span {
+                                                                str: "a",
+                                                                start: 80,
+                                                                end: 81,
+                                                            },
+                                                            data: Identifier {
+                                                                name: "a",
+                                                            },
+                                                        },
+                                                        index: None,
+                                                    },
+                                                },
+                                                right_expr: Node {
+                                                    sp: Span {
+                                                        str: "10",
+                                                        start: 84,
+                                                        end: 86,
+                                                    },
+                                                    data: Literal(
+                                                        Int(
+                                                            10,
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                    },
+                                ],
+                                function_return: Node {
+                                    sp: Span {
+                                        str: "c",
+                                        start: 99,
+                                        end: 100,
+                                    },
+                                    data: GetOrSetValue(
+                                        GetOrSetValue {
+                                            identifier: Node {
+                                                sp: Span {
+                                                    str: "c",
+                                                    start: 99,
+                                                    end: 100,
+                                                },
+                                                data: Identifier {
+                                                    name: "c",
+                                                },
+                                            },
+                                            index: None,
+                                        },
+                                    ),
+                                },
+                            },
+                        },
+                    },
+                },
+            ],
+        ),
+        main_function: Node {
+            sp: Span {
+                str: "int main () {    \n    return 0;\n}",
+                start: 109,
+                end: 142,
+            },
+            data: Function {
+                name: Node {
+                    sp: Span {
+                        str: "int main () {    \n    return 0;\n}",
+                        start: 109,
+                        end: 142,
+                    },
+                    data: Identifier {
+                        name: "main",
+                    },
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: Span {
+                        str: "{    \n    return 0;\n}",
+                        start: 121,
+                        end: 142,
+                    },
+                    data: Block {
+                        declarations: [],
+                        statements: [],
+                        function_return: Node {
+                            sp: Span {
+                                str: "0",
+                                start: 138,
+                                end: 139,
+                            },
+                            data: Literal(
+                                Int(
+                                    0,
+                                ),
+                            ),
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-27T13:12:38 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_a.ctiny
+[2023-07-27T13:12:38 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file example_1.ctiny!
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: Span {
+        str: "// a Ctiny example with a function call\n\nint sum(int a, int b) {\n    int a;\n    a = 10;\n    return c;\n}\n    \nint main () {    \n    return 0;\n}",
+        start: 0,
+        end: 142,
+    },
+    data: TranslationUnit {
+        functions: Some(
+            [
+                Node {
+                    sp: Span {
+                        str: "int sum(int a, int b) {\n    int a;\n    a = 10;\n    return c;\n}",
+                        start: 41,
+                        end: 103,
+                    },
+                    data: Function {
+                        name: Node {
+                            sp: Span {
+                                str: "sum",
+                                start: 45,
+                                end: 48,
+                            },
+                            data: Identifier {
+                                name: "sum",
+                            },
+                        },
+                        return_type: Int,
+                        params: Some(
+                            [
+                                Node {
+                                    sp: Span {
+                                        str: "int a",
+                                        start: 49,
+                                        end: 54,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Node {
+                                            sp: Span {
+                                                str: "a",
+                                                start: 53,
+                                                end: 54,
+                                            },
+                                            data: Identifier {
+                                                name: "a",
+                                            },
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                                Node {
+                                    sp: Span {
+                                        str: "int b",
+                                        start: 56,
+                                        end: 61,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Node {
+                                            sp: Span {
+                                                str: "b",
+                                                start: 60,
+                                                end: 61,
+                                            },
+                                            data: Identifier {
+                                                name: "b",
+                                            },
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                            ],
+                        ),
+                        body: Node {
+                            sp: Span {
+                                str: "{\n    int a;\n    a = 10;\n    return c;\n}",
+                                start: 63,
+                                end: 103,
+                            },
+                            data: Block {
+                                declarations: [
+                                    Node {
+                                        sp: Span {
+                                            str: "int a",
+                                            start: 69,
+                                            end: 74,
+                                        },
+                                        data: Declaration {
+                                            type_specifier: Int,
+                                            identifier: Node {
+                                                sp: Span {
+                                                    str: "a",
+                                                    start: 73,
+                                                    end: 74,
+                                                },
+                                                data: Identifier {
+                                                    name: "a",
+                                                },
+                                            },
+                                            array_size: None,
+                                        },
+                                    },
+                                ],
+                                statements: [
+                                    Node {
+                                        sp: Span {
+                                            str: "a = 10;",
+                                            start: 80,
+                                            end: 87,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                left_var: Node {
+                                                    sp: Span {
+                                                        str: "a ",
+                                                        start: 80,
+                                                        end: 82,
+                                                    },
+                                                    data: GetOrSetValue {
+                                                        identifier: Node {
+                                                            sp: Span {
+                                                                str: "a",
+                                                                start: 80,
+                                                                end: 81,
+                                                            },
+                                                            data: Identifier {
+                                                                name: "a",
+                                                            },
+                                                        },
+                                                        index: None,
+                                                    },
+                                                },
+                                                right_expr: Node {
+                                                    sp: Span {
+                                                        str: "10",
+                                                        start: 84,
+                                                        end: 86,
+                                                    },
+                                                    data: Literal(
+                                                        Int(
+                                                            10,
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                    },
+                                ],
+                                function_return: Node {
+                                    sp: Span {
+                                        str: "c",
+                                        start: 99,
+                                        end: 100,
+                                    },
+                                    data: GetOrSetValue(
+                                        GetOrSetValue {
+                                            identifier: Node {
+                                                sp: Span {
+                                                    str: "c",
+                                                    start: 99,
+                                                    end: 100,
+                                                },
+                                                data: Identifier {
+                                                    name: "c",
+                                                },
+                                            },
+                                            index: None,
+                                        },
+                                    ),
+                                },
+                            },
+                        },
+                    },
+                },
+            ],
+        ),
+        main_function: Node {
+            sp: Span {
+                str: "int main () {    \n    return 0;\n}",
+                start: 109,
+                end: 142,
+            },
+            data: Function {
+                name: Node {
+                    sp: Span {
+                        str: "int main () {    \n    return 0;\n}",
+                        start: 109,
+                        end: 142,
+                    },
+                    data: Identifier {
+                        name: "main",
+                    },
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: Span {
+                        str: "{    \n    return 0;\n}",
+                        start: 121,
+                        end: 142,
+                    },
+                    data: Block {
+                        declarations: [],
+                        statements: [],
+                        function_return: Node {
+                            sp: Span {
+                                str: "0",
+                                start: 138,
+                                end: 139,
+                            },
+                            data: Literal(
+                                Int(
+                                    0,
+                                ),
+                            ),
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_a.ctiny
+[2023-07-27T16:01:13 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_c.ctiny
+[2023-07-27T16:01:13 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     int a; // not allowed here
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_undefined_error.ctiny
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file invalid_undefined_error.ctiny!
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: Span {
+        str: "int main () {\n    int c;\n\n    c = a; // error a not defined.\n    \n    c = 10;\n\n    return 0;\n}",
+        start: 0,
+        end: 94,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: Span {
+                str: "int main () {\n    int c;\n\n    c = a; // error a not defined.\n    \n    c = 10;\n\n    return 0;\n}",
+                start: 0,
+                end: 94,
+            },
+            data: Function {
+                name: Node {
+                    sp: Span {
+                        str: "int main () {\n    int c;\n\n    c = a; // error a not defined.\n    \n    c = 10;\n\n    return 0;\n}",
+                        start: 0,
+                        end: 94,
+                    },
+                    data: Identifier {
+                        name: "main",
+                    },
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: Span {
+                        str: "{\n    int c;\n\n    c = a; // error a not defined.\n    \n    c = 10;\n\n    return 0;\n}",
+                        start: 12,
+                        end: 94,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: Span {
+                                    str: "int c",
+                                    start: 18,
+                                    end: 23,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "c",
+                                            start: 22,
+                                            end: 23,
+                                        },
+                                        data: Identifier {
+                                            name: "c",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: Span {
+                                    str: "c = a;",
+                                    start: 30,
+                                    end: 36,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "c ",
+                                                start: 30,
+                                                end: 32,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "c",
+                                                        start: 30,
+                                                        end: 31,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "c",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "a",
+                                                start: 34,
+                                                end: 35,
+                                            },
+                                            data: GetOrSetValue(
+                                                GetOrSetValue {
+                                                    identifier: Node {
+                                                        sp: Span {
+                                                            str: "a",
+                                                            start: 34,
+                                                            end: 35,
+                                                        },
+                                                        data: Identifier {
+                                                            name: "a",
+                                                        },
+                                                    },
+                                                    index: None,
+                                                },
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "c = 10;",
+                                    start: 70,
+                                    end: 77,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "c ",
+                                                start: 70,
+                                                end: 72,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "c",
+                                                        start: 70,
+                                                        end: 71,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "c",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "10",
+                                                start: 74,
+                                                end: 76,
+                                            },
+                                            data: Literal(
+                                                Int(
+                                                    10,
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                        ],
+                        function_return: Node {
+                            sp: Span {
+                                str: "0",
+                                start: 90,
+                                end: 91,
+                            },
+                            data: Literal(
+                                Int(
+                                    0,
+                                ),
+                            ),
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_d.ctiny
+[2023-07-27T16:01:13 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 1:1
+  |
+1 | int x; // global not allowed
+  | ^---
+  |
+  = expected translation_unit
+
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_b.ctiny
+[2023-07-27T16:01:13 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 2:5
+  |
+2 |     int a = 2; //error; declaration should be in next lines
+  |     ^---
+  |
+  = expected function_return, multi_declaration, or statement
+
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_c.ctiny!
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: Span {
+        str: "// a Ctiny example with a function call\nint sum(int a, int b) {\n    int c;\n\n    a = 10;\n    b = 20;\n    c = a + b;\n\n    return c;\n}\n    \nint main () {\n    int a, b, c;\n\n    a = 10;\n    b = 20;\n    c = sum(a, b);\n    \n    return 0;\n}",
+        start: 0,
+        end: 232,
+    },
+    data: TranslationUnit {
+        functions: Some(
+            [
+                Node {
+                    sp: Span {
+                        str: "int sum(int a, int b) {\n    int c;\n\n    a = 10;\n    b = 20;\n    c = a + b;\n\n    return c;\n}",
+                        start: 40,
+                        end: 131,
+                    },
+                    data: Function {
+                        name: Node {
+                            sp: Span {
+                                str: "sum",
+                                start: 44,
+                                end: 47,
+                            },
+                            data: Identifier {
+                                name: "sum",
+                            },
+                        },
+                        return_type: Int,
+                        params: Some(
+                            [
+                                Node {
+                                    sp: Span {
+                                        str: "int a",
+                                        start: 48,
+                                        end: 53,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Node {
+                                            sp: Span {
+                                                str: "a",
+                                                start: 52,
+                                                end: 53,
+                                            },
+                                            data: Identifier {
+                                                name: "a",
+                                            },
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                                Node {
+                                    sp: Span {
+                                        str: "int b",
+                                        start: 55,
+                                        end: 60,
+                                    },
+                                    data: Declaration {
+                                        type_specifier: Int,
+                                        identifier: Node {
+                                            sp: Span {
+                                                str: "b",
+                                                start: 59,
+                                                end: 60,
+                                            },
+                                            data: Identifier {
+                                                name: "b",
+                                            },
+                                        },
+                                        array_size: None,
+                                    },
+                                },
+                            ],
+                        ),
+                        body: Node {
+                            sp: Span {
+                                str: "{\n    int c;\n\n    a = 10;\n    b = 20;\n    c = a + b;\n\n    return c;\n}",
+                                start: 62,
+                                end: 131,
+                            },
+                            data: Block {
+                                declarations: [
+                                    Node {
+                                        sp: Span {
+                                            str: "int c",
+                                            start: 68,
+                                            end: 73,
+                                        },
+                                        data: Declaration {
+                                            type_specifier: Int,
+                                            identifier: Node {
+                                                sp: Span {
+                                                    str: "c",
+                                                    start: 72,
+                                                    end: 73,
+                                                },
+                                                data: Identifier {
+                                                    name: "c",
+                                                },
+                                            },
+                                            array_size: None,
+                                        },
+                                    },
+                                ],
+                                statements: [
+                                    Node {
+                                        sp: Span {
+                                            str: "a = 10;",
+                                            start: 80,
+                                            end: 87,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                left_var: Node {
+                                                    sp: Span {
+                                                        str: "a ",
+                                                        start: 80,
+                                                        end: 82,
+                                                    },
+                                                    data: GetOrSetValue {
+                                                        identifier: Node {
+                                                            sp: Span {
+                                                                str: "a",
+                                                                start: 80,
+                                                                end: 81,
+                                                            },
+                                                            data: Identifier {
+                                                                name: "a",
+                                                            },
+                                                        },
+                                                        index: None,
+                                                    },
+                                                },
+                                                right_expr: Node {
+                                                    sp: Span {
+                                                        str: "10",
+                                                        start: 84,
+                                                        end: 86,
+                                                    },
+                                                    data: Literal(
+                                                        Int(
+                                                            10,
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                    },
+                                    Node {
+                                        sp: Span {
+                                            str: "b = 20;",
+                                            start: 92,
+                                            end: 99,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                left_var: Node {
+                                                    sp: Span {
+                                                        str: "b ",
+                                                        start: 92,
+                                                        end: 94,
+                                                    },
+                                                    data: GetOrSetValue {
+                                                        identifier: Node {
+                                                            sp: Span {
+                                                                str: "b",
+                                                                start: 92,
+                                                                end: 93,
+                                                            },
+                                                            data: Identifier {
+                                                                name: "b",
+                                                            },
+                                                        },
+                                                        index: None,
+                                                    },
+                                                },
+                                                right_expr: Node {
+                                                    sp: Span {
+                                                        str: "20",
+                                                        start: 96,
+                                                        end: 98,
+                                                    },
+                                                    data: Literal(
+                                                        Int(
+                                                            20,
+                                                        ),
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                    },
+                                    Node {
+                                        sp: Span {
+                                            str: "c = a + b;",
+                                            start: 104,
+                                            end: 114,
+                                        },
+                                        data: Assignment(
+                                            AssignmentStatement {
+                                                left_var: Node {
+                                                    sp: Span {
+                                                        str: "c ",
+                                                        start: 104,
+                                                        end: 106,
+                                                    },
+                                                    data: GetOrSetValue {
+                                                        identifier: Node {
+                                                            sp: Span {
+                                                                str: "c",
+                                                                start: 104,
+                                                                end: 105,
+                                                            },
+                                                            data: Identifier {
+                                                                name: "c",
+                                                            },
+                                                        },
+                                                        index: None,
+                                                    },
+                                                },
+                                                right_expr: Node {
+                                                    sp: Span {
+                                                        str: "a + b",
+                                                        start: 108,
+                                                        end: 113,
+                                                    },
+                                                    data: BinaryExpression(
+                                                        BinaryExpression {
+                                                            left: Node {
+                                                                sp: Span {
+                                                                    str: "a ",
+                                                                    start: 108,
+                                                                    end: 110,
+                                                                },
+                                                                data: GetOrSetValue(
+                                                                    GetOrSetValue {
+                                                                        identifier: Node {
+                                                                            sp: Span {
+                                                                                str: "a",
+                                                                                start: 108,
+                                                                                end: 109,
+                                                                            },
+                                                                            data: Identifier {
+                                                                                name: "a",
+                                                                            },
+                                                                        },
+                                                                        index: None,
+                                                                    },
+                                                                ),
+                                                            },
+                                                            operator: Plus,
+                                                            right: Node {
+                                                                sp: Span {
+                                                                    str: "b",
+                                                                    start: 112,
+                                                                    end: 113,
+                                                                },
+                                                                data: GetOrSetValue(
+                                                                    GetOrSetValue {
+                                                                        identifier: Node {
+                                                                            sp: Span {
+                                                                                str: "b",
+                                                                                start: 112,
+                                                                                end: 113,
+                                                                            },
+                                                                            data: Identifier {
+                                                                                name: "b",
+                                                                            },
+                                                                        },
+                                                                        index: None,
+                                                                    },
+                                                                ),
+                                                            },
+                                                        },
+                                                    ),
+                                                },
+                                            },
+                                        ),
+                                    },
+                                ],
+                                function_return: Node {
+                                    sp: Span {
+                                        str: "c",
+                                        start: 127,
+                                        end: 128,
+                                    },
+                                    data: GetOrSetValue(
+                                        GetOrSetValue {
+                                            identifier: Node {
+                                                sp: Span {
+                                                    str: "c",
+                                                    start: 127,
+                                                    end: 128,
+                                                },
+                                                data: Identifier {
+                                                    name: "c",
+                                                },
+                                            },
+                                            index: None,
+                                        },
+                                    ),
+                                },
+                            },
+                        },
+                    },
+                },
+            ],
+        ),
+        main_function: Node {
+            sp: Span {
+                str: "int main () {\n    int a, b, c;\n\n    a = 10;\n    b = 20;\n    c = sum(a, b);\n    \n    return 0;\n}",
+                start: 137,
+                end: 232,
+            },
+            data: Function {
+                name: Node {
+                    sp: Span {
+                        str: "int main () {\n    int a, b, c;\n\n    a = 10;\n    b = 20;\n    c = sum(a, b);\n    \n    return 0;\n}",
+                        start: 137,
+                        end: 232,
+                    },
+                    data: Identifier {
+                        name: "main",
+                    },
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: Span {
+                        str: "{\n    int a, b, c;\n\n    a = 10;\n    b = 20;\n    c = sum(a, b);\n    \n    return 0;\n}",
+                        start: 149,
+                        end: 232,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: Span {
+                                    str: "int a",
+                                    start: 155,
+                                    end: 160,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "a",
+                                            start: 159,
+                                            end: 160,
+                                        },
+                                        data: Identifier {
+                                            name: "a",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "b",
+                                    start: 162,
+                                    end: 163,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "b",
+                                            start: 162,
+                                            end: 163,
+                                        },
+                                        data: Identifier {
+                                            name: "b",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "c",
+                                    start: 165,
+                                    end: 166,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "c",
+                                            start: 165,
+                                            end: 166,
+                                        },
+                                        data: Identifier {
+                                            name: "c",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: Span {
+                                    str: "a = 10;",
+                                    start: 173,
+                                    end: 180,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "a ",
+                                                start: 173,
+                                                end: 175,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "a",
+                                                        start: 173,
+                                                        end: 174,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "a",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "10",
+                                                start: 177,
+                                                end: 179,
+                                            },
+                                            data: Literal(
+                                                Int(
+                                                    10,
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "b = 20;",
+                                    start: 185,
+                                    end: 192,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "b ",
+                                                start: 185,
+                                                end: 187,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "b",
+                                                        start: 185,
+                                                        end: 186,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "b",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "20",
+                                                start: 189,
+                                                end: 191,
+                                            },
+                                            data: Literal(
+                                                Int(
+                                                    20,
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "c = sum(a, b);",
+                                    start: 197,
+                                    end: 211,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "c ",
+                                                start: 197,
+                                                end: 199,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "c",
+                                                        start: 197,
+                                                        end: 198,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "c",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "sum(a, b)",
+                                                start: 201,
+                                                end: 210,
+                                            },
+                                            data: FunctionCall(
+                                                FunctionCall {
+                                                    name: Node {
+                                                        sp: Span {
+                                                            str: "sum",
+                                                            start: 201,
+                                                            end: 204,
+                                                        },
+                                                        data: Identifier {
+                                                            name: "sum",
+                                                        },
+                                                    },
+                                                    arguments: [
+                                                        Node {
+                                                            sp: Span {
+                                                                str: "a",
+                                                                start: 205,
+                                                                end: 206,
+                                                            },
+                                                            data: GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Node {
+                                                                        sp: Span {
+                                                                            str: "a",
+                                                                            start: 205,
+                                                                            end: 206,
+                                                                        },
+                                                                        data: Identifier {
+                                                                            name: "a",
+                                                                        },
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                        },
+                                                        Node {
+                                                            sp: Span {
+                                                                str: "b",
+                                                                start: 208,
+                                                                end: 209,
+                                                            },
+                                                            data: GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Node {
+                                                                        sp: Span {
+                                                                            str: "b",
+                                                                            start: 208,
+                                                                            end: 209,
+                                                                        },
+                                                                        data: Identifier {
+                                                                            name: "b",
+                                                                        },
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                        },
+                                                    ],
+                                                },
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                        ],
+                        function_return: Node {
+                            sp: Span {
+                                str: "0",
+                                start: 228,
+                                end: 229,
+                            },
+                            data: Literal(
+                                Int(
+                                    0,
+                                ),
+                            ),
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: Span {
+        str: "int main () {\n    bool x;\n    float y, z;\n\n    z = 0;\n    y = 0;\n    x = true;\n\n    if(x) {\n        y = y + z;\n    }\n    else{\n        y = y - z;\n    }\n    return 0;\n}",
+        start: 0,
+        end: 167,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: Span {
+                str: "int main () {\n    bool x;\n    float y, z;\n\n    z = 0;\n    y = 0;\n    x = true;\n\n    if(x) {\n        y = y + z;\n    }\n    else{\n        y = y - z;\n    }\n    return 0;\n}",
+                start: 0,
+                end: 167,
+            },
+            data: Function {
+                name: Node {
+                    sp: Span {
+                        str: "int main () {\n    bool x;\n    float y, z;\n\n    z = 0;\n    y = 0;\n    x = true;\n\n    if(x) {\n        y = y + z;\n    }\n    else{\n        y = y - z;\n    }\n    return 0;\n}",
+                        start: 0,
+                        end: 167,
+                    },
+                    data: Identifier {
+                        name: "main",
+                    },
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: Span {
+                        str: "{\n    bool x;\n    float y, z;\n\n    z = 0;\n    y = 0;\n    x = true;\n\n    if(x) {\n        y = y + z;\n    }\n    else{\n        y = y - z;\n    }\n    return 0;\n}",
+                        start: 12,
+                        end: 167,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: Span {
+                                    str: "bool x",
+                                    start: 18,
+                                    end: 24,
+                                },
+                                data: Declaration {
+                                    type_specifier: Bool,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "x",
+                                            start: 23,
+                                            end: 24,
+                                        },
+                                        data: Identifier {
+                                            name: "x",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "float y",
+                                    start: 30,
+                                    end: 37,
+                                },
+                                data: Declaration {
+                                    type_specifier: Float,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "y",
+                                            start: 36,
+                                            end: 37,
+                                        },
+                                        data: Identifier {
+                                            name: "y",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "z",
+                                    start: 39,
+                                    end: 40,
+                                },
+                                data: Declaration {
+                                    type_specifier: Float,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "z",
+                                            start: 39,
+                                            end: 40,
+                                        },
+                                        data: Identifier {
+                                            name: "z",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: Span {
+                                    str: "z = 0;",
+                                    start: 47,
+                                    end: 53,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "z ",
+                                                start: 47,
+                                                end: 49,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "z",
+                                                        start: 47,
+                                                        end: 48,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "z",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "0",
+                                                start: 51,
+                                                end: 52,
+                                            },
+                                            data: Literal(
+                                                Int(
+                                                    0,
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "y = 0;",
+                                    start: 58,
+                                    end: 64,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "y ",
+                                                start: 58,
+                                                end: 60,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "y",
+                                                        start: 58,
+                                                        end: 59,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "y",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "0",
+                                                start: 62,
+                                                end: 63,
+                                            },
+                                            data: Literal(
+                                                Int(
+                                                    0,
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "x = true;",
+                                    start: 69,
+                                    end: 78,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "x ",
+                                                start: 69,
+                                                end: 71,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "x",
+                                                        start: 69,
+                                                        end: 70,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "x",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "true",
+                                                start: 73,
+                                                end: 77,
+                                            },
+                                            data: Literal(
+                                                Bool(
+                                                    true,
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "if(x) {\n        y = y + z;\n    }\n    else{\n        y = y - z;\n    }",
+                                    start: 84,
+                                    end: 151,
+                                },
+                                data: If(
+                                    IfStatement {
+                                        condition: Node {
+                                            sp: Span {
+                                                str: "x",
+                                                start: 87,
+                                                end: 88,
+                                            },
+                                            data: GetOrSetValue(
+                                                GetOrSetValue {
+                                                    identifier: Node {
+                                                        sp: Span {
+                                                            str: "x",
+                                                            start: 87,
+                                                            end: 88,
+                                                        },
+                                                        data: Identifier {
+                                                            name: "x",
+                                                        },
+                                                    },
+                                                    index: None,
+                                                },
+                                            ),
+                                        },
+                                        if_body: [
+                                            Node {
+                                                sp: Span {
+                                                    str: "y = y + z;",
+                                                    start: 100,
+                                                    end: 110,
+                                                },
+                                                data: Assignment(
+                                                    AssignmentStatement {
+                                                        left_var: Node {
+                                                            sp: Span {
+                                                                str: "y ",
+                                                                start: 100,
+                                                                end: 102,
+                                                            },
+                                                            data: GetOrSetValue {
+                                                                identifier: Node {
+                                                                    sp: Span {
+                                                                        str: "y",
+                                                                        start: 100,
+                                                                        end: 101,
+                                                                    },
+                                                                    data: Identifier {
+                                                                        name: "y",
+                                                                    },
+                                                                },
+                                                                index: None,
+                                                            },
+                                                        },
+                                                        right_expr: Node {
+                                                            sp: Span {
+                                                                str: "y + z",
+                                                                start: 104,
+                                                                end: 109,
+                                                            },
+                                                            data: BinaryExpression(
+                                                                BinaryExpression {
+                                                                    left: Node {
+                                                                        sp: Span {
+                                                                            str: "y ",
+                                                                            start: 104,
+                                                                            end: 106,
+                                                                        },
+                                                                        data: GetOrSetValue(
+                                                                            GetOrSetValue {
+                                                                                identifier: Node {
+                                                                                    sp: Span {
+                                                                                        str: "y",
+                                                                                        start: 104,
+                                                                                        end: 105,
+                                                                                    },
+                                                                                    data: Identifier {
+                                                                                        name: "y",
+                                                                                    },
+                                                                                },
+                                                                                index: None,
+                                                                            },
+                                                                        ),
+                                                                    },
+                                                                    operator: Plus,
+                                                                    right: Node {
+                                                                        sp: Span {
+                                                                            str: "z",
+                                                                            start: 108,
+                                                                            end: 109,
+                                                                        },
+                                                                        data: GetOrSetValue(
+                                                                            GetOrSetValue {
+                                                                                identifier: Node {
+                                                                                    sp: Span {
+                                                                                        str: "z",
+                                                                                        start: 108,
+                                                                                        end: 109,
+                                                                                    },
+                                                                                    data: Identifier {
+                                                                                        name: "z",
+                                                                                    },
+                                                                                },
+                                                                                index: None,
+                                                                            },
+                                                                        ),
+                                                                    },
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                ),
+                                            },
+                                        ],
+                                        else_body: Some(
+                                            [
+                                                Node {
+                                                    sp: Span {
+                                                        str: "y = y - z;",
+                                                        start: 135,
+                                                        end: 145,
+                                                    },
+                                                    data: Assignment(
+                                                        AssignmentStatement {
+                                                            left_var: Node {
+                                                                sp: Span {
+                                                                    str: "y ",
+                                                                    start: 135,
+                                                                    end: 137,
+                                                                },
+                                                                data: GetOrSetValue {
+                                                                    identifier: Node {
+                                                                        sp: Span {
+                                                                            str: "y",
+                                                                            start: 135,
+                                                                            end: 136,
+                                                                        },
+                                                                        data: Identifier {
+                                                                            name: "y",
+                                                                        },
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            },
+                                                            right_expr: Node {
+                                                                sp: Span {
+                                                                    str: "y - z",
+                                                                    start: 139,
+                                                                    end: 144,
+                                                                },
+                                                                data: BinaryExpression(
+                                                                    BinaryExpression {
+                                                                        left: Node {
+                                                                            sp: Span {
+                                                                                str: "y ",
+                                                                                start: 139,
+                                                                                end: 141,
+                                                                            },
+                                                                            data: GetOrSetValue(
+                                                                                GetOrSetValue {
+                                                                                    identifier: Node {
+                                                                                        sp: Span {
+                                                                                            str: "y",
+                                                                                            start: 139,
+                                                                                            end: 140,
+                                                                                        },
+                                                                                        data: Identifier {
+                                                                                            name: "y",
+                                                                                        },
+                                                                                    },
+                                                                                    index: None,
+                                                                                },
+                                                                            ),
+                                                                        },
+                                                                        operator: Minus,
+                                                                        right: Node {
+                                                                            sp: Span {
+                                                                                str: "z",
+                                                                                start: 143,
+                                                                                end: 144,
+                                                                            },
+                                                                            data: GetOrSetValue(
+                                                                                GetOrSetValue {
+                                                                                    identifier: Node {
+                                                                                        sp: Span {
+                                                                                            str: "z",
+                                                                                            start: 143,
+                                                                                            end: 144,
+                                                                                        },
+                                                                                        data: Identifier {
+                                                                                            name: "z",
+                                                                                        },
+                                                                                    },
+                                                                                    index: None,
+                                                                                },
+                                                                            ),
+                                                                        },
+                                                                    },
+                                                                ),
+                                                            },
+                                                        },
+                                                    ),
+                                                },
+                                            ],
+                                        ),
+                                    },
+                                ),
+                            },
+                        ],
+                        function_return: Node {
+                            sp: Span {
+                                str: "0",
+                                start: 163,
+                                end: 164,
+                            },
+                            data: Literal(
+                                Int(
+                                    0,
+                                ),
+                            ),
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_d.ctiny!
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: Span {
+        str: "int main() {\n    int a[10], i;\n\n    i = 10;\n\n    while(i > 0) {\n        a[i] = i;\n    }\n    \n    return 0;\n}",
+        start: 0,
+        end: 108,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: Span {
+                str: "int main() {\n    int a[10], i;\n\n    i = 10;\n\n    while(i > 0) {\n        a[i] = i;\n    }\n    \n    return 0;\n}",
+                start: 0,
+                end: 108,
+            },
+            data: Function {
+                name: Node {
+                    sp: Span {
+                        str: "int main() {\n    int a[10], i;\n\n    i = 10;\n\n    while(i > 0) {\n        a[i] = i;\n    }\n    \n    return 0;\n}",
+                        start: 0,
+                        end: 108,
+                    },
+                    data: Identifier {
+                        name: "main",
+                    },
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: Span {
+                        str: "{\n    int a[10], i;\n\n    i = 10;\n\n    while(i > 0) {\n        a[i] = i;\n    }\n    \n    return 0;\n}",
+                        start: 11,
+                        end: 108,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: Span {
+                                    str: "int a[10]",
+                                    start: 17,
+                                    end: 26,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "a",
+                                            start: 21,
+                                            end: 22,
+                                        },
+                                        data: Identifier {
+                                            name: "a",
+                                        },
+                                    },
+                                    array_size: Some(
+                                        10,
+                                    ),
+                                },
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "i",
+                                    start: 28,
+                                    end: 29,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "i",
+                                            start: 28,
+                                            end: 29,
+                                        },
+                                        data: Identifier {
+                                            name: "i",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: Span {
+                                    str: "i = 10;",
+                                    start: 36,
+                                    end: 43,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "i ",
+                                                start: 36,
+                                                end: 38,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "i",
+                                                        start: 36,
+                                                        end: 37,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "i",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "10",
+                                                start: 40,
+                                                end: 42,
+                                            },
+                                            data: Literal(
+                                                Int(
+                                                    10,
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "while(i > 0) {\n        a[i] = i;\n    }",
+                                    start: 49,
+                                    end: 87,
+                                },
+                                data: While(
+                                    WhileStatement {
+                                        condition: Node {
+                                            sp: Span {
+                                                str: "i > 0",
+                                                start: 55,
+                                                end: 60,
+                                            },
+                                            data: BinaryExpression(
+                                                BinaryExpression {
+                                                    left: Node {
+                                                        sp: Span {
+                                                            str: "i ",
+                                                            start: 55,
+                                                            end: 57,
+                                                        },
+                                                        data: GetOrSetValue(
+                                                            GetOrSetValue {
+                                                                identifier: Node {
+                                                                    sp: Span {
+                                                                        str: "i",
+                                                                        start: 55,
+                                                                        end: 56,
+                                                                    },
+                                                                    data: Identifier {
+                                                                        name: "i",
+                                                                    },
+                                                                },
+                                                                index: None,
+                                                            },
+                                                        ),
+                                                    },
+                                                    operator: Greater,
+                                                    right: Node {
+                                                        sp: Span {
+                                                            str: "0",
+                                                            start: 59,
+                                                            end: 60,
+                                                        },
+                                                        data: Literal(
+                                                            Int(
+                                                                0,
+                                                            ),
+                                                        ),
+                                                    },
+                                                },
+                                            ),
+                                        },
+                                        body: [
+                                            Node {
+                                                sp: Span {
+                                                    str: "a[i] = i;",
+                                                    start: 72,
+                                                    end: 81,
+                                                },
+                                                data: Assignment(
+                                                    AssignmentStatement {
+                                                        left_var: Node {
+                                                            sp: Span {
+                                                                str: "a[i]",
+                                                                start: 72,
+                                                                end: 76,
+                                                            },
+                                                            data: GetOrSetValue {
+                                                                identifier: Node {
+                                                                    sp: Span {
+                                                                        str: "a",
+                                                                        start: 72,
+                                                                        end: 73,
+                                                                    },
+                                                                    data: Identifier {
+                                                                        name: "a",
+                                                                    },
+                                                                },
+                                                                index: Some(
+                                                                    Node {
+                                                                        sp: Span {
+                                                                            str: "i",
+                                                                            start: 74,
+                                                                            end: 75,
+                                                                        },
+                                                                        data: GetOrSetValue(
+                                                                            GetOrSetValue {
+                                                                                identifier: Node {
+                                                                                    sp: Span {
+                                                                                        str: "i",
+                                                                                        start: 74,
+                                                                                        end: 75,
+                                                                                    },
+                                                                                    data: Identifier {
+                                                                                        name: "i",
+                                                                                    },
+                                                                                },
+                                                                                index: None,
+                                                                            },
+                                                                        ),
+                                                                    },
+                                                                ),
+                                                            },
+                                                        },
+                                                        right_expr: Node {
+                                                            sp: Span {
+                                                                str: "i",
+                                                                start: 79,
+                                                                end: 80,
+                                                            },
+                                                            data: GetOrSetValue(
+                                                                GetOrSetValue {
+                                                                    identifier: Node {
+                                                                        sp: Span {
+                                                                            str: "i",
+                                                                            start: 79,
+                                                                            end: 80,
+                                                                        },
+                                                                        data: Identifier {
+                                                                            name: "i",
+                                                                        },
+                                                                    },
+                                                                    index: None,
+                                                                },
+                                                            ),
+                                                        },
+                                                    },
+                                                ),
+                                            },
+                                        ],
+                                    },
+                                ),
+                            },
+                        ],
+                        function_return: Node {
+                            sp: Span {
+                                str: "0",
+                                start: 104,
+                                end: 105,
+                            },
+                            data: Literal(
+                                Int(
+                                    0,
+                                ),
+                            ),
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_b.ctiny!
+[2023-07-27T16:01:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] AST: Node {
+    sp: Span {
+        str: "int main () {\n    int i;\n    char c;\n\n    i = 20;\n\n    while (i > 0) {\n        c = 'a';\n    }\n    \n    return 0;\n}",
+        start: 0,
+        end: 114,
+    },
+    data: TranslationUnit {
+        functions: None,
+        main_function: Node {
+            sp: Span {
+                str: "int main () {\n    int i;\n    char c;\n\n    i = 20;\n\n    while (i > 0) {\n        c = 'a';\n    }\n    \n    return 0;\n}",
+                start: 0,
+                end: 114,
+            },
+            data: Function {
+                name: Node {
+                    sp: Span {
+                        str: "int main () {\n    int i;\n    char c;\n\n    i = 20;\n\n    while (i > 0) {\n        c = 'a';\n    }\n    \n    return 0;\n}",
+                        start: 0,
+                        end: 114,
+                    },
+                    data: Identifier {
+                        name: "main",
+                    },
+                },
+                return_type: Int,
+                params: None,
+                body: Node {
+                    sp: Span {
+                        str: "{\n    int i;\n    char c;\n\n    i = 20;\n\n    while (i > 0) {\n        c = 'a';\n    }\n    \n    return 0;\n}",
+                        start: 12,
+                        end: 114,
+                    },
+                    data: Block {
+                        declarations: [
+                            Node {
+                                sp: Span {
+                                    str: "int i",
+                                    start: 18,
+                                    end: 23,
+                                },
+                                data: Declaration {
+                                    type_specifier: Int,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "i",
+                                            start: 22,
+                                            end: 23,
+                                        },
+                                        data: Identifier {
+                                            name: "i",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "char c",
+                                    start: 29,
+                                    end: 35,
+                                },
+                                data: Declaration {
+                                    type_specifier: Char,
+                                    identifier: Node {
+                                        sp: Span {
+                                            str: "c",
+                                            start: 34,
+                                            end: 35,
+                                        },
+                                        data: Identifier {
+                                            name: "c",
+                                        },
+                                    },
+                                    array_size: None,
+                                },
+                            },
+                        ],
+                        statements: [
+                            Node {
+                                sp: Span {
+                                    str: "i = 20;",
+                                    start: 42,
+                                    end: 49,
+                                },
+                                data: Assignment(
+                                    AssignmentStatement {
+                                        left_var: Node {
+                                            sp: Span {
+                                                str: "i ",
+                                                start: 42,
+                                                end: 44,
+                                            },
+                                            data: GetOrSetValue {
+                                                identifier: Node {
+                                                    sp: Span {
+                                                        str: "i",
+                                                        start: 42,
+                                                        end: 43,
+                                                    },
+                                                    data: Identifier {
+                                                        name: "i",
+                                                    },
+                                                },
+                                                index: None,
+                                            },
+                                        },
+                                        right_expr: Node {
+                                            sp: Span {
+                                                str: "20",
+                                                start: 46,
+                                                end: 48,
+                                            },
+                                            data: Literal(
+                                                Int(
+                                                    20,
+                                                ),
+                                            ),
+                                        },
+                                    },
+                                ),
+                            },
+                            Node {
+                                sp: Span {
+                                    str: "while (i > 0) {\n        c = 'a';\n    }",
+                                    start: 55,
+                                    end: 93,
+                                },
+                                data: While(
+                                    WhileStatement {
+                                        condition: Node {
+                                            sp: Span {
+                                                str: "i > 0",
+                                                start: 62,
+                                                end: 67,
+                                            },
+                                            data: BinaryExpression(
+                                                BinaryExpression {
+                                                    left: Node {
+                                                        sp: Span {
+                                                            str: "i ",
+                                                            start: 62,
+                                                            end: 64,
+                                                        },
+                                                        data: GetOrSetValue(
+                                                            GetOrSetValue {
+                                                                identifier: Node {
+                                                                    sp: Span {
+                                                                        str: "i",
+                                                                        start: 62,
+                                                                        end: 63,
+                                                                    },
+                                                                    data: Identifier {
+                                                                        name: "i",
+                                                                    },
+                                                                },
+                                                                index: None,
+                                                            },
+                                                        ),
+                                                    },
+                                                    operator: Greater,
+                                                    right: Node {
+                                                        sp: Span {
+                                                            str: "0",
+                                                            start: 66,
+                                                            end: 67,
+                                                        },
+                                                        data: Literal(
+                                                            Int(
+                                                                0,
+                                                            ),
+                                                        ),
+                                                    },
+                                                },
+                                            ),
+                                        },
+                                        body: [
+                                            Node {
+                                                sp: Span {
+                                                    str: "c = 'a';",
+                                                    start: 79,
+                                                    end: 87,
+                                                },
+                                                data: Assignment(
+                                                    AssignmentStatement {
+                                                        left_var: Node {
+                                                            sp: Span {
+                                                                str: "c ",
+                                                                start: 79,
+                                                                end: 81,
+                                                            },
+                                                            data: GetOrSetValue {
+                                                                identifier: Node {
+                                                                    sp: Span {
+                                                                        str: "c",
+                                                                        start: 79,
+                                                                        end: 80,
+                                                                    },
+                                                                    data: Identifier {
+                                                                        name: "c",
+                                                                    },
+                                                                },
+                                                                index: None,
+                                                            },
+                                                        },
+                                                        right_expr: Node {
+                                                            sp: Span {
+                                                                str: "'a'",
+                                                                start: 83,
+                                                                end: 86,
+                                                            },
+                                                            data: Literal(
+                                                                Char(
+                                                                    97,
+                                                                ),
+                                                            ),
+                                                        },
+                                                    },
+                                                ),
+                                            },
+                                        ],
+                                    },
+                                ),
+                            },
+                        ],
+                        function_return: Node {
+                            sp: Span {
+                                str: "0",
+                                start: 110,
+                                end: 111,
+                            },
+                            data: Literal(
+                                Int(
+                                    0,
+                                ),
+                            ),
+                        },
+                    },
+                },
+            },
+        },
+    },
+}
+[2023-07-27T16:10:36 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:12:07 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/building_grammar/example_1.ctiny
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file example_1.ctiny!
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_a.ctiny
+[2023-07-27T16:12:27 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_c.ctiny
+[2023-07-27T16:12:27 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     int a; // not allowed here
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_undefined_error.ctiny
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file invalid_undefined_error.ctiny!
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_d.ctiny
+[2023-07-27T16:12:27 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 1:1
+  |
+1 | int x; // global not allowed
+  | ^---
+  |
+  = expected translation_unit
+
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_b.ctiny
+[2023-07-27T16:12:27 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 2:5
+  |
+2 |     int a = 2; //error; declaration should be in next lines
+  |     ^---
+  |
+  = expected function_return, multi_declaration, or statement
+
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_c.ctiny!
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_d.ctiny!
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-27T16:12:27 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_b.ctiny!
+[2023-07-27T16:14:54 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:14:54 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:14:54 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:14:54 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: Node {
+    sp: Span {
+        str: "0",
+        start: 163,
+        end: 164,
+    },
+    data: Int(
+        0,
+    ),
+}
+[2023-07-27T16:18:28 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:18:28 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:18:28 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:18:28 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: Int(
+    0,
+)
+[2023-07-27T16:18:57 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:18:57 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:18:57 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:18:57 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: 0
+[2023-07-27T16:19:25 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:19:25 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:19:25 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:19:25 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: 97
+[2023-07-27T16:21:02 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:21:02 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:21:02 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:21:02 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: 97
+[2023-07-27T16:21:20 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:21:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:21:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:21:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: 97
+[2023-07-27T16:21:46 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:21:46 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:21:46 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:21:46 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: 97
+[2023-07-27T16:24:20 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:24:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:24:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:24:20 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: 97
+[2023-07-27T16:25:13 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:25:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:25:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:25:13 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: 97 (Int)
+[2023-07-27T16:48:05 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:49:22 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:49:22 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: /home/onyr/Documents/5passau/ctiny_programing_paradigm_project/res/valid/valid_program_a.ctiny
+[2023-07-27T16:49:22 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T16:49:22 UTC][INFO tiny_ebnf_grammar_parser::pipelines] )Program return value: 97 (Int)
+[2023-07-27T16:49:58 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:49:58 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_a.ctiny
+[2023-07-27T16:49:58 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax or AST Parsing ERROR: 
+  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:49:58 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_c.ctiny
+[2023-07-27T16:49:58 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax or AST Parsing ERROR: 
+  --> 6:5
+  |
+6 |     int a; // not allowed here
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:49:58 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_undefined_error.ctiny
+[2023-07-27T16:49:58 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file invalid_undefined_error.ctiny!
+[2023-07-27T16:49:58 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Interpretation ERROR: 
+  --> 4:9
+  |
+4 |     c = a; // error a not defined.
+  |         ^
+  |
+  = 🔴 [Semantic error] Undeclared variable: a
+
+[2023-07-27T16:49:58 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_d.ctiny
+[2023-07-27T16:49:58 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax or AST Parsing ERROR: 
+  --> 1:1
+  |
+1 | int x; // global not allowed
+  | ^---
+  |
+  = expected translation_unit
+
+[2023-07-27T16:49:58 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_b.ctiny
+[2023-07-27T16:49:58 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax or AST Parsing ERROR: 
+  --> 2:5
+  |
+2 |     int a = 2; //error; declaration should be in next lines
+  |     ^---
+  |
+  = expected function_return, multi_declaration, or statement
+

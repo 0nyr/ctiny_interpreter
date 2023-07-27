@@ -64,7 +64,11 @@ fn test_interpret_expression_literal() {
     ";
 
     // syntax parsing
-    let ast = parse_content_into_ast(test_str, None);
+    let ast = parse_content_into_ast(test_str, None)
+        .unwrap_or_else(|error| { 
+            print!("AST ERROR for {}: \n {}\n", test_str, error); 
+            panic!(); 
+        });
     let main_id_node = &ast.data.main_function.data.name;
 
     let mut symbol_table = build_static_symbol_table(&ast);

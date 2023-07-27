@@ -1,28 +1,24 @@
 use crate::interpretation::interpret_function::interpret_translation_unit;
 use crate::params;
+use crate::semantic::errors::{SemanticError, SyntaxParsingError};
 use crate::symbol_table::build_static_symbol_table;
 use crate::syntax_parsing; // self allows to use the module name
 use crate::syntax_parsing::Rule;
 use crate::abstract_syntax_tree::build_translation_unit;
 use crate::abstract_syntax_tree::nodes::AST;
 
-// TODO: debug
 pub fn parse_content_into_ast<'a>(
     file_content: &'a str,
     file_name: Option<&str>,
-) -> Result<AST<'a>, Error<Rule>> {
-    let optional_file_annotation = match file_name {
-        Some(file_name) => format!(" [f: {}]", file_name),
-        None => String::from(""),
-    };
-
+) -> Result<AST<'a>, SemanticError> {
     // syntax parsing
     let rule = Rule::translation_unit;
     let pairs =  syntax_parsing::parse(rule, file_content)
-        .unwrap_or_else(|error| { 
-            log::error!("🚧 Syntax parsing ERROR{}: \n {}\n", optional_file_annotation, error);
-            return error;
-        });
+        .map_err(|error| {
+            SemanticError::SyntaxParsing(
+                SyntaxParsingError::from(error)
+            )
+    })?;
 
     let first_pair = pairs.into_iter().next().unwrap();
     assert_eq!(first_pair.as_rule(), rule);
@@ -31,10 +27,11 @@ pub fn parse_content_into_ast<'a>(
     // AST conversion
     // WARN: don't forget to change the method if needed
     let ast: AST = build_translation_unit(first_pair)
-        .unwrap_or_else(|error| { 
-            log::error!("🚧 AST ERROR{}: \n {}\n", optional_file_annotation, error);
-            panic!(); 
-        });
+        .map_err(|error| {
+            SemanticError::SyntaxParsing(
+                SyntaxParsingError::from(error)
+            )
+        })?;
     
     if let Some(file_name) = file_name {
         log::info!("Syntax Parsing successful for file {}!", file_name);
@@ -42,14 +39,15 @@ pub fn parse_content_into_ast<'a>(
         log::info!("Syntax Parsing successful for file content!");
     }
 
-    ast
+    Ok(ast)
 }
 
 /// For all input files:
 ///     1. Perform syntax parsing
 ///     2. Construct an AST
-///     3. Perform semantic analysis
-pub fn pipeline_syntax_and_ast(input_files: Vec<std::path::PathBuf>) {
+pub fn pipeline_syntax_and_ast(
+    input_files: Vec<std::path::PathBuf>
+) {
     println!("Pipeline: {:#?}", params::argv::Pipeline::SyntaxAndASTParsing);
 
     // run syntax parsing on all input files
@@ -59,14 +57,24 @@ pub fn pipeline_syntax_and_ast(input_files: Vec<std::path::PathBuf>) {
         let file_content = std::fs::read_to_string(file).unwrap();
         let file_content_str = file_content.as_str();
         let ast = parse_content_into_ast(file_content_str, Some(file_name));
-        log::info!("AST: {:#?}", ast);
+        match ast {
+            Ok(ast) => {
+                if params::ARGV.display_ast {
+                    log::info!("AST: {:#?}", ast);
+                }
+            },
+            Err(error) => {
+                log::error!("🚧 Syntax Parsing ERROR: \n {}\n", error);
+                continue;
+            },
+        }
     }
 }
 
 /// For all input files:
 ///     1. Perform syntax parsing
 ///     2. Construct an AST
-///     3. Perform semantic analysis
+///     3. Perform interpretation
 pub fn pipeline_syntax_ast_interpretation(input_files: Vec<std::path::PathBuf>) {
     println!("Pipeline: {:#?}", params::argv::Pipeline::SyntaxASTAndInterpretation);
 
@@ -78,8 +86,18 @@ pub fn pipeline_syntax_ast_interpretation(input_files: Vec<std::path::PathBuf>) 
         let file_name = file.file_name().unwrap().to_str().unwrap();
         let file_content = std::fs::read_to_string(file).unwrap();
         let file_content_str = file_content.as_str();
-        let ast = parse_content_into_ast(file_content_str, Some(file_name));
-        log::info!("AST: {:#?}", ast);
+        let ast = match parse_content_into_ast(file_content_str, Some(file_name)) {
+            Ok(ast) => {
+                if params::ARGV.display_ast {
+                    log::info!("AST: {:#?}", ast);
+                }
+                ast
+            },
+            Err(error) => {
+                log::error!("🚧 Syntax or AST Parsing ERROR: \n {}\n", error);
+                continue;
+            },
+        };
 
         // build symbol table
         let mut symbol_table = build_static_symbol_table(&ast);
@@ -91,11 +109,11 @@ pub fn pipeline_syntax_ast_interpretation(input_files: Vec<std::path::PathBuf>) 
         );
         match res {
             Ok(program_return_value) => {
-                log::info!("Program return value: {:#?}", program_return_value);
+                log::info!(")Program return value: {}", program_return_value.data);
             },
             Err(error) => {
                 log::error!("🚧 Interpretation ERROR: \n {}\n", error);
-                panic!();
+                continue;
             },
         }
     }

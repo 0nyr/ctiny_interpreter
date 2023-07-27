@@ -268,6 +268,25 @@ build_translation_unit_test!(
 );
 
 build_translation_unit_test!(
+    test_semantic_incorrect_function_array_argument_provided,
+    "int foo (int x[10]) { // array argument not allowed
+        x = x + 1;
+        return x;
+    }
+    int main () {
+        int x[10];
+        int i;
+        i = 0;
+        while (i < 10) {
+            x[i] = i;
+            i = i + 1;
+        }
+        x = foo(x); 
+        return x;
+    }"
+);
+
+build_translation_unit_test!(
     test_semantic_incorrect_function_too_many_argument_provided,
     "int foo (int x, char y, int z) {
         x = x + 1;

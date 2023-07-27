@@ -20,6 +20,10 @@ pub struct Argv {
     /// The pipeline to run
     #[arg(value_enum, short, long, default_value = "syntax-and-ast-parsing")]
     pub pipeline: Pipeline,
+
+    /// whether to print the AST or not
+    #[arg(long, default_value = "false")]
+    pub display_ast: bool,
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, ValueEnum, Debug)]

@@ -1,5 +1,5 @@
-
 use pest::Span;
+use std::fmt;
 
 use crate::semantic::errors::{SemanticError, SemanticErrorTrait, UndeclaredFunctionError};
 
@@ -216,6 +216,21 @@ impl Value {
             Value::Float(_) => TypeSpecifier::Float,
             Value::Char(_) => TypeSpecifier::Char,
             Value::Bool(_) => TypeSpecifier::Bool,
+        }
+    }
+}
+
+impl fmt::Display for Value {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Value::Int(i) => write!(f, "{} (Int)", i),
+            Value::Float(fl) => write!(f, "{} (Float)", fl),
+            Value::Char(c) => write!(
+                f, "{} (Char)", 
+                // convert u8 into ASCII char
+                char::from(*c)
+            ),
+            Value::Bool(b) => write!(f, "{} (Bool)", b),
         }
     }
 }
