@@ -28,11 +28,8 @@ fn main() {
         params::argv::Pipeline::SyntaxAndASTParsing => {
             pipelines::pipeline_syntax_and_ast(input_paths);
         },
-        params::argv::Pipeline::TypeOverflowChecking => {
-            pipelines::pipeline_syntax_and_ast(input_paths);
-        },
-        params::argv::Pipeline::SemanticAnalysis => {
-            pipelines::pipeline_syntax_and_ast(input_paths);
+        params::argv::Pipeline::SyntaxASTAndInterpretation => {
+            pipelines::pipeline_syntax_ast_interpretation(input_paths);
         },
     }
     

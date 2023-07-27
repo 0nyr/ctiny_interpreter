@@ -18,7 +18,7 @@ pub struct Argv {
     pub directories: Option<Vec<String>>, 
 
     /// The pipeline to run
-    #[arg(value_enum, short, long, default_value = "type-overflow-checking")]
+    #[arg(value_enum, short, long, default_value = "syntax-and-ast-parsing")]
     pub pipeline: Pipeline,
 }
 
@@ -27,9 +27,7 @@ pub enum Pipeline {
     /// run the syntax parsing
     SyntaxAndASTParsing,
     // semantic analysis
-    SemanticAnalysis,
-    /// run the type overflow checking
-    TypeOverflowChecking,
+    SyntaxASTAndInterpretation,
 }
 
 pub fn get_program_args() -> Argv {

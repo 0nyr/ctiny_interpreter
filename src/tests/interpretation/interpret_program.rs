@@ -267,6 +267,20 @@ build_translation_unit_test!(
     }"
 );
 
+build_translation_unit_test!(
+    test_semantic_incorrect_function_too_many_argument_provided,
+    "int foo (int x, char y, int z) {
+        x = x + 1;
+        return x;
+    }
+    int main () {
+        int x;
+        x = 10;
+        x = foo(1, 'a', 3, 4); // foo is missing argument
+        return x;
+    }"
+);
+
 
 
 // #[test]
