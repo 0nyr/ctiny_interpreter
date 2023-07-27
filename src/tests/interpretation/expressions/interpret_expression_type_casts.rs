@@ -1,10 +1,8 @@
-use std::collections::HashMap;
-use pest::{Parser, Span};
+use pest::Parser;
 
 use crate::semantic::errors::{SemanticError, ASTBuildingError};
-use crate::abstract_syntax_tree::nodes::{Value, Identifier, Node};
+use crate::abstract_syntax_tree::nodes::{Value, Node};
 use crate::interpretation::interpret_expression::interpret_expression;
-use crate::symbol_table::structs::{Scope, SymbolTable};
 use crate::abstract_syntax_tree::expressions::build_expression;
 use crate::syntax_parsing::{CTinyParser, Rule};
 use crate::tests::interpretation::{create_symbol_table_and_empty_main_scope, create_pseudo_translation_unit};

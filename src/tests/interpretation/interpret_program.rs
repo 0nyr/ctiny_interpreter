@@ -295,61 +295,7 @@ build_translation_unit_test!(
     int main () {
         int x;
         x = 10;
-        x = foo(1, 'a', 3, 4); // foo is missing argument
+        x = foo(1, 'a', 3, 4); // foo has too many arguments
         return x;
     }"
 );
-
-
-
-// #[test]
-// fn test_interpret_basic_program_with_declaration_and_assignment() {
-//     let test_str = "int main() { int a; a = 42; return a; }";
-//     let rule = Rule::translation_unit;
-
-//     // Syntax parsing
-//     let pairs = match CTinyParser::parse(rule, test_str) {
-//         Ok(pairs) => pairs,
-//         Err(error) => {
-//             panic!("Syntax parsing error for {}: \n {}\n", test_str, error);
-//         },
-//     };
-
-//     let first_pair = pairs.into_iter().next().unwrap();
-//     assert_eq!(first_pair.as_rule(), rule);
-//     assert_eq!(first_pair.as_str(), test_str);
-
-//     // AST conversion
-//     let ast = {
-//         match build_translation_unit(first_pair) {
-//             // need to convert the AST Error into a Semantic Error
-//             Ok(translation_unit) => translation_unit,
-//             Err(error) => {
-//                 panic!("AST ERROR for {}: \n {}\n", test_str, error);
-//             },
-//         }
-//     };
-//     print!("AST for string \"{}\": \n {:#?} \n\n", test_str, ast);
-
-//     // build symbol table
-//     let mut symbol_table = build_static_symbol_table(&ast);
-
-//     // interpretation
-//     let interpreted_value = interpret_translation_unit(
-//         &ast,
-//         &mut symbol_table,
-//     );
-//     match interpreted_value {
-//         Ok(interpreted_value_node) => {
-//             assert_eq!(interpreted_value_node.data, Value::Int(42));
-//             print!("Successfully interpreted program <{}>.\n\n", test_str); 
-//         },
-//         Err(error) => {
-//             panic!(
-//                 "Error interpreting program <{}>: {}\n\n", 
-//                 test_str, 
-//                 error
-//             );
-//         },
-//     }
-// }

@@ -193,6 +193,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "ctiny_interpreter"
+version = "1.0.0"
+dependencies = [
+ "chrono",
+ "clap",
+ "dotenv",
+ "fern",
+ "lazy_static",
+ "log",
+ "pest 2.7.1",
+ "pest_derive",
+]
+
+[[package]]
 name = "digest"
 version = "0.10.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -483,20 +497,6 @@ dependencies = [
  "libc",
  "wasi",
  "winapi",
-]
-
-[[package]]
-name = "tiny_ebnf_grammar_parser"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "clap",
- "dotenv",
- "fern",
- "lazy_static",
- "log",
- "pest 2.7.1",
- "pest_derive",
 ]
 
 [[package]]

@@ -12,5 +12,5 @@ int main () {
     else{
         y = y - z;
     }
-    return 'a';
+    return 0;
 }

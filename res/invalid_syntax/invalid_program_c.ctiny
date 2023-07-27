@@ -1,0 +1,9 @@
+int main () {
+    int c;
+
+    c = 'a';
+    
+    int a; // error: definition not allowed after assignment
+
+    return 0;
+}

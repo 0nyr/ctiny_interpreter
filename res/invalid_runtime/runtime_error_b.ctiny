@@ -1,0 +1,14 @@
+int main() {
+    int a[10], i;
+
+    i = 10;
+
+    while(i > 0) {
+        a[i] = i;
+        i = i - 1;
+    }
+
+    // runtime error: unassigned array element at index 0
+    
+    return a[10];
+}

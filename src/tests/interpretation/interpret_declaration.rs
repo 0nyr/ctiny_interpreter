@@ -1,10 +1,7 @@
-use std::collections::HashMap;
-use pest::{Parser, Span};
+use pest::Parser;
 
 use crate::abstract_syntax_tree::declarations::build_multi_declaration;
 use crate::semantic::errors::{SemanticError, ASTBuildingError, SyntaxParsingError};
-use crate::abstract_syntax_tree::nodes::{Identifier, Node};
-use crate::symbol_table::structs::{Scope, SymbolTable};
 use crate::syntax_parsing::{CTinyParser, Rule};
 use crate::interpretation::interpret_declaration::interpret_declaration;
 use crate::tests::interpretation::create_symbol_table_and_empty_main_scope;
@@ -106,7 +103,7 @@ macro_rules! build_interpret_declaration_test {
 
             // check and print
             match interpreted_literal {
-                Ok(interpreted_literal) => {
+                Ok(_) => {
                     print!(
                         "Expected error, but got Ok multi-declaration instead, for multi-declaration <{}>.", 
                         test_str,

@@ -1,9 +1,0 @@
-int main () {
-    int c;
-
-    c = a; // error a not defined.
-    
-    c = 10;
-
-    return 0;
-}

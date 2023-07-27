@@ -1,15 +1,24 @@
 # WORKLOG
 
-* [ ] Correct the .txt grammar with modifications done inside .pest PEG file.
-* [ ] Add static identifier check: cast error if an identifier is equal to a keywork... And remove the KEYWORD rule from the pest grammar.
+### Refactoring ideas and potential improvement
 
-### Refactoring ideas
+> If you want to contribute to this project, here are some ideas for you:
 
 * [ ] Unify error system between AST an Semantic parts. Actually, the custom complex error system is probably unecessary and could be removed to favor the pest::CustomError instead.
 * [ ] Refactor the test macros and function for more unification and DRYness
+* [ ] Improvement: Add static identifier check: cast error if an identifier is equal to a keywork... And remove the KEYWORD rule from the pest grammar.
 * [ ] Experiment with reference counting on Function and Scope. Rust offers references, which are similar to pointers but with additional guarantees and restrictions for safety, and `Rc` or `Arc` types for shared ownership of data.
 
 ## Logs
+
+### Thu 27 Jul 2023
+
+* Adding interpretation pipeline.
+* Added new CLI argument for AST optional display.
+* Correcting minor bugs
+* Rewriting the original EBNF grammar correctly.
+* Updating README
+* Added and tested compiled release.
 
 ### Wed 26 Jul 2023
 
@@ -18,7 +27,6 @@
 * Remove declaration interpretation from function interpretation since this is already done in the symbol table construction process.
 
 * [X] debug translation_unit interpretation
-
 * [X] Add more complex tests for translation_unit interpretation.
 * [ ] Integrate syntax checking and interpretation checking into pipelines.
 

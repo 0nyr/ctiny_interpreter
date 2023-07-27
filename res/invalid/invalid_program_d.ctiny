@@ -1,7 +1,0 @@
-int x; // global not allowed
-
-int main(){
-    x = 3;
-
-    return 0; 
-}

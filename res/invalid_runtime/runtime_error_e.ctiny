@@ -1,0 +1,11 @@
+int foo (int x, char y, int z) {
+    x = x + 1;
+    return x;
+}
+
+int main () {
+    int x;
+    x = 10;
+    x = foo(1, 'a', 3, 4); // runtime error: foo has too many arguments
+    return x;
+}

@@ -1,10 +1,8 @@
-use crate::abstract_syntax_tree::nodes::{Node, Declaration, Value, Expression, Identifier, UnaryOperator, TypeSpecifier, Function, TranslationUnit};
-use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UndeclaredFunctionError};
-use crate::semantic::operations::perform_binary_operation;
+use crate::abstract_syntax_tree::nodes::{Node, Value, Function, TranslationUnit};
+use crate::semantic::errors::SemanticError;
 use crate::semantic::type_casts::cast_to_type;
-use crate::symbol_table::structs::{SymbolTable, Variable, NormalVarData, ArrayVarData};
+use crate::symbol_table::structs::SymbolTable;
 
-use super::interpret_declaration::interpret_declaration;
 use super::interpret_expression::interpret_expression;
 use super::interpret_statement::interpret_statement;
 

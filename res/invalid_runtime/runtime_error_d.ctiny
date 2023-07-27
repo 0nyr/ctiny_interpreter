@@ -1,0 +1,4 @@
+int main() { 
+    int a; // runtime error: a is unused
+    return 0; 
+}

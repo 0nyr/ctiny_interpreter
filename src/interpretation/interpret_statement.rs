@@ -1,7 +1,6 @@
-use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, UnaryOperator, TypeSpecifier, Statement, AssignmentStatement, TranslationUnit};
+use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, Identifier, TypeSpecifier, Statement, TranslationUnit};
 use crate::params::MAX_NB_OF_LOOP_ITERATIONS;
-use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait, UnexpectedStatementParsingError, UnexpectedTypeCastError, MaxLoopIterationError};
-use crate::semantic::operations::perform_binary_operation;
+use crate::semantic::errors::{SemanticError, SemanticErrorTrait, UnexpectedStatementParsingError, UnexpectedTypeCastError, MaxLoopIterationError};
 use crate::semantic::type_casts::cast_to_type;
 use crate::symbol_table::structs::SymbolTable;
 

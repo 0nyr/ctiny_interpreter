@@ -1,0 +1,12 @@
+int main() {
+    int a[10], i;
+
+    i = 10;
+
+    // runtime error: infinite loop
+    while(i > 0) {
+        a[i] = i;
+    }
+    
+    return a[10];
+}

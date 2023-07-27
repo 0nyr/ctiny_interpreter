@@ -1,0 +1,7 @@
+int x; // error: global not allowed
+
+int main(){
+    x = 3;
+
+    return 0; 
+}

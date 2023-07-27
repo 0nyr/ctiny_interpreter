@@ -5579,3 +5579,484 @@ int main () {
   |
   = expected function_return, multi_declaration, or statement
 
+[2023-07-27T16:57:47 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:57:47 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_a.ctiny
+[2023-07-27T16:57:47 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax or AST Parsing ERROR: 
+  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:57:47 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_c.ctiny
+[2023-07-27T16:57:47 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax or AST Parsing ERROR: 
+  --> 6:5
+  |
+6 |     int a; // not allowed here
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:57:47 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_undefined_error.ctiny
+[2023-07-27T16:57:47 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file invalid_undefined_error.ctiny!
+[2023-07-27T16:57:47 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Interpretation ERROR: 
+  --> 4:9
+  |
+4 |     c = a; // error a not defined.
+  |         ^
+  |
+  = 🔴 [Semantic error] Undeclared variable: a
+
+[2023-07-27T16:57:47 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_d.ctiny
+[2023-07-27T16:57:47 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax or AST Parsing ERROR: 
+  --> 1:1
+  |
+1 | int x; // global not allowed
+  | ^---
+  |
+  = expected translation_unit
+
+[2023-07-27T16:57:47 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_b.ctiny
+[2023-07-27T16:57:47 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax or AST Parsing ERROR: 
+  --> 2:5
+  |
+2 |     int a = 2; //error; declaration should be in next lines
+  |     ^---
+  |
+  = expected function_return, multi_declaration, or statement
+
+[2023-07-27T16:58:01 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:58:23 UTC][INFO tiny_ebnf_grammar_parser::params]  🚀 starting program...
+[2023-07-27T16:58:23 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_a.ctiny
+[2023-07-27T16:58:23 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:58:23 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_c.ctiny
+[2023-07-27T16:58:23 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     int a; // not allowed here
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T16:58:23 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_undefined_error.ctiny
+[2023-07-27T16:58:23 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Syntax Parsing successful for file invalid_undefined_error.ctiny!
+[2023-07-27T16:58:23 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_d.ctiny
+[2023-07-27T16:58:23 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 1:1
+  |
+1 | int x; // global not allowed
+  | ^---
+  |
+  = expected translation_unit
+
+[2023-07-27T16:58:23 UTC][INFO tiny_ebnf_grammar_parser::pipelines] Parsing file: res/invalid/invalid_program_b.ctiny
+[2023-07-27T16:58:23 UTC][ERROR tiny_ebnf_grammar_parser::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 2:5
+  |
+2 |     int a = 2; //error; declaration should be in next lines
+  |     ^---
+  |
+  = expected function_return, multi_declaration, or statement
+
+[2023-07-27T17:19:02 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:19:28 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:19:28 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-27T17:19:28 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_c.ctiny!
+[2023-07-27T17:19:28 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-27T17:19:28 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T17:19:28 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-27T17:19:28 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_d.ctiny!
+[2023-07-27T17:19:28 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-27T17:19:28 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_b.ctiny!
+[2023-07-27T17:20:20 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:20:20 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid/invalid_program_a.ctiny
+[2023-07-27T17:20:20 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T17:20:20 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid/invalid_program_c.ctiny
+[2023-07-27T17:20:20 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     int a; // not allowed here
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T17:20:20 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid/invalid_undefined_error.ctiny
+[2023-07-27T17:20:20 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file invalid_undefined_error.ctiny!
+[2023-07-27T17:20:20 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid/invalid_program_d.ctiny
+[2023-07-27T17:20:20 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 1:1
+  |
+1 | int x; // global not allowed
+  | ^---
+  |
+  = expected translation_unit
+
+[2023-07-27T17:20:20 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid/invalid_program_b.ctiny
+[2023-07-27T17:20:20 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 2:5
+  |
+2 |     int a = 2; //error; declaration should be in next lines
+  |     ^---
+  |
+  = expected function_return, multi_declaration, or statement
+
+[2023-07-27T17:31:53 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_c.ctiny!
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] )Program return value: 30 (Int)
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] )Program return value: 0 (Int)
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_d.ctiny!
+[2023-07-27T17:32:11 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 1:1
+  |
+1 | a
+  | ^
+  |
+  = 🔴 [Semantic error] Array a has not been assigned a value at index 0.
+
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_e.ctiny
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_e.ctiny!
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] )Program return value: 55 (Int)
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_b.ctiny!
+[2023-07-27T17:32:11 UTC][INFO ctiny_interpreter::pipelines] )Program return value: 0 (Int)
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_c.ctiny
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_c.ctiny!
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] )Program return value: 30 (Int)
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_a.ctiny
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_a.ctiny!
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] )Program return value: 0 (Int)
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_d.ctiny
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_d.ctiny!
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] )Program return value: 9 (Int)
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_e.ctiny
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_e.ctiny!
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] )Program return value: 55 (Int)
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/valid/valid_program_b.ctiny
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file valid_program_b.ctiny!
+[2023-07-27T17:36:14 UTC][INFO ctiny_interpreter::pipelines] )Program return value: 0 (Int)
+[2023-07-27T17:38:01 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:38:22 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:38:22 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_a.ctiny
+[2023-07-27T17:38:22 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T17:38:22 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_c.ctiny
+[2023-07-27T17:38:22 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     int a; // error: definition not allowed after assignment
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T17:38:22 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_e.ctiny
+[2023-07-27T17:38:22 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 9:1
+  |
+9 | }
+  | ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T17:38:22 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_d.ctiny
+[2023-07-27T17:38:22 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 1:1
+  |
+1 | int x; // error: global not allowed
+  | ^---
+  |
+  = expected translation_unit
+
+[2023-07-27T17:38:22 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_b.ctiny
+[2023-07-27T17:38:22 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 2:5
+  |
+2 |     int a = 2; // error: declaration should be in next lines
+  |     ^---
+  |
+  = expected function_return, multi_declaration, or statement
+
+[2023-07-27T17:39:02 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:39:02 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_a.ctiny
+[2023-07-27T17:39:02 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     char c; //error: declaration must be at the beginning
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T17:39:02 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_c.ctiny
+[2023-07-27T17:39:02 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 6:5
+  |
+6 |     int a; // error: definition not allowed after assignment
+  |     ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T17:39:02 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_e.ctiny
+[2023-07-27T17:39:02 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 8:1
+  |
+8 | } // error: missing return
+  | ^---
+  |
+  = expected function_return or statement
+
+[2023-07-27T17:39:02 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_d.ctiny
+[2023-07-27T17:39:02 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 1:1
+  |
+1 | int x; // error: global not allowed
+  | ^---
+  |
+  = expected translation_unit
+
+[2023-07-27T17:39:02 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_syntax/invalid_program_b.ctiny
+[2023-07-27T17:39:02 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Syntax Parsing ERROR: 
+  --> 2:5
+  |
+2 |     int a = 2; // error: declaration should be in next lines
+  |     ^---
+  |
+  = expected function_return, multi_declaration, or statement
+
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_a.ctiny
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_a.ctiny!
+[2023-07-27T17:40:13 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 6:9
+  |
+6 |     b = a; // runtime error: implicit conversion from int to char causing overflow
+  |         ^
+  |
+  = 🔴 [Semantic error] Int literal out of range for char: 32767
+
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_d.ctiny
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_d.ctiny!
+[2023-07-27T17:40:13 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 1:1
+  |
+1 | a
+  | ^
+  |
+  = 🔴 [Semantic error] Variable a has not been assigned a value.
+
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_b.ctiny
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_b.ctiny!
+[2023-07-27T17:40:13 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 1:1
+  |
+1 | a
+  | ^
+  |
+  = 🔴 [Semantic error] Array a has not been assigned a value at index 0.
+
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_e.ctiny
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_e.ctiny!
+[2023-07-27T17:40:13 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 9:9
+  |
+9 |     x = foo(1, 'a', 3, 4); // runtime error: foo has too many arguments
+  |         ^---------------^
+  |
+  = 🔴 [Semantic error] Expected 3 arguments, got 4 for function foo
+
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_c.ctiny
+[2023-07-27T17:40:13 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_c.ctiny!
+[2023-07-27T17:40:13 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 7:5
+  |
+7 |     while(i > 0) {
+  | ...
+9 |     }␊
+  |     ^
+  |
+  = 🔴 [Semantic error] Maximum number of loop iteration reached (max: 1000).
+
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_a.ctiny
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_a.ctiny!
+[2023-07-27T17:41:08 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 6:9
+  |
+6 |     b = a; // runtime error: implicit conversion from int to char causing overflow
+  |         ^
+  |
+  = 🔴 [Semantic error] Int literal out of range for char: 32767
+
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_d.ctiny
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_d.ctiny!
+[2023-07-27T17:41:08 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 1:1
+  |
+1 | a
+  | ^
+  |
+  = 🔴 [Semantic error] Variable a has not been assigned a value.
+
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_b.ctiny
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_b.ctiny!
+[2023-07-27T17:41:08 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 1:1
+  |
+1 | a
+  | ^
+  |
+  = 🔴 [Semantic error] Array a has not been assigned a value at index 0.
+
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_e.ctiny
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_e.ctiny!
+[2023-07-27T17:41:08 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 9:9
+  |
+9 |     x = foo(1, 'a', 3, 4); // runtime error: foo has too many arguments
+  |         ^---------------^
+  |
+  = 🔴 [Semantic error] Expected 3 arguments, got 4 for function foo
+
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_c.ctiny
+[2023-07-27T17:41:08 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_c.ctiny!
+[2023-07-27T17:41:08 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 7:5
+  |
+7 |     while(i > 0) {
+  | ...
+9 |     }␊
+  |     ^
+  |
+  = 🔴 [Semantic error] Maximum number of loop iteration reached (max: 1000).
+
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_a.ctiny
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_a.ctiny!
+[2023-07-27T17:41:11 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 6:9
+  |
+6 |     b = a; // runtime error: implicit conversion from int to char causing overflow
+  |         ^
+  |
+  = 🔴 [Semantic error] Int literal out of range for char: 32767
+
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_d.ctiny
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_d.ctiny!
+[2023-07-27T17:41:11 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 1:1
+  |
+1 | a
+  | ^
+  |
+  = 🔴 [Semantic error] Variable a has not been assigned a value.
+
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_b.ctiny
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_b.ctiny!
+[2023-07-27T17:41:11 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 1:1
+  |
+1 | a
+  | ^
+  |
+  = 🔴 [Semantic error] Array a has not been assigned a value at index 0.
+
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_e.ctiny
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_e.ctiny!
+[2023-07-27T17:41:11 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 9:9
+  |
+9 |     x = foo(1, 'a', 3, 4); // runtime error: foo has too many arguments
+  |         ^---------------^
+  |
+  = 🔴 [Semantic error] Expected 3 arguments, got 4 for function foo
+
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_c.ctiny
+[2023-07-27T17:41:11 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_c.ctiny!
+[2023-07-27T17:41:11 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 7:5
+  |
+7 |     while(i > 0) {
+  | ...
+9 |     }␊
+  |     ^
+  |
+  = 🔴 [Semantic error] Maximum number of loop iteration reached (max: 1000).
+
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::params]  🚀 starting program...
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_a.ctiny
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_a.ctiny!
+[2023-07-27T17:41:56 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 6:9
+  |
+6 |     b = a; // runtime error: implicit conversion from int to char causing overflow
+  |         ^
+  |
+  = 🔴 [Semantic error] Int literal out of range for char: 32767
+
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_d.ctiny
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_d.ctiny!
+[2023-07-27T17:41:56 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 1:1
+  |
+1 | a
+  | ^
+  |
+  = 🔴 [Semantic error] Variable a has not been assigned a value.
+
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_b.ctiny
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_b.ctiny!
+[2023-07-27T17:41:56 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 1:1
+  |
+1 | a
+  | ^
+  |
+  = 🔴 [Semantic error] Array a has not been assigned a value at index 0.
+
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_e.ctiny
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_e.ctiny!
+[2023-07-27T17:41:56 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 9:9
+  |
+9 |     x = foo(1, 'a', 3, 4); // runtime error: foo has too many arguments
+  |         ^---------------^
+  |
+  = 🔴 [Semantic error] Expected 3 arguments, got 4 for function foo
+
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Parsing file: res/invalid_runtime/runtime_error_c.ctiny
+[2023-07-27T17:41:56 UTC][INFO ctiny_interpreter::pipelines] Syntax Parsing successful for file runtime_error_c.ctiny!
+[2023-07-27T17:41:56 UTC][ERROR ctiny_interpreter::pipelines] 🚧 Interpretation ERROR: 
+  --> 7:5
+  |
+7 |     while(i > 0) {
+  | ...
+9 |     }␊
+  |     ^
+  |
+  = 🔴 [Semantic error] Maximum number of loop iteration reached (max: 1000).
+

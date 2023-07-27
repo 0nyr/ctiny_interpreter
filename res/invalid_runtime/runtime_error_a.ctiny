@@ -1,0 +1,9 @@
+int main() {
+    int a;
+    char b;
+
+    a = 32767;
+    b = a; // runtime error: implicit conversion from int to char causing overflow
+
+    return 0;
+}

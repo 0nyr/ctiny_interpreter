@@ -1,6 +1,6 @@
 use crate::interpretation::interpret_function::interpret_translation_unit;
 use crate::params;
-use crate::semantic::errors::{SemanticError, SyntaxParsingError};
+use crate::semantic::errors::{SemanticError, SyntaxParsingError, ASTBuildingError};
 use crate::symbol_table::build_static_symbol_table;
 use crate::syntax_parsing; // self allows to use the module name
 use crate::syntax_parsing::Rule;
@@ -28,8 +28,8 @@ pub fn parse_content_into_ast<'a>(
     // WARN: don't forget to change the method if needed
     let ast: AST = build_translation_unit(first_pair)
         .map_err(|error| {
-            SemanticError::SyntaxParsing(
-                SyntaxParsingError::from(error)
+            SemanticError::ASTBuilding(
+                ASTBuildingError::from(error)
             )
         })?;
     

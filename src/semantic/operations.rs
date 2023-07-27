@@ -1,6 +1,4 @@
-use pest::Span;
-
-use crate::abstract_syntax_tree::nodes::{Node, Value, Expression, UnaryExpression, BinaryExpression, FunctionCall, TypeCast, GetOrSetValue, Identifier, UnaryOperator, TypeSpecifier, BinaryOperator};
+use crate::abstract_syntax_tree::nodes::{Node, Value, TypeSpecifier, BinaryOperator};
 use crate::merge_spans_no_check;
 use crate::semantic::errors::{SemanticError, SemanticErrorTrait, UnexpectedTypeCastError};
 use crate::semantic::type_casts::cast_to_type;

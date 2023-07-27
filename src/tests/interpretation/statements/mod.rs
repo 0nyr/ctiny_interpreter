@@ -111,7 +111,7 @@ macro_rules! build_interpret_statement_to_value_test {
 
             // check and print
             match interpreted_literal {
-                Ok(interpreted_literal) => {
+                Ok(_) => {
                     print!(
                         "Expected error, but got Ok stament instead, for statement <{}>.", 
                         test_str,

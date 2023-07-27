@@ -1,0 +1,8 @@
+int main () {
+    int c;
+
+    c = 'a';
+    
+    c = 10;
+
+} // error: missing return

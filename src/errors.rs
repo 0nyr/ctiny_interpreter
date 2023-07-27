@@ -27,10 +27,6 @@ pub fn make_ast_error(span: pest::Span, message: &str) -> Error<Rule> {
     make_error(span, format!("{} {}", AST_ERROR_PREFIX, message).as_str())
 }
 
-pub fn make_semantic_error_from_pair(pair: Pair<Rule>, message: &str) -> Error<Rule> {
-    make_semantic_error(pair.as_span(), message)
-}
-
 pub fn make_semantic_error(span: pest::Span, message: &str) -> Error<Rule> {
     make_error(span, format!("{} {}", SEMANTIC_ERROR_PREFIX, message).as_str())
 }

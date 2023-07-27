@@ -1,7 +1,5 @@
-use crate::abstract_syntax_tree::nodes::{Node, Declaration, Value, Expression, Identifier, UnaryOperator, TypeSpecifier};
-use crate::semantic::errors::{SemanticError, UnexpectedExpressionParsingError, SemanticErrorTrait};
-use crate::semantic::operations::perform_binary_operation;
-use crate::semantic::type_casts::cast_to_type;
+use crate::abstract_syntax_tree::nodes::{Node, Declaration, Identifier};
+use crate::semantic::errors::SemanticError;
 use crate::symbol_table::structs::{SymbolTable, Variable, NormalVarData, ArrayVarData};
 
 fn interpret_normal_declaration<'a>(

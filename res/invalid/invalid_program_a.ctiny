@@ -1,9 +1,0 @@
-int main () {
-    int i;
-
-    i = 20;
-
-    char c; //error: declaration must be at the beginning
-    
-    return 0;
-}

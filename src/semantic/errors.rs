@@ -71,8 +71,6 @@ pub enum SemanticError {
     // operation overflow 
     IntOverflow(IntOverflowError),
     FloatOverflow(FloatOverflowError),
-    CharOverflow(CharOverflowError),
-    BoolOverflow(BoolOverflowError),
 
     // loop
     MaxLoopIteration(MaxLoopIterationError),
@@ -123,8 +121,6 @@ impl fmt::Display for SemanticError {
             SemanticError::UnexpectedTypeCast(error) => write!(f, "{}", error),
             SemanticError::IntOverflow(error) => write!(f, "{}", error),
             SemanticError::FloatOverflow(error) => write!(f, "{}", error),
-            SemanticError::CharOverflow(error) => write!(f, "{}", error),
-            SemanticError::BoolOverflow(error) => write!(f, "{}", error),
             SemanticError::DivisionByZero(error) => write!(f, "{}", error),
             SemanticError::UnexpectedStatementParsing(error) => write!(f, "{}", error),
             SemanticError::SyntaxParsing(error) => write!(f, "{}", error),
